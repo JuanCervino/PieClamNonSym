@@ -366,7 +366,7 @@ class PCLAMIter(MessagePassing):
                 
                 if (i+1)%plot_every == 0:
                     printd(f'\nfit wrapper {which_fit}, plotting state at iter {i}')
-                    acc_tracker.plot_intermediate(draw_edges=True)    
+                    acc_tracker.plot_intermediate(**kwargs)    
             # ========================================== end for loop
            
             # RETURN ACCURACIES
@@ -468,7 +468,7 @@ class PCLAMIter(MessagePassing):
                                 verbose=verbose,
                                 acc_every=acc_every, 
                                 plot_every=plot_every,
-                                kwargs=kwargs)
+                                **kwargs)
                                 
         
 
@@ -527,7 +527,7 @@ class PCLAMIter(MessagePassing):
                             acc_every=acc_every,
                             performance_metric=performance_metric,
                             **feat_params,
-                            kwargs=params)
+                            **params)
         
         fit_prior_func = lambda: self.fit_prior(
                             graph=graph, 
@@ -538,7 +538,7 @@ class PCLAMIter(MessagePassing):
                             performance_metric=performance_metric,
                             verbose=verbose_in_funcs, 
                             **prior_params,
-                            kwargs=params)
+                            **params)
         
         # FIRST AND SECOND PARAMS
     
@@ -569,7 +569,7 @@ class PCLAMIter(MessagePassing):
                                 task=task, 
                                 acc_every=acc_every,
                                 calling_function_name='fit',
-                                kwargs=params)
+                                **params)
         
         # BACK FORTH 0 -> RUN FIRST FUNCTION
         if n_back_forth == 0:
@@ -660,7 +660,7 @@ class PCLAMIter(MessagePassing):
 
             if (i+1)%plot_every == 0:
                 printd(f'\nfit, plotting state at iter {i+1}.\ndataset: {graph.name}, ,model: {self.model_name}')
-                acc_tracker.plot_intermediate(num_blanks_second, num_blanks_first, i+1, draw_edges=True)
+                acc_tracker.plot_intermediate(num_blanks_second, num_blanks_first, i+1, **params)
         # ========= end fit loop ================
 
        

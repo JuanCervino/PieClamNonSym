@@ -406,7 +406,8 @@ def plot_optimization_stage(
 
     # plot SBM and original adj
     if 'adj' in things_to_plot:
-        w_opt = get_prob_graph(graph_cpu.x, lorenz=lorenz, prior=prior)
+        w_opt = get_prob_graph(graph_cpu.x, lorenz=lorenz, prior=None)
+        # w_opt = get_prob_graph(graph.x, lorenz=lorenz, prior=prior).cpu()
         w_gt = to_dense_adj(graph_cpu.edge_index)[0]
         w_cut = w_opt.clone()
 

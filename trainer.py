@@ -400,8 +400,8 @@ class Trainer():
 
 
         except (ValueError, AssertionError) as e:
-            if verbose:
-                printd(f'\nERROR in train_model_on_params: {e}')
+            
+            printd(f'\nERROR in train_model_on_params: {e}')
             raise
             
         finally:
