@@ -366,7 +366,7 @@ class PCLAMIter(MessagePassing):
                 
                 if (i+1)%plot_every == 0:
                     printd(f'\nfit wrapper {which_fit}, plotting state at iter {i}')
-                    acc_tracker.plot_intermediate()    
+                    acc_tracker.plot_intermediate(draw_edges=True)    
             # ========================================== end for loop
            
             # RETURN ACCURACIES
@@ -660,7 +660,7 @@ class PCLAMIter(MessagePassing):
 
             if (i+1)%plot_every == 0:
                 printd(f'\nfit, plotting state at iter {i+1}.\ndataset: {graph.name}, ,model: {self.model_name}')
-                acc_tracker.plot_intermediate(num_blanks_second, num_blanks_first, i+1)
+                acc_tracker.plot_intermediate(num_blanks_second, num_blanks_first, i+1, draw_edges=True)
         # ========= end fit loop ================
 
        
@@ -1338,7 +1338,11 @@ class AccTrack:
         return latest_acc
 
 
-    def plot_intermediate(self, n_iter_first=None, n_iter_second=None, n_back_forth=None):
+    def plot_intermediate(self, 
+                          n_iter_first=None, 
+                          n_iter_second=None, 
+                          n_back_forth=None,
+                          **kwargs):
         
         if self.accuracies_test.keys() != ['losses']:
             plot_test_accuracies(self.accuracies_test, n_iter_first, n_iter_second, n_back_forth)
@@ -1352,7 +1356,8 @@ class AccTrack:
                 self.graph, 
                 things_to_plot=things_to_plot,
                 community_affiliation=self.graph.y, 
-                calling_function_name='fit_feats')
+                calling_function_name='fit_feats',
+                **kwargs)
             
 
 # 888888    db    88""Yb 88     Yb  dP .dP"Y8 888888  dP"Yb  88""Yb 

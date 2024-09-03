@@ -86,11 +86,15 @@ def plot_2dgraph(graph,
                  proj_dims=[0,1],
                  community_affiliation=None, 
                  test_mask=None, 
-                 x_fig_lim=None, 
-                 y_fig_lim=None, 
+                #  x_fig_lim=None, 
+                #  y_fig_lim=None, 
                  ax=None, 
                  figsize=(2,2), 
                  **kwargs):
+        
+        
+        x_fig_lim = kwargs.get('x_fig_lim', None)
+        y_fig_lim = kwargs.get('y_fig_lim', None)
         draw_edges = kwargs.get('draw_edges', False)
         draw_community_affiliation = kwargs.get('draw_community_affiliation', True)
         draw_colorful_nodes = kwargs.get('draw_colorful_nodes', False)
@@ -130,10 +134,17 @@ def plot_2dgraph(graph,
         
         edge_color = 'black' 
         if draw_edges:
-            width = 10/num_edges
+            width = 35/num_edges
         else:
             width = 0.0
-        nx.draw(G, pos=node_positions_dict, node_color=node_colors, node_size=node_sizes, arrows=False, edge_color=edge_color, width=width, ax=ax)
+         # Draw edges first
+        # nx.draw_networkx_edges(G, pos=node_positions_dict, edge_color=edge_color, width=width, ax=ax)
+        
+        # # Draw nodes with specified alpha
+        # alpha_value = 0.5  # Adjust this value between 0 and 1 as needed
+        # nx.draw_networkx_nodes(G, pos=node_positions_dict, node_color=node_colors, node_size=node_sizes, alpha=alpha_value, ax=ax)
+        
+        nx.draw(G, pos=node_positions_dict, node_color=node_colors, node_size=node_sizes, arrows=False, edge_color=edge_color, width=width, alpha=0.5, ax=ax)
      
         #* add the axes (nx doesn't use them ever)
         ax.axis('on')
@@ -475,6 +486,7 @@ def plot_optimization_stage(
         else: #* 2 features
             
             if prior: 
+                draw_nodes_on_prior = kwargs.get('draw_nodes_on_prior', True)
                 if lorenz:
                     x_fig_lim = [-0.01, 2.7]
                     y_fig_lim = [-1.7, 1.7]
@@ -488,6 +500,7 @@ def plot_optimization_stage(
                 # plot_prob(prior.model.log_prob, device=next(prior.model.parameters()).device, ax=axes[0], title='prior', x_fig_lim=x_fig_lim, y_fig_lim=y_fig_lim)
                 plot_prob(prior.forward_ll, device=next(prior.model.parameters()).device, ax=axes[0], title='prior', x_fig_lim=x_fig_lim, y_fig_lim=y_fig_lim)
                 
+                # if draw_nodes_on_prior:
                 plot_2dgraph(
                     graph_cpu, community_affiliation=community_affiliation_cpu,
                     lorenz_fig_lims=lorenz, ax=axes[0], 

@@ -20,6 +20,7 @@ from utils import utils
 import json
 import yaml
 from copy import deepcopy
+from datetime import datetime
 
 
 
@@ -298,7 +299,7 @@ class Trainer():
         if self.configs_dict is None:
             raise ValueError(" in train_model_on_params: trainer doesn't have a config dict.")
         
-        printd(f'\n starting optimization of {self.model_name} on {self.dataset_name} on device {self.device}')
+        printd(f'\n {datetime.now().strftime("%Y-%m-%d %H:%M:%S")} starting optimization of {self.model_name} on {self.dataset_name} on device {self.device}')
         print('\n configs_dict: \n' + json.dumps(self.configs_dict, indent=4))
           
         if init_feats or (self.data.x is None):
