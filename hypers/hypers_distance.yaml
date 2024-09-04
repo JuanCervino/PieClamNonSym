@@ -244,14 +244,14 @@ sbm3x3HalfDiag_piegam:
         num_layers_mlp: 2
     feat_opt:
         n_iter: 2000
-        lr: 0.00001
+        lr: 0.0001
     prior_opt:
         n_iter: 2000
-        lr: 0.000005
+        lr: 0.00001
         noise_amp: 0.1
         weight_decay: 0.01
     back_forth:
-        n_back_forth: 20
+        n_back_forth: 5
         scheduler_step_size: 100
         scheduler_gamma: 0.5
         first_func_in_fit: 'fit_prior'

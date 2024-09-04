@@ -499,7 +499,8 @@ def plot_optimization_stage(
 
                 # plot prior with the 2d graph
                 # plot_prob(prior.model.log_prob, device=next(prior.model.parameters()).device, ax=axes[0], title='prior', x_fig_lim=x_fig_lim, y_fig_lim=y_fig_lim)
-                plot_prob(prior.forward_ll, device=next(prior.model.parameters()).device, ax=axes[0], title='prior', x_fig_lim=x_fig_lim, y_fig_lim=y_fig_lim)
+                if draw_nodes_on_prior:
+                    plot_prob(prior.forward_ll, device=next(prior.model.parameters()).device, ax=axes[0], title='prior', x_fig_lim=x_fig_lim, y_fig_lim=y_fig_lim)
                 
                 # if draw_nodes_on_prior:
                 plot_2dgraph(
