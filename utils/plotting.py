@@ -21,7 +21,7 @@ from utils.utils import get_prob_graph
 from utils.printing_utils import printd
 
 
-def plot_feats(graph):
+def plot_feats(graph, lorenz):
     '''plot the individual features per node one by one'''
     num_feats = graph.x.shape[1]
     printd(f'plotting {num_feats} features')
@@ -29,16 +29,25 @@ def plot_feats(graph):
     if type(axes) != np.ndarray:
         axes = np.array([axes])
     
+    y_fig_lim_inclusive = [-0.1, 2]
+    if lorenz:
+        y_fig_lim_exclusive = [-2,2]
+    else:
+        y_fig_lim_exclusive = y_fig_lim_inclusive
+
     if num_feats == 2:
-        axes[0].plot(graph.x[:,0].detach().numpy())
-        axes[1].plot(graph.x[:,1].detach().numpy())
+        axes[0].plot(graph.x[:, 0].detach().numpy())
+        axes[0].set_ylim(y_fig_lim_inclusive)
+        axes[1].plot(graph.x[:, 1].detach().numpy())
+        axes[1].set_ylim(y_fig_lim_exclusive)
         
     if num_feats > 2:
-        for i in range(math.ceil(num_feats/2)):
-            axes[0,i].plot(graph.x[:,i].detach().numpy())
-            if i+math.ceil(num_feats/2) < num_feats:
-                axes[1,i].plot(graph.x[:,i+math.ceil(num_feats/2)].detach().numpy())
-        
+        for i in range(math.ceil(num_feats / 2)):
+            axes[0, i].plot(graph.x[:, i].detach().numpy())
+            axes[0, i].set_ylim(y_fig_lim_inclusive)
+            if i + math.ceil(num_feats / 2) < num_feats:
+                axes[1, i].plot(graph.x[:, i + math.ceil(num_feats / 2)].detach().numpy())
+                axes[1, i].set_ylim(y_fig_lim_exclusive)
 
 def plot_relu_lines(lorenz, ax, line_range=1):
     if lorenz:
@@ -426,7 +435,7 @@ def plot_optimization_stage(
         
     # plot the features
     if 'feats' in things_to_plot:
-        plot_feats(graph_cpu)
+        plot_feats(graph_cpu, lorenz=lorenz)
     # plot 2d graphs
     
     if '2dgraphs' in things_to_plot:

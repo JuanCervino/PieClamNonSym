@@ -86,7 +86,7 @@ def sample_normflows_dist(num_samples, name_shape, lorenz=False, device='cpu'):
 
 def simulate_dataset(name, verbose=False):
     figsize = (2, 1)
-    if name == 'smallBipart':
+    if name == 'small_bipart':
         num_samples = 3
         prob_adj_bipart, y = create_sbm(num_samples, p_comm=[0.0, 0.0], p_bipart=[1])
         adj_bipart = sample_from_adj(prob_adj_bipart)
