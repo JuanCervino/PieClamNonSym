@@ -407,7 +407,7 @@ class Trainer():
         finally:
             self.data.edge_index = self.data.edge_index_original.to(self.device)
             self.data.edge_attr = torch.ones(self.data.edge_index.shape[1]).bool().to(self.device)
-            printd(f'\n\n\nFINISHED train model on params \n last accuracies:')
+            printd(f'\n\n\nFINISHED train \n last accuracies:')
             for key in accuracies_test.keys():
                 if accuracies_test[key] is not None:
                     print(f'{key}: {accuracies_test[key][-1]}')
