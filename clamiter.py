@@ -1166,7 +1166,6 @@ class AccTrack:
             # =================================== end anomaly detection auc calc
 
         elif self.task == 'link_prediction':
-            #todo: how to insert the lorenz variable here?
             auc_score = roc_of_omitted_dyads(
                         self.graph.x, 
                         self.lorenz, 
