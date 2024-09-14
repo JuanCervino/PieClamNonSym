@@ -3,5 +3,4 @@ datasets/__pycache__/
 tests/__pycache__/
 .vscode/
 fckrnd.ipynb
-experiments/anomaly_unsupervised_bigclam.ipynb
 experiments/experiments/link_prediction.ipynb
