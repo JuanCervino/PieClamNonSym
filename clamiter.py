@@ -369,7 +369,7 @@ class PCLAMIter(MessagePassing):
                     acc_tracker.plot_intermediate(**kwargs)    
             # ========================================== end for loop
            
-            # RETURN ACCURACIES
+            # LAST CALC ACCS            
             acc_tracker.get_intermediate_accuracies(losses=losses, measurement_interval=(i+1)%acc_every)
             
             if verbose:
@@ -1003,12 +1003,11 @@ class AccTrack:
                  acc_every,
                  **kwargs 
                  ):
-        '''should track all of the accuracies and losses. should also save the best state, validation accuracies...'''
+        '''should track all of the accuracies and losses during an optimization in one of the fit functions. should also save the best state, validation accuracies...'''
         #todo: IF THE TASK IS NONE, ACC TRACKER SHOULD TRACK LOSSES. 
         # trainer should be an option as well
         self.task = task # trainer knows the model and dataset. does it matter? i think not.  
         self.acc_every = acc_every
-        
         
         self.clamiter = clamiter
         self.graph = graph
@@ -1063,7 +1062,15 @@ class AccTrack:
                 
     
         elif task == 'link_prediction':
-            accuracies = []
+            #* the code needs to work on datasets on which the dyads to omit is not known, therefore, val and test dyads to omit need to be sent down separately as if the test nodes are really not known, so that there can be an option to check only the validation nodes...
+            self.lorenz = kwargs.get('lorenz', None)
+            self.dyads_to_omit = kwargs.get('dyads_to_omit', None) 
+            self.val_ = kwargs.get('validate', True)
+            if self.dyads_to_omit is None or self.lorenz is None:
+                raise ValueError('in AccTrack, dyads_to_omit and lorenz should be given')
+            
+            self.accuracies_test = {'auc': []}                                                                      
+            self.accuracies_val = {'auc': []}
 
 
         elif task == 'distance':
@@ -1086,6 +1093,7 @@ class AccTrack:
             
             
     def get_intermediate_accuracies(self, losses, measurement_interval=None):
+        ''' get the accuracies after a certain number of iterations'''
         
         if measurement_interval is None:
             measurement_interval = self.acc_every
@@ -1166,26 +1174,17 @@ class AccTrack:
             # =================================== end anomaly detection auc calc
 
         elif self.task == 'link_prediction':
+            # todo: first do only test no val and see that everything works
             auc_score = roc_of_omitted_dyads(
                         self.graph.x, 
                         self.lorenz, 
                         self.dyads_to_omit)['auc']
-            self.accuracies.append(auc_score)
+            self.accuracies_test['auc'].append(auc_score)
 
         elif self.task == 'distance':
             l2_norm = utils.relative_l2_distance_data(self.graph, self.clamiter.lorenz, verbose=False).cpu().item()
             self.accuracies_val.append(l2_norm)
-            # if l2_norm < self.best_distance:
-            #     self.best_distance = l2_norm
-            #     self.patiance_steps = max(self.patiance_steps - 1, 0)
-            # else:
-            #     self.patiance_steps += 1
-                
-                # if early_stop!=0:
-                #     if patiance >= early_stop:
-                #         printd(f'\nfit_prior early stopping at iteration {i}')
-                #         break
-
+          
             
             # estimation on what has been
             log_cut = self.metric_log_cut(self.graph)
