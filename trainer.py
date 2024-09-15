@@ -501,7 +501,9 @@ class Trainer():
         
     def omit_dyads(self, dyads_to_omit):
         
-        ''' this function prepares the data for node ommition. it adds the non edges to omit to the edges array and creates a boolean mask for the edges to omit.
+        '''Prepares the data for node ommition. 
+        it adds the non edges to omit to the edges array and creates a boolean mask for the edges to omit.
+
         dyads_to_omit: (edges_to_omit, non_edges_to_omit). dropped dyads get the edge attr 0 and the retained edges get the edge attr 1.
         PARAM: dyads_to_omit: tuple 4 elements:'''
         
