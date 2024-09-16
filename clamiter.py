@@ -1075,10 +1075,12 @@ class AccTrack:
    
         if self.task == 'anomaly':
             if self.clamiter.prior is not None:              
-                auc_vanilla_star_anomaly, auc_prior_anomaly, auc_prior_star_anomaly = all_types_classify(self.clamiter, self.graph, ll_types=['vanilla_star', 'prior', 'prior_star'])
-                
+                auc_vanilla_star_anomaly, auc_prior_anomaly, auc_prior_star_anomaly = all_types_classify(
+                                                        self.clamiter, 
+                                                        self.graph, 
+                                                        ll_types=['vanilla_star', 'prior', 'prior_star'])
+                                                    
             else: # VANILLA
-                #TEST accuracy
                 auc_vanilla_star_anomaly = all_types_classify(self.clamiter, self.graph, ll_types=['vanilla_star'])[0]
                     
             for key in self.accuracies_test.keys():
@@ -1092,25 +1094,32 @@ class AccTrack:
         elif self.task == 'link_prediction':
             # the test and val set are independent of each other as the test set is "given" and the validation is chosen 
             # todo: add another method for when there is a prior in which you multiply with the prior probability
-            auc_score_val = roc_of_omitted_dyads(
+            def calc_auc_and_append(self, test_or_val):
+                ind = 0 if test_or_val == 'test' else 1
+                auc_score = roc_of_omitted_dyads(
                         self.graph.x, 
                         self.lorenz, 
-                        self.omitted_dyads[0])['auc']
-            
-            auc_score_test = roc_of_omitted_dyads(
-                        self.graph.x, 
-                        self.lorenz, 
-                        self.omitted_dyads[1])['auc']
-            
-            self.accuracies_val['auc'].append(auc_score_val)
+                        self.omitted_dyads[ind])['auc']
+                return auc_score
 
-            self.accuracies_test['auc'].append(auc_score_test)
+            auc_score_test = calc_auc_and_append(self, 'test')
+                
+            
+            for keys in self.accuracies_test.keys():
+                self.accuracies_test[keys] += [locals()[f'auc_score_{keys}']]*measurement_interval
+                self.accuracies_test[keys][-1] += eps
+
+            if self.omitted_dyads[1] is not None:
+                auc_score_val = calc_auc_and_append(self, 'val')
+                for keys in self.accuracies_val.keys():
+                    self.accuracies_val[keys] += [locals()[f'auc_score_{keys}']]*measurement_interval
+                    self.accuracies_val[keys][-1] += eps    
 
 
 
         elif self.task == 'distance':
             l2_norm = utils.relative_l2_distance_data(self.graph, self.clamiter.lorenz, verbose=False).cpu().item()
-            self.accuracies_val.append(l2_norm)
+            self.accuracies_val += [l2_norm]*measurement_interval
           
             
             # estimation on what has been
@@ -1160,6 +1169,7 @@ class AccTrack:
         if self.accuracies_val is not None:
             self.accuracies_val += accuracies_val_1st + accuracies_val_2nd
 
+    
     def print_accuracies(self):
         '''print the accuracies at the end of the iteration'''
         if self.task is not None:
