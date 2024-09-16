@@ -10,6 +10,7 @@ from itertools import product
 import tqdm
 import matplotlib.pyplot as plt
 import time
+import math
 from transformation import train_prior
 from datasets.import_dataset import import_dataset, transform_attributes
 import clamiter as ci
@@ -266,6 +267,7 @@ class Trainer():
     def train(self,
             init_type='small_gaus', 
             dyads_to_omit = None, 
+            val_rel_size=0.3,
             init_feats=False, 
             acc_every=20, 
             performance_metric=None,
@@ -322,9 +324,10 @@ class Trainer():
             self.data.edge_index, self.data.edge_attr = self.omit_dyads(dyads_to_omit)
             # for a real dataset, there will be missing dyads for the test set and we will append the validation set to them which we will choose however we want, so for the experiment we can just pick 1/3 of the edges and 1/3 of the non edges in dyads_to_omit[0] and [1] as the validation omitted and the rest to be test omitted.
             # ORDER in each is (edges, non_edges)
-            omitted_val = ([dyads_to_omit[0][:, :dyads_to_omit[0].shape[1]//3], dyads_to_omit[1][:, :dyads_to_omit[1].shape[1]//3]])
+                        
+            omitted_val = ([dyads_to_omit[0][:, :round(dyads_to_omit[0].shape[1]*val_rel_size)], dyads_to_omit[1][:, :round(dyads_to_omit[1].shape[1]*val_rel_size)]])
 
-            omitted_test = ([dyads_to_omit[0][:, dyads_to_omit[0].shape[1]//3:], dyads_to_omit[1][:, dyads_to_omit[1].shape[1]//3:]])
+            omitted_test = ([dyads_to_omit[0][:, round(dyads_to_omit[0].shape[1]*val_rel_size):], dyads_to_omit[1][:, round(dyads_to_omit[1].shape[1]*val_rel_size):]])
 
             omitted_dyads = (omitted_test, omitted_val)
         

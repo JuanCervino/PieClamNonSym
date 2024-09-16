@@ -1075,34 +1075,23 @@ class AccTrack:
    
         if self.task == 'anomaly':
             if self.clamiter.prior is not None:              
-            # LINK get best aucs for round
-                
-                #ANOMALY STUFF (only smell no taste!)
                 auc_vanilla_star_anomaly, auc_prior_anomaly, auc_prior_star_anomaly = all_types_classify(self.clamiter, self.graph, ll_types=['vanilla_star', 'prior', 'prior_star'])
                 
-                # acc measurement not taken at every iter so need to duplicate to replicate correct iteration 
-                self.accuracies_test['vanilla_star'] += [auc_vanilla_star_anomaly]*measurement_interval
-                self.accuracies_test['vanilla_star'][-1] += eps
-
-                self.accuracies_test['prior'] += [auc_prior_anomaly]*measurement_interval
-                self.accuracies_test['prior'][-1] += eps
-
-                self.accuracies_test['prior_star'] += [auc_prior_star_anomaly]*measurement_interval
-                self.accuracies_test['prior_star'][-1] += eps
-                
-                   
-                        
             else: # VANILLA
                 #TEST accuracy
                 auc_vanilla_star_anomaly = all_types_classify(self.clamiter, self.graph, ll_types=['vanilla_star'])[0]
-                self.accuracies_test['vanilla_star']+= [auc_vanilla_star_anomaly]*measurement_interval
                     
+            for key in self.accuracies_test.keys():
+                self.accuracies_test[key] += [locals()[f'auc_{key}_anomaly']]*measurement_interval
+                self.accuracies_test[key][-1] += eps
+            
                 
         
                     
   
         elif self.task == 'link_prediction':
             # the test and val set are independent of each other as the test set is "given" and the validation is chosen 
+            # todo: add another method for when there is a prior in which you multiply with the prior probability
             auc_score_val = roc_of_omitted_dyads(
                         self.graph.x, 
                         self.lorenz, 
