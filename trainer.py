@@ -512,9 +512,16 @@ class Trainer():
         
     def omit_dyads(self, dyads_to_omit):
         
-        ''' this function prepares the data for node ommition. it adds the non edges to omit to the edges array and creates a boolean mask for the edges to omit.
+        ''' this function prepares the data for dyad ommition. it adds the non edges to omit to the edges array and creates a boolean mask for the edges to omit.
         dyads_to_omit: (edges_to_omit, non_edges_to_omit). dropped dyads get the edge attr 0 and the retained edges get the edge attr 1.
         PARAM: dyads_to_omit: tuple 4 elements:'''
+        
+        #! the edge index is rearanged in get dyads to omit. it's not a simple two hop densification. 
+        #! if a dyads to omit becomes an edge through densification we change the attr to 1. we can maybe multiply 
+        #! i am getting an edge_attr from the two hop. i move all of the edges 
+        # so i can just do coalesce and merge according to max: it's easy. edges and non edges to omit have attr 0. i take all of the 1s and densify them and give attr 1 to all. then i append to them the edges with edge attr 0 and coalesce with maximum. the omitted dyads that turned to edges are just edges now
+        
+        
         
         assert len(dyads_to_omit) == 4, 'dyads_to_omit should be a tuple (edges_to_omit, non_edges_to_omit, edge_index_rearanged, edge_mask_rearanged)'
         assert dyads_to_omit[2].shape[1] == self.data.edge_index.shape[1], 'dyads_to_omit[2] should be the same as self.data.edge_index but rearanged'

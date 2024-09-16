@@ -571,6 +571,8 @@ class PCLAMIter(MessagePassing):
                                 task=task, 
                                 acc_every=acc_every,
                                 calling_function_name='fit',
+                                lorenz=self.lorenz,
+                                omitted_dyads=omitted_dyads,
                                 **params)
         
         # BACK FORTH 0 -> RUN FIRST FUNCTION
@@ -1042,8 +1044,9 @@ class AccTrack:
             if self.omitted_dyads is None or self.lorenz is None:
                 raise ValueError('in AccTrack, omitted_dyads and lorenz should be given')
             
-            self.accuracies_test = {'auc': []}                                                                      
-            self.accuracies_val = {'auc': []}
+            self.accuracies_test = {'auc': []}    
+
+            self.accuracies_val = []
 
 
         elif task == 'distance':
@@ -1102,18 +1105,18 @@ class AccTrack:
                         self.omitted_dyads[ind])['auc']
                 return auc_score
 
-            auc_score_test = calc_auc_and_append(self, 'test')
+            auc_test = calc_auc_and_append(self, 'test')
                 
             
             for keys in self.accuracies_test.keys():
-                self.accuracies_test[keys] += [locals()[f'auc_score_{keys}']]*measurement_interval
+                self.accuracies_test[keys] += [locals()[f'{keys}_test']]*measurement_interval
                 self.accuracies_test[keys][-1] += eps
 
-            if self.omitted_dyads[1] is not None:
-                auc_score_val = calc_auc_and_append(self, 'val')
+            if self.omitted_dyads[1][0].numel() != 0:
+                auc_val = calc_auc_and_append(self, 'val')
                 for keys in self.accuracies_val.keys():
-                    self.accuracies_val[keys] += [locals()[f'auc_score_{keys}']]*measurement_interval
-                    self.accuracies_val[keys][-1] += eps    
+                    self.accuracies_val += [locals()[f'{keys}_val']]*measurement_interval
+                    self.accuracies_val[-1] += eps    
 
 
 
