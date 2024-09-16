@@ -316,9 +316,17 @@ class Trainer():
         # ====================================================================================
         
         # OMIT DYADS
+        omitted_dyads = None
         if dyads_to_omit:
-            '''omitting dyads happens indirectly with an algebraic trick.'''
+            '''omitting dyads happens indirectly with an algebraic trick. omitted dyads are in the edge index flagged as 0.  the dyads were omitted. if there is no information about the test set, there will be only validation.'''
             self.data.edge_index, self.data.edge_attr = self.omit_dyads(dyads_to_omit)
+            # for a real dataset, there will be missing dyads for the test set and we will append the validation set to them which we will choose however we want, so for the experiment we can just pick 1/3 of the edges and 1/3 of the non edges in dyads_to_omit[0] and [1] as the validation omitted and the rest to be test omitted.
+            # ORDER in each is (edges, non_edges)
+            omitted_val = ([dyads_to_omit[0][:, :dyads_to_omit[0].shape[1]//3], dyads_to_omit[1][:, :dyads_to_omit[1].shape[1]//3]])
+
+            omitted_test = ([dyads_to_omit[0][:, dyads_to_omit[0].shape[1]//3:], dyads_to_omit[1][:, dyads_to_omit[1].shape[1]//3:]])
+
+            omitted_dyads = (omitted_test, omitted_val)
         
         # ====================================================================================
         self.data.to(self.device) 
@@ -332,7 +340,7 @@ class Trainer():
                         graph=self.data,
                         acc_every=acc_every,
                         task=self.task,
-                        dyads_to_omit=dyads_to_omit, 
+                        omitted_dyads=omitted_dyads, 
                         performance_metric=performance_metric,
                         plot_every=plot_every,
                         **self.configs_dict['feat_opt'], 
@@ -371,7 +379,7 @@ class Trainer():
                 losses, accuracies_test, accuracies_val = self.clamiter.fit(
                                         self.data, 
                                         optimizer=self.optimizer, scheduler=self.scheduler,
-                                        dyads_to_omit=dyads_to_omit, 
+                                        omitted_dyads=omitted_dyads, 
                                         prior_fit_mask=prior_fit_mask,
 
                                         task=self.task, 
@@ -501,9 +509,7 @@ class Trainer():
         
     def omit_dyads(self, dyads_to_omit):
         
-        '''Prepares the data for node ommition. 
-        it adds the non edges to omit to the edges array and creates a boolean mask for the edges to omit.
-
+        ''' this function prepares the data for node ommition. it adds the non edges to omit to the edges array and creates a boolean mask for the edges to omit.
         dyads_to_omit: (edges_to_omit, non_edges_to_omit). dropped dyads get the edge attr 0 and the retained edges get the edge attr 1.
         PARAM: dyads_to_omit: tuple 4 elements:'''
         

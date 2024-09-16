@@ -221,7 +221,7 @@ class PCLAMIter(MessagePassing):
         return readout
     
    
-    def fit_feats_fixed_prior(self, graph, n_iter, lr, node_mask=None, dyads_to_omit=None, cutoff=0.0, plot_every=1000, verbose=False, show_iter=None):
+    def fit_feats_fixed_prior(self, graph, n_iter, lr, node_mask=None, omitted_dyads=None, cutoff=0.0, plot_every=1000, verbose=False, show_iter=None):
         #* try saying that 3 times!
         ''' optimize n_iter times with the prior fixed, then for every feat dimension, swap it with all the rest of the dimensions and caluclate the loss. for every ax choose the swap that gives the best loss'''
         #todo: cancel the dropout node thing, just slows everything down
@@ -233,7 +233,7 @@ class PCLAMIter(MessagePassing):
         losses_feats, _ , l2_norms= self.fit_feats(graph=graph, node_mask=node_mask,
                                                 n_iter=n_iter, 
                                                 lr=lr, 
-                                                dyads_to_omit=dyads_to_omit, cutoff=cutoff, 
+                                                omitted_dyads=omitted_dyads, cutoff=cutoff, 
                                                 verbose=verbose, show_iter=show_iter)
             
                 
@@ -290,7 +290,7 @@ class PCLAMIter(MessagePassing):
             # kwargs are: 
             #       node_mask=None, 
             #       performance_metric=None,
-            #       dyads_to_omit=None, 
+            #       omitted_dyads=None, 
             
 
             # ASSERTIONS
@@ -312,6 +312,7 @@ class PCLAMIter(MessagePassing):
                                 task=task, 
                                 acc_every=acc_every,
                                 calling_function_name=which_fit,
+                                lorenz=self.lorenz,
                                 **kwargs)
                  
             # ======== end init early stop ======
@@ -400,7 +401,7 @@ class PCLAMIter(MessagePassing):
                   task,
                   node_mask=None, 
                   performance_metric=None,
-                  dyads_to_omit=None, 
+                  omitted_dyads=None, 
                   early_stop=0,
                   cutoff=0.0, 
                   verbose=False,
@@ -418,7 +419,7 @@ class PCLAMIter(MessagePassing):
                                 which_fit='fit_feats',
                                 node_mask=node_mask,
                                 performance_metric=performance_metric,
-                                dyads_to_omit=dyads_to_omit, 
+                                omitted_dyads=omitted_dyads, 
                                 early_stop=early_stop,
                                 cutoff=cutoff, 
                                 verbose=verbose,
@@ -441,7 +442,7 @@ class PCLAMIter(MessagePassing):
                   weight_decay=None,
                   task='anomaly', 
                   performance_metric=None,
-                  dyads_to_omit=None,
+                  omitted_dyads=None,
                   early_stop=0,
                   noise_amp=0.01, 
                   verbose=False,
@@ -462,7 +463,7 @@ class PCLAMIter(MessagePassing):
                                 optimizer=optimizer,
                                 node_mask=node_mask,
                                 performance_metric=performance_metric,
-                                dyads_to_omit=dyads_to_omit, 
+                                omitted_dyads=omitted_dyads, 
                                 early_stop=early_stop,
                                 cutoff=0.0, 
                                 verbose=verbose,
@@ -481,7 +482,7 @@ class PCLAMIter(MessagePassing):
             first_func_in_fit='fit_feats',
             optimizer=None, scheduler=None, 
             n_back_forth=0, 
-            dyads_to_omit=None, 
+            omitted_dyads=None, 
             prior_fit_mask=None,
             plot_every=1000,
             acc_every=20,
@@ -521,7 +522,7 @@ class PCLAMIter(MessagePassing):
 
         fit_feats_func = lambda: self.fit_feats(
                             graph, 
-                            dyads_to_omit=dyads_to_omit, 
+                            omitted_dyads=omitted_dyads, 
                             verbose=verbose_in_funcs,
                             task=task,
                             acc_every=acc_every,
@@ -535,6 +536,7 @@ class PCLAMIter(MessagePassing):
                             optimizer=optimizer,
                             task=task,
                             acc_every=acc_every,
+                            omitted_dyads=omitted_dyads,
                             performance_metric=performance_metric,
                             verbose=verbose_in_funcs, 
                             **prior_params,
@@ -717,7 +719,7 @@ class PCLAMIter(MessagePassing):
             graph, 
             things_to_plot=['adj','feats', '2dgraphs', 'losses'],
             community_affiliation=None, 
-            dyads_to_omit=None, 
+            omitted_dyads=None, 
             anomalies_gt=None, 
             i=0,
             n_iter=0,
@@ -732,7 +734,7 @@ class PCLAMIter(MessagePassing):
                             self.lorenz, 
                             things_to_plot,
                             community_affiliation, 
-                            dyads_to_omit, 
+                            omitted_dyads, 
                             calling_function_name=calling_function_name,
                             **kwargs)
         
@@ -1020,7 +1022,6 @@ class AccTrack:
         # different conditions if its a vanilla, not vanilla, feat, prior fit even...... 
         # what is the difference between the prior and feats when collecting data? vanilla stuff shouldn't change when optimizing the prior... but we can collect them the same way why not?
         if task == 'anomaly':
-            self.dyads_to_omit = kwargs.get('dyads_to_omit', None)
             
             if self.clamiter.prior is not None:
 
@@ -1028,46 +1029,18 @@ class AccTrack:
                 self.accuracies_test = {'vanilla_star': [], 'prior': [], 'prior_star': []}
                 
                 # LINK earlystop
-                if self.dyads_to_omit is not None:
-                    # LINK auc init
-                    
-                    self.best_vanilla_link_auc = 0
-                    self.best_prior_link_auc = 0
-
-                    self.iter_best_vanilla_link = 0
-                    self.iter_best_prior_link = 0
-                    
-                    self.best_vanilla_link_x = graph.x.clone()
-                    self.best_prior_link_x = graph.x.clone()
-
-                    self.count_not_improved_vanilla_link = 0
-                    self.count_not_improved_prior_link = 0
-                    
-                    self.accuracies_val = {'vanilla_auc': [], 'prior_vanilla_auc': []} 
-                    # ===== anomaly auc init =======                
-            
-            
+                
             else: # VANILLA init auc early stop 
                 self.accuracies_test = {'vanilla_star': []}
                 
-                if self.dyads_to_omit is not None:
-                    
-                    self.best_vanilla_link_auc = 0
-                    self.iter_best_vanilla_link = 0
-                    self.best_vanilla_link_x = graph.x.clone()
-                    self.count_not_improved_vanilla_link = 0
-                    self.accuracies_val = {'vanilla_auc': []}
-                
-
-                
+    
     
         elif task == 'link_prediction':
             #* the code needs to work on datasets on which the dyads to omit is not known, therefore, val and test dyads to omit need to be sent down separately as if the test nodes are really not known, so that there can be an option to check only the validation nodes...
             self.lorenz = kwargs.get('lorenz', None)
-            self.dyads_to_omit = kwargs.get('dyads_to_omit', None) 
-            self.val_ = kwargs.get('validate', True)
-            if self.dyads_to_omit is None or self.lorenz is None:
-                raise ValueError('in AccTrack, dyads_to_omit and lorenz should be given')
+            self.omitted_dyads = kwargs.get('omitted_dyads', None) 
+            if self.omitted_dyads is None or self.lorenz is None:
+                raise ValueError('in AccTrack, omitted_dyads and lorenz should be given')
             
             self.accuracies_test = {'auc': []}                                                                      
             self.accuracies_val = {'auc': []}
@@ -1117,69 +1090,34 @@ class AccTrack:
                 self.accuracies_test['prior_star'] += [auc_prior_star_anomaly]*measurement_interval
                 self.accuracies_test['prior_star'][-1] += eps
                 
-                
-                if self.dyads_to_omit is not None:
-                    auc_vanilla_link = roc_of_omitted_dyads(self.graph.x, self.lorenz, self.dyads_to_omit, use_prior=False)
-                    auc_prior_link = roc_of_omitted_dyads(self.graph.x, self.lorenz, self.dyads_to_omit, use_prior=True)
-                    
-                    self.accuracies_val['vanilla_auc'].append(auc_vanilla_link)
-                    self.accuracies_val['prior_vanilla_auc'].append(auc_prior_link)
-                    
-
-                    if auc_vanilla_link - self.best_vanilla_link_auc > 0.002:
-                        self.best_vanilla_link_auc = auc_vanilla_link
-                        self.iter_best_vanilla_link = i
-                        self.best_vanilla_link_x = self.graph.x.clone()
-                        self.count_not_improved_vanilla_link = max(self.count_not_improved_vanilla_link - 1, 0)
-                    else:
-                        self.count_not_improved_vanilla_link += 1
-
-                    if auc_prior_link - self.best_prior_link_auc > 0:
-                        self.best_prior_link_auc = auc_prior_link
-                        self.iter_best_prior_link = i
-                        self.best_prior_link_x = self.graph.x.clone()
-                        self.count_not_improved_prior_link = max(self.count_not_improved_prior_link - 1, 0)
-                    else:
-                        self.count_not_improved_prior_link += 1
-                        # ==== end link stuff ================
-
-                
-                        # == end best for round =================
+                   
                         
             else: # VANILLA
                 #TEST accuracy
                 auc_vanilla_star_anomaly = all_types_classify(self.clamiter, self.graph, ll_types=['vanilla_star'])[0]
                 self.accuracies_test['vanilla_star']+= [auc_vanilla_star_anomaly]*measurement_interval
                     
-                if self.dyads_to_omit is not None:
-                    auc_vanilla_link = roc_of_omitted_dyads(self.graph.x, self.lorenz, self.dyads_to_omit, use_prior=False)['auc']
-                    self.accuracies_val['vanilla_auc'].append(auc_vanilla_link)
-                
-                    if auc_vanilla_link - best_vanilla_link_auc > 0.0:
-                        best_vanilla_link_auc = auc_vanilla_link
-                        iter_best_vanilla_link = i
-                        best_vanilla_link_x = self.graph.x.clone()
-                        count_not_improved_vanilla_link = max(count_not_improved_vanilla_link - 1, 0)
-                    else:
-                        count_not_improved_vanilla_link += 1
-                                            
-                    # if early_stop!=0:
-                    #     if count_not_improved_vanilla_link >= early_stop:
-                    #         printd(f'\nfit_feats, early stopping at iteration {i}')
-                    #         break
-
                 
         
                     
-            # =================================== end anomaly detection auc calc
-
+  
         elif self.task == 'link_prediction':
-            # todo: first do only test no val and see that everything works
-            auc_score = roc_of_omitted_dyads(
+            # the test and val set are independent of each other as the test set is "given" and the validation is chosen 
+            auc_score_val = roc_of_omitted_dyads(
                         self.graph.x, 
                         self.lorenz, 
-                        self.dyads_to_omit)['auc']
-            self.accuracies_test['auc'].append(auc_score)
+                        self.omitted_dyads[0])['auc']
+            
+            auc_score_test = roc_of_omitted_dyads(
+                        self.graph.x, 
+                        self.lorenz, 
+                        self.omitted_dyads[1])['auc']
+            
+            self.accuracies_val['auc'].append(auc_score_val)
+
+            self.accuracies_test['auc'].append(auc_score_test)
+
+
 
         elif self.task == 'distance':
             l2_norm = utils.relative_l2_distance_data(self.graph, self.clamiter.lorenz, verbose=False).cpu().item()
@@ -1202,50 +1140,17 @@ class AccTrack:
         ''' if you were keeping track of the best features, this will return them'''
         #! used only with val
         if self.task == 'anomaly':
-            # SAVE BEST FEATS
+            # ANOMALY DETECTION HAS NO VALIDATION SET
             if self.clamiter.prior is not None:
-               
-                #todo: save best feats using link prediction
-                if self.dyads_to_omit is not None:
-                    auc_list_link = [self.best_vanilla_link_auc, self.best_prior_link_auc]
-                    iter_list_link = [self.iter_best_vanilla_link, self.iter_best_prior_link]
-                    best_link_x_list = [best_vanilla_link_x, best_prior_link_x]
-                    best_name_list = ['vanilla_link', 'prior_link']
-
-                    if self.performance_metric == 'vanilla_link':
-                        best_link_auc = auc_list_link[0]
-                        iter_best_link_auc = iter_list_link[0]
-                        self.graph.x = best_link_x_list[0].clone()
-                        printd(f'\nfit_feats end, performance metric {self.best_vanilla_link_auc= }, {self.iter_best_vanilla_link=}')
-                    elif self.performance_metric == 'prior_link':
-                        best_link_auc = auc_list_link[1]
-                        iter_best_link_auc = iter_list_link[1]
-                        self.graph.x = best_link_x_list[1].clone()
-                        printd(f'\nfit_feats end, performance metric {self.best_prior_link_auc= } {self.iter_best_prior_link=}')
-                    elif self.performance_metric == 'best':
-                        '''if the performance metric is not specified, take the best one'''
-                        best_link_auc = max(auc_list_link)
-                        best_accuracy_index = auc_list_link.index(best_link_auc)
-                        iter_best_link_auc = iter_list_link[best_accuracy_index]
-                        self.graph.x = best_link_x_list[best_accuracy_index].clone()
-                        best_performance_metric = best_name_list[best_accuracy_index]
-                        printd(f'\nfit_feats end, {best_performance_metric= } {best_link_auc= }, {iter_best_link_auc=}')
-
-                    del best_vanilla_link_x, best_prior_link_x
-
+               pass
+      
             
 
                
             else: # vanilla. should take the best one anyway
-                if self.dyads_to_omit is not None:
-                    best_link_auc = self.best_vanilla_link_auc
-                    iter_best_link_auc = self.iter_best_vanilla_link
-                    self.graph.x = best_vanilla_link_x.clone()
-                    del self.best_vanilla_link_x
-
-              
-            
-                
+                pass
+ 
+                            
         
         elif self.task == 'distance':
             best_val_distance = max(self.accuracies_val)

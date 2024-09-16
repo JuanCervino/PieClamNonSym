@@ -389,7 +389,7 @@ def plot_optimization_stage(
                 lorenz, 
                 things_to_plot=['adj','feats', '2dgraphs', 'losses'], 
                 community_affiliation=None, 
-                dyads_to_omit=None, 
+                omitted_dyads=None, 
                 losses=None, 
                 i=0, 
                 n_iter=0,  
@@ -423,7 +423,7 @@ def plot_optimization_stage(
         w_cut[w_cut<0] = 0
         fig1, axes1 = plt.subplots(1,2)
         im_gt = plot_adj(w_gt, ax=axes1[0])
-        im_opt = plot_adj(w_cut, dyads_to_omit, ax=axes1[1])
+        im_opt = plot_adj(w_cut, omitted_dyads, ax=axes1[1])
 
         axes1[0].set_title('ground truth adj')
         axes1[1].set_title('optimized adj')
@@ -625,12 +625,12 @@ def plot_test_accuracies(
 #     axes[2].set_title('prior_star')
 #     plt.show()
 
-def plot_sparse_adj(edge_index, dyads_to_omit=None, test_index=None, test_mask=None, ax=None, figsize=(3,3), title=''):
+def plot_sparse_adj(edge_index, omitted_dyads=None, test_index=None, test_mask=None, ax=None, figsize=(3,3), title=''):
     W = to_dense_adj(edge_index)[0]
-    return plot_adj(W, dyads_to_omit, test_index, test_mask, ax, figsize, title)
+    return plot_adj(W, omitted_dyads, test_index, test_mask, ax, figsize, title)
 
 
-def plot_adj(w, dyads_to_omit=None, test_index=None, test_mask=None, ax=None, figsize=(3,3), title=''):
+def plot_adj(w, omitted_dyads=None, test_index=None, test_mask=None, ax=None, figsize=(3,3), title=''):
     
     if w.shape[0] == 2 and w.shape[1] != 2:
         w = to_dense_adj(w)[0]
@@ -641,10 +641,17 @@ def plot_adj(w, dyads_to_omit=None, test_index=None, test_mask=None, ax=None, fi
 
 
 
-    if dyads_to_omit is not None:
-        dyads_to_omit_np = (dyads_to_omit[0].detach().cpu().numpy(), dyads_to_omit[1].detach().cpu().numpy())
-        ax.scatter(dyads_to_omit_np[0][0], dyads_to_omit_np[0][1], color='red', s=5/w.shape[1])
-        ax.scatter(dyads_to_omit_np[1][0], dyads_to_omit_np[1][1], color='red', s=5/w.shape[1])
+    if omitted_dyads is not None:
+        # omitted dyads is (omitted_val, omitted_test). if one is none we don't want to plot it. 
+        omitted_val_np, omitted_test_np = (omitted_dyads[0].detach().cpu().numpy(), omitted_dyads[1].detach().cpu().numpy())
+        omitted_val_edges, omitted_val_non_edges = omitted_val_np[0], omitted_val_np[1]
+        omitted_test_edges, omitted_test_non_edges = omitted_test_np[0], omitted_test_np[1]
+        ax.scatter(omitted_val_edges[0], omitted_val_edges[1], color='green', s=5/w.shape[1])
+        ax.scatter(omitted_val_non_edges[0], omitted_val_non_edges[1], color='green', s=5/w.shape[1])
+        ax.scatter(omitted_test_edges[0], omitted_test_edges[1], color='red', s=5/w.shape[1])
+        ax.scatter(omitted_test_non_edges[0], omitted_test_non_edges[1], color='red', s=5/w.shape[1])
+        # ax.scatter(dyads_to_omit_np[0][0], dyads_to_omit_np[0][1], color='red', s=5/w.shape[1])
+        # ax.scatter(dyads_to_omit_np[1][0], dyads_to_omit_np[1][1], color='red', s=5/w.shape[1])
 
     if test_mask is not None:
         test_index = torch.where(test_mask)[0]

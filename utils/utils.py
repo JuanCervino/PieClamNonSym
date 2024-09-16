@@ -227,7 +227,7 @@ def sample_edges(edge_index, num_samples):
     return to_undirected(sampled_edges)
 
 def get_dyads_to_omit(edge_index, p_sample_edge, p_sample_non_edge=None):
-    '''pick a random set of edges and the same number of non edges to omit from the dataset. '''
+    
     if p_sample_edge == 0:
         return None
 

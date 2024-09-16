@@ -267,7 +267,7 @@ def edge_mask_drop_and_rearange(edge_index, p):
     edge_index_directed = edge_index[:, row < col]
 
     row_directed, col_directed = edge_index_directed
-
+    
     edge_mask_directed_retain = torch.rand(row_directed.size(0), device=edge_index.device) >= p
     # edge_index_directed_retained = edge_index_directed[:, edge_mask_directed_drop]
 
