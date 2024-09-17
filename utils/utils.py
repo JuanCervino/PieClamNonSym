@@ -4,10 +4,13 @@ from torch_geometric.data import Data
 from torch_geometric import utils
 from torch_geometric.utils import dense_to_sparse, to_undirected, remove_self_loops, sort_edge_index, is_undirected, negative_sampling, subgraph, to_networkx, from_networkx, to_dense_adj, k_hop_subgraph, coalesce, contains_self_loops, contains_isolated_nodes, dropout_edge
 
+
+#! remove all of the link prediction stuff from here to link prediction 
+# from sklearn.metrics import roc_curve, roc_auc_score
+
 from torch_geometric.transforms import TwoHop
 from networkx.algorithms.cuts import conductance
 from torch_geometric.transforms import RemoveDuplicatedEdges
-from sklearn.metrics import roc_curve, roc_auc_score
 from cutnorm import compute_cutnorm
 
 from utils import utils_pyg as up
@@ -176,21 +179,21 @@ def omit_dyads(data, dyads_to_omit):
         data.edge_index = retained_with_omitted_non_edges
         data.edge_attr = edge_mask
     
-def several_omits(data, num_sets, percentage_edges, percentage_non_edges=None, same_number=True):
-    '''returns a list of lists of dyads to omit. seems unimpotant at the moment since the original omittion is random'''
-    if percentage_non_edges is None:
-        same_number = True
-    num_edges = data.edge_index.shape[1]
-    num_non_edges = data.x.shape[0]*(data.x.shape[0]-1) - num_edges
-    num_edges_to_omit = floor(percentage_edges*num_edges)
-    num_non_edges_to_omit = floor(percentage_non_edges*num_non_edges)
-    if same_number:
-        num_non_edges_to_omit = num_edges_to_omit
-    dyad_sets = []
-    for i in range(num_sets):
-        dyads_to_omit = get_dyads_to_omit(data.edge_index, floor(num_edges_to_omit), floor(num_non_edges_to_omit))
-        dyad_sets.append(dyads_to_omit)
-    return dyad_sets
+# def several_omits(data, num_sets, percentage_edges, percentage_non_edges=None, same_number=True):
+#     '''returns a list of lists of dyads to omit. seems unimpotant at the moment since the original omittion is random'''
+#     if percentage_non_edges is None:
+#         same_number = True
+#     num_edges = data.edge_index.shape[1]
+#     num_non_edges = data.x.shape[0]*(data.x.shape[0]-1) - num_edges
+#     num_edges_to_omit = floor(percentage_edges*num_edges)
+#     num_non_edges_to_omit = floor(percentage_non_edges*num_non_edges)
+#     if same_number:
+#         num_non_edges_to_omit = num_edges_to_omit
+#     dyad_sets = []
+#     for i in range(num_sets):
+#         dyads_to_omit = get_dyads_to_omit(data.edge_index, floor(num_edges_to_omit), floor(num_non_edges_to_omit))
+#         dyad_sets.append(dyads_to_omit)
+#     return dyad_sets
 
 
 def edge_mask_of_selected_edges(edge_index, edges_to_omit):
@@ -352,43 +355,6 @@ def plot_roc_curve(fpr, tpr, thresholds):
 
 
 
-def roc_of_omitted_dyads(x, lorenz, dyads_to_omit=None, prior=None, use_prior=False, verbose=False):
-    '''calculates the minimun distance from 0,1 in the roc curve and the auc. mathematically there is no sense in using the prior'''
-    if dyads_to_omit is None:
-        return {'auc': 0.0}
-    edges_coords_0, edges_coords_1 = edges_by_coords(Data(x=x, edge_index=dyads_to_omit[0]))
-
-    non_edges_coords_0, non_edges_coords_1 = edges_by_coords(Data(x=x, edge_index=dyads_to_omit[1]))
-
-    edge_probs = get_edge_probs_from_edges_coords(edges_coords_0, edges_coords_1, lorenz, prior, use_prior)
-    non_edge_probs = get_edge_probs_from_edges_coords(non_edges_coords_0, non_edges_coords_1, lorenz, prior, use_prior)
-    
-    y_true = torch.cat((torch.ones(len(edge_probs)), torch.zeros(len(non_edge_probs)))).cpu().detach().numpy()
-    y_score = torch.cat((edge_probs, non_edge_probs)).cpu().detach().numpy()
-    fpr, tpr, thresholds = roc_curve(y_true, y_score)   
-    auc = roc_auc_score(y_true, y_score)
-
-    fpr_tpr_vec = torch.cat((torch.tensor(fpr).view(-1, 1), torch.tensor(tpr).view(-1, 1)), dim=1)
-    dists_from_11 = torch.sqrt(((torch.tensor([0,1]) - fpr_tpr_vec)**2).sum(dim=1))
-    min_dist_idx = torch.argmin(dists_from_11)
-    min_dist = dists_from_11[min_dist_idx]
-    best_threshold = thresholds[min_dist_idx]
-
-
-    if verbose:
-        plt.figure()
-        plt.plot(fpr, tpr, label='ROC curve')
-        plt.scatter(*fpr_tpr_vec[min_dist_idx].detach().numpy(), color='red', label='closest point to (0,1)')
-        plt.plot([0, 1], [0, 1], 'k--')
-        plt.xlim([0.0, 1.0])
-        plt.ylim([0.0, 1.05])
-        plt.xlabel('False Positive Rate')
-        plt.ylabel('True Positive Rate')
-        plt.title('Receiver Operating Characteristic')
-        plt.legend(loc="lower right")
-        plt.show()
-
-    return {'min_dist':min_dist.item(), 'auc':auc, 'best_thresh':best_threshold}
 
 # 88 88b 88 88 888888 
 # 88 88Yb88 88   88   
@@ -397,7 +363,7 @@ def roc_of_omitted_dyads(x, lorenz, dyads_to_omit=None, prior=None, use_prior=Fa
 
 #! i think that maybe the problem with anomaly planting is that the anomaly set can be larger than a community.
 def k_minimal_neighborhoods(data, k):   
-    '''returns the k minimal neighborhoods of the graph'''
+    '''returns the k minimal neighborhoods of the graph. the node initialization method that was used by bigclam'''
     # if not hasattr(data, 'node_mask') or (hasattr(data, 'node_mask') and data.node_mask is None):
     #     node_mask = torch.ones(data.num_nodes).bool()
     # else:

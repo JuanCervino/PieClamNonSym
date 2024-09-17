@@ -22,7 +22,9 @@ from transformation import  RealNVP, relu_lightcone, relu_transform, uv_from_xt
 from utils.plotting import *
 from utils import utils
 from utils import utils_pyg as up
-from utils.utils import get_prob_graph, edges_by_coords, roc_of_omitted_dyads, k_minimal_neighborhoods
+from utils.utils import get_prob_graph, edges_by_coords, k_minimal_neighborhoods
+# from link_prediction import roc_of_omitted_dyads
+import link_prediction as lp
 from utils.printing_utils import printd, print_dolphin, print_escher, print_end_fit
 from datasets.import_dataset import import_dataset
 # from tests import tests
@@ -1099,7 +1101,7 @@ class AccTrack:
             # todo: add another method for when there is a prior in which you multiply with the prior probability
             def calc_auc_and_append(self, test_or_val):
                 ind = 0 if test_or_val == 'test' else 1
-                auc_score = roc_of_omitted_dyads(
+                auc_score = lp.roc_of_omitted_dyads(
                         self.graph.x, 
                         self.lorenz, 
                         self.omitted_dyads[ind])['auc']

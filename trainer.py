@@ -14,6 +14,7 @@ import math
 from transformation import train_prior
 from datasets.import_dataset import import_dataset, transform_attributes
 import clamiter as ci
+import link_prediction as lp
 from utils.plotting import plot_optimization_stage, plot_2dgraph
 from utils.printing_utils import printd
 from utils import utils
@@ -30,6 +31,8 @@ from datetime import datetime
 # dP   `" dP   Yb 88Yb88 88__   88 dP   `"                                  
 # Yb      Yb   dP 88 Y88 88""   88 Yb  "88                                  
 #  YboodP  YbodP  88  Y8 88     88  YboodP 
+
+# change hyperparameters manually
 
 def set_config(configs_dict, parent, child, value):
     '''set the value of a parameter in the configs dict.'''
@@ -509,41 +512,22 @@ class Trainer():
         self.device = device
         self.data.to(device)
         self.clamiter.to(device)
-        
-    def omit_dyads(self, dyads_to_omit):
-        
-        ''' this function prepares the data for dyad ommition. it adds the non edges to omit to the edges array and creates a boolean mask for the edges to omit.
-        dyads_to_omit: (edges_to_omit, non_edges_to_omit). dropped dyads get the edge attr 0 and the retained edges get the edge attr 1.
-        PARAM: dyads_to_omit: tuple 4 elements:'''
-        
-        #! the edge index is rearanged in get dyads to omit. it's not a simple two hop densification. 
-        #! if a dyads to omit becomes an edge through densification we change the attr to 1. we can maybe multiply 
-        #! i am getting an edge_attr from the two hop. i move all of the edges 
-        # so i can just do coalesce and merge according to max: it's easy. edges and non edges to omit have attr 0. i take all of the 1s and densify them and give attr 1 to all. then i append to them the edges with edge attr 0 and coalesce with maximum. the omitted dyads that turned to edges are just edges now
-        
-        
-        
-        assert len(dyads_to_omit) == 4, 'dyads_to_omit should be a tuple (edges_to_omit, non_edges_to_omit, edge_index_rearanged, edge_mask_rearanged)'
-        assert dyads_to_omit[2].shape[1] == self.data.edge_index.shape[1], 'dyads_to_omit[2] should be the same as self.data.edge_index but rearanged'
-        assert torch_geometric.utils.coalesce(dyads_to_omit[2]).shape[1] == self.data.edge_index.shape[1], 'dyads_to_omit[2] should be the same as self.data.edge_index but rearanged'
 
 
-
-        omitted_dyads_tot = torch.cat([dyads_to_omit[0], dyads_to_omit[1]], dim=1)
-        
-        rearanged_edge_index = dyads_to_omit[2]
-        rearanged_edge_index_with_omitted_non_edges = torch.cat([rearanged_edge_index, dyads_to_omit[1]], dim=1)
-        edge_attr = torch.cat([dyads_to_omit[3], torch.zeros(dyads_to_omit[1].shape[1]).bool()])
-        assert is_undirected(rearanged_edge_index_with_omitted_non_edges), 'edges in dyads_to_omit should be undirected'
-        assert (rearanged_edge_index_with_omitted_non_edges[:, ~edge_attr] == omitted_dyads_tot ).all(), 'edge_attr should be 0 for omitted dyads'
-        assert rearanged_edge_index_with_omitted_non_edges.shape[1] == self.data.edge_index.shape[1] + dyads_to_omit[1].shape[1], 'rearanged_edge_index_with_omitted_non_edges should have the same number of edges as the original edge_index + the non edges to omit'
-        # so edge_attr == 0 for omitted edges and ==1 for non omitted
-        return rearanged_edge_index_with_omitted_non_edges, edge_attr
+#link prediction
     
+    def omit_dyads(self, dyads_to_omit):
+        '''returns a new edge index with the dyads to omit and the attr to recognize them'''
+        return lp.omit_dyads(self.data, dyads_to_omit)
+        
+
     def determine_community_affiliation(self, clustering_method, clustering_param):
         '''determine the community affiliation of the nodes in x'''
         self.data.communities_found = ca.determine_community_affiliation(self.data.x, clustering_method, self.lorenz, clustering_param)
     
+    # node classification
+    
+
     def community_detection_metrics(self, dyads_to_omit=None, verbose=False):
         '''returns the performance metrics of the model'''
         test_no_duplicity(self.data.edge_index)
