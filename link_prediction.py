@@ -69,7 +69,29 @@ def omit_dyads(data, dyads_to_omit):
         assert (rearanged_edge_index_with_omitted_non_edges[:, ~edge_attr] == omitted_dyads_tot ).all(), 'edge_attr should be 0 for omitted dyads'
         assert rearanged_edge_index_with_omitted_non_edges.shape[1] == data.edge_index.shape[1] + dyads_to_omit[1].shape[1], 'rearanged_edge_index_with_omitted_non_edges should have the same number of edges as the original edge_index + the non edges to omit'
         # so edge_attr == 0 for omitted edges and ==1 for non omitted
+
         return rearanged_edge_index_with_omitted_non_edges, edge_attr
+
+
+
+def omit_densify_split(
+          data, 
+          dyads_to_omit, 
+          val_rel_size=0.3, 
+          densify=False):
+
+        data_clone = data.clone()
+        data_clone.edge_index, data_clone.edge_attr = omit_dyads(data_clone, dyads_to_omit)
+
+
+        omitted_val = ([dyads_to_omit[0][:, :round(dyads_to_omit[0].shape[1]*val_rel_size)], dyads_to_omit[1][:, :round(dyads_to_omit[1].shape[1]*val_rel_size)]])
+
+        omitted_test = ([dyads_to_omit[0][:, round(dyads_to_omit[0].shape[1]*val_rel_size):], dyads_to_omit[1][:, round(dyads_to_omit[1].shape[1]*val_rel_size):]])
+
+        data_clone.omitted_dyads = (omitted_test, omitted_val)
+        return data_clone
+    
+
 
 
 

@@ -23,7 +23,6 @@ from utils.plotting import *
 from utils import utils
 from utils import utils_pyg as up
 from utils.utils import get_prob_graph, edges_by_coords, k_minimal_neighborhoods
-# from link_prediction import roc_of_omitted_dyads
 import link_prediction as lp
 from utils.printing_utils import printd, print_dolphin, print_escher, print_end_fit
 from datasets.import_dataset import import_dataset
@@ -223,7 +222,7 @@ class PCLAMIter(MessagePassing):
         return readout
     
    
-    def fit_feats_fixed_prior(self, graph, n_iter, lr, node_mask=None, omitted_dyads=None, cutoff=0.0, plot_every=1000, verbose=False, show_iter=None):
+    def fit_feats_fixed_prior(self, graph, n_iter, lr, node_mask=None, cutoff=0.0, plot_every=1000, verbose=False, show_iter=None):
         #* try saying that 3 times!
         ''' optimize n_iter times with the prior fixed, then for every feat dimension, swap it with all the rest of the dimensions and caluclate the loss. for every ax choose the swap that gives the best loss'''
         #todo: cancel the dropout node thing, just slows everything down
@@ -235,7 +234,7 @@ class PCLAMIter(MessagePassing):
         losses_feats, _ , l2_norms= self.fit_feats(graph=graph, node_mask=node_mask,
                                                 n_iter=n_iter, 
                                                 lr=lr, 
-                                                omitted_dyads=omitted_dyads, cutoff=cutoff, 
+                                                cutoff=cutoff, 
                                                 verbose=verbose, show_iter=show_iter)
             
                 
@@ -292,7 +291,7 @@ class PCLAMIter(MessagePassing):
             # kwargs are: 
             #       node_mask=None, 
             #       performance_metric=None,
-            #       omitted_dyads=None, 
+            
             
 
             # ASSERTIONS
@@ -403,7 +402,6 @@ class PCLAMIter(MessagePassing):
                   task,
                   node_mask=None, 
                   performance_metric=None,
-                  omitted_dyads=None, 
                   early_stop=0,
                   cutoff=0.0, 
                   verbose=False,
@@ -421,7 +419,6 @@ class PCLAMIter(MessagePassing):
                                 which_fit='fit_feats',
                                 node_mask=node_mask,
                                 performance_metric=performance_metric,
-                                omitted_dyads=omitted_dyads, 
                                 early_stop=early_stop,
                                 cutoff=cutoff, 
                                 verbose=verbose,
@@ -444,7 +441,6 @@ class PCLAMIter(MessagePassing):
                   weight_decay=None,
                   task='anomaly', 
                   performance_metric=None,
-                  omitted_dyads=None,
                   early_stop=0,
                   noise_amp=0.01, 
                   verbose=False,
@@ -465,7 +461,6 @@ class PCLAMIter(MessagePassing):
                                 optimizer=optimizer,
                                 node_mask=node_mask,
                                 performance_metric=performance_metric,
-                                omitted_dyads=omitted_dyads, 
                                 early_stop=early_stop,
                                 cutoff=0.0, 
                                 verbose=verbose,
@@ -484,7 +479,6 @@ class PCLAMIter(MessagePassing):
             first_func_in_fit='fit_feats',
             optimizer=None, scheduler=None, 
             n_back_forth=0, 
-            omitted_dyads=None, 
             prior_fit_mask=None,
             plot_every=1000,
             acc_every=20,
@@ -524,7 +518,6 @@ class PCLAMIter(MessagePassing):
 
         fit_feats_func = lambda: self.fit_feats(
                             graph, 
-                            omitted_dyads=omitted_dyads, 
                             verbose=verbose_in_funcs,
                             task=task,
                             acc_every=acc_every,
@@ -538,7 +531,6 @@ class PCLAMIter(MessagePassing):
                             optimizer=optimizer,
                             task=task,
                             acc_every=acc_every,
-                            omitted_dyads=omitted_dyads,
                             performance_metric=performance_metric,
                             verbose=verbose_in_funcs, 
                             **prior_params,
@@ -574,7 +566,6 @@ class PCLAMIter(MessagePassing):
                                 acc_every=acc_every,
                                 calling_function_name='fit',
                                 lorenz=self.lorenz,
-                                omitted_dyads=omitted_dyads,
                                 **params)
         
         # BACK FORTH 0 -> RUN FIRST FUNCTION
@@ -1042,13 +1033,13 @@ class AccTrack:
         elif task == 'link_prediction':
             #* the code needs to work on datasets on which the dyads to omit is not known, therefore, val and test dyads to omit need to be sent down separately as if the test nodes are really not known, so that there can be an option to check only the validation nodes...
             self.lorenz = kwargs.get('lorenz', None)
-            self.omitted_dyads = kwargs.get('omitted_dyads', None) 
-            if self.omitted_dyads is None or self.lorenz is None:
+            if self.graph.omitted_dyads is None or self.lorenz is None:
                 raise ValueError('in AccTrack, omitted_dyads and lorenz should be given')
             
             self.accuracies_test = {'auc': []}    
 
-            self.accuracies_val = []
+            # self.accuracies_val = []
+            self.accuracies_val = {'auc': []}
 
 
         elif task == 'distance':
@@ -1104,7 +1095,7 @@ class AccTrack:
                 auc_score = lp.roc_of_omitted_dyads(
                         self.graph.x, 
                         self.lorenz, 
-                        self.omitted_dyads[ind])['auc']
+                        self.graph.omitted_dyads[ind])['auc']
                 return auc_score
 
             auc_test = calc_auc_and_append(self, 'test')
@@ -1114,11 +1105,13 @@ class AccTrack:
                 self.accuracies_test[keys] += [locals()[f'{keys}_test']]*measurement_interval
                 self.accuracies_test[keys][-1] += eps
 
-            if self.omitted_dyads[1][0].numel() != 0:
+            if self.graph.omitted_dyads[1][0].numel() != 0:
                 auc_val = calc_auc_and_append(self, 'val')
                 for keys in self.accuracies_val.keys():
-                    self.accuracies_val += [locals()[f'{keys}_val']]*measurement_interval
-                    self.accuracies_val[-1] += eps    
+                    # self.accuracies_val += [locals()[f'{keys}_val']]*measurement_interval
+                    # self.accuracies_val[-1] += eps    
+                    self.accuracies_val[keys] += [locals()[f'{keys}_val']]*measurement_interval
+                    self.accuracies_val[keys][-1] += eps    
 
 
 
@@ -1171,8 +1164,12 @@ class AccTrack:
         
         for key in self.accuracies_test.keys():
             self.accuracies_test[key] += accuracies_test_1st[key] + accuracies_test_2nd[key]
-        if self.accuracies_val is not None:
-            self.accuracies_val += accuracies_val_1st + accuracies_val_2nd
+
+        if accuracies_val_1st is not None:
+            for key in self.accuracies_val.keys():
+                self.accuracies_val[key] += accuracies_val_1st[key] + accuracies_val_2nd[key]
+        # if self.accuracies_val is not None:
+        #     self.accuracies_val += accuracies_val_1st + accuracies_val_2nd
 
     
     def print_accuracies(self):
