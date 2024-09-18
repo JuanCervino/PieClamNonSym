@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import math
 
 from utils import utils
-from utils import utils_pyg 
+from utils import utils_pyg as up
 
 
 def get_dyads_to_omit(edge_index, p_sample_edge, p_sample_non_edge=None):
@@ -24,7 +24,7 @@ def get_dyads_to_omit(edge_index, p_sample_edge, p_sample_non_edge=None):
     # sampled_edge_index = sample_edges(edge_index, num_samples_edge)
     # sampled_non_edge_index = sample_edges(non_edge_index, num_samples_non_edge)
     
-    edge_index_rearanged, edge_mask_retain = utils_pyg.edge_mask_drop_and_rearange(edge_index, p_sample_edge)
+    edge_index_rearanged, edge_mask_retain = up.edge_mask_drop_and_rearange(edge_index, p_sample_edge)
     
     sampled_edge_index = edge_index_rearanged[:, ~edge_mask_retain]
     sampled_non_edge_index = upg.sort_edge_index(upg.negative_sampling(
@@ -82,7 +82,10 @@ def omit_densify_split(
 
         data_clone = data.clone()
         data_clone.edge_index, data_clone.edge_attr = omit_dyads(data_clone, dyads_to_omit)
+        #todo: densify: just do two hop densification and the attr for a densified node should be 1
 
+        if densify:
+            data_clone.edge_index, data_clone.edge_attr = up.my_two_hop(data_clone)
 
         omitted_val = ([dyads_to_omit[0][:, :round(dyads_to_omit[0].shape[1]*val_rel_size)], dyads_to_omit[1][:, :round(dyads_to_omit[1].shape[1]*val_rel_size)]])
 

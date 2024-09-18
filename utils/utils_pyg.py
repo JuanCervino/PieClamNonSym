@@ -2,6 +2,14 @@ import os
 import scipy.sparse as sp
 import scipy.io
 import torch
+
+from torch_geometric import EdgeIndex
+from torch_geometric.data import Data
+from torch_geometric.data.datapipes import functional_transform
+from torch_geometric.transforms import BaseTransform
+from torch_geometric.utils import coalesce, remove_self_loops
+from torch_geometric import utils
+
 from utils.printing_utils import printd
 
 #* pyg supplement functions. 
@@ -276,3 +284,60 @@ def edge_mask_drop_and_rearange(edge_index, p):
     edge_index_orig_rearange = torch.cat([edge_index_directed, edge_index_directed.flip(0)], dim=1)
     #! very important to use the new edge index otherwise the positions of the dropped edges is not correct!
     return edge_index_orig_rearange, edge_mask_retain
+
+
+
+# @functional_transform('my_two_hop')
+# class MyTwoHop(BaseTransform):
+#     r"""Adds the two hop edges to the edge indices
+#     (functional name: :obj:`two_hop`).
+#     """
+#     def forward(self, data: Data) -> Data:
+#         assert data.edge_index is not None
+#         edge_index, edge_attr = data.edge_index, data.edge_attr
+#         N = data.num_nodes
+
+#         edge_index = EdgeIndex(edge_index, sparse_size=(N, N))
+#         edge_index = edge_index.sort_by('row')[0]
+#         edge_index2 = edge_index.matmul(edge_index)[0].as_tensor()
+#         edge_index2, _ = remove_self_loops(edge_index2)
+#         edge_index = torch.cat([edge_index, edge_index2], dim=1)
+
+#         if edge_attr is not None:
+#             # We treat newly added edge features as "zero-features":
+#             edge_attr2 = edge_attr.new_zeros(edge_index2.size(1), *edge_attr.size()[1:]) + 1
+#             edge_attr = torch.cat([edge_attr, edge_attr2], dim=0)
+
+#         data.edge_index, data.edge_attr = coalesce(edge_index, edge_attr, N)
+
+#         return data
+
+def my_two_hop(data):
+    '''densify the edges with with attr 1. if one of the edges with attr 0 is produced, set it's attr to 1'''
+    assert data.edge_index is not None
+    edge_index, edge_attr = data.edge_index, data.edge_attr
+    N = data.num_nodes
+
+    # Sort edge_index by the attribute values
+    # sorted_indices = edge_attr.argsort(dim=0, descending=True)
+    # edge_index = edge_index[:, sorted_indices]
+    # edge_attr = edge_attr[sorted_indices]
+    
+    #densify the edge with attribute 1
+    edges_to_densify = edge_index[:, edge_attr]
+
+    edges_to_densify = EdgeIndex(edges_to_densify, sparse_size=(N, N))
+    edges_to_densify = edges_to_densify.sort_by('row')[0]
+    # all of the 2hop edges V:
+    edges_densified = edges_to_densify.matmul(edges_to_densify)[0].as_tensor()
+    edges_densified, _ = remove_self_loops(edges_densified)
+    edge_index = torch.cat([edge_index, edges_densified], dim=1)
+
+    # We treat newly added edge features as "zero-features":
+    attr_densified = torch.ones(edges_densified.size(1)).bool()
+    edge_attr = torch.cat([edge_attr, attr_densified], dim=0)
+
+    edge_index, edge_attr = coalesce(edge_index, edge_attr, N, reduce="max")
+
+    return edge_index, edge_attr
+
