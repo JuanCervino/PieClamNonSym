@@ -295,6 +295,10 @@ class Trainer():
         '''
         #todo: print the classification score every few back and forth? in the fit functions? it does take some time...
         # SETUP AND INIT NODES
+        if plot_every == 1:
+            if self.model_name == 'bigclam' or self.model_name == 'iegam':
+                raise ValueError('plot_every=1 is not supported for non prior models.')
+
         if not verbose:
             verbose_in_funcs = False
 

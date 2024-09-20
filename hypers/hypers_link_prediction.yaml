@@ -258,7 +258,7 @@ MightyConfigs_piegam:
         weight_decay: 0.1
         early_stop: 0
     back_forth:
-        n_back_forth: 3
+        n_back_forth: 5
         scheduler_step_size: 1
         scheduler_gamma: 0.5
         early_stop_fit: 0

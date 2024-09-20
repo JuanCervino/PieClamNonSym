@@ -1,0 +1,1 @@
+{"0.9664345788093941": [["feat_opt", "lr", 1e-05], ["feat_opt", "n_iter", 500], ["prior_opt", "lr", 1e-05], ["prior_opt", "noise_amp", 0.1], ["prior_opt", "n_iter", 1300], ["back_forth", "n_back_forth", 7]]}

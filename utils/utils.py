@@ -57,7 +57,7 @@ def get_edge_probs_from_edges_coords(edges_coords_0, edges_coords_1, lorenz, pri
         tbr = (1-torch.exp(-fufv)) * prior_nodes_0 * prior_nodes_1
     else:
         tbr = 1-torch.exp(-fufv)
-    
+    #todo: add an option to return both to avoid double calculation 
     return tbr
 
 def get_prob_graph(x, lorenz, to_sparse=False, prior=None,ret_fufv=False):

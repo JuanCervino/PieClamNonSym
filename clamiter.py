@@ -83,7 +83,6 @@ class PCLAMIter(MessagePassing):
             self.model_name = 'piegam'
 
         if attr_opt:
-            #! bug here, we add the dim attr before we do the data transform...
             self.in_out_dim = dim_feat + dim_attr
         else:
             self.in_out_dim = dim_feat
@@ -1095,7 +1094,10 @@ class AccTrack:
                 auc_score = lp.roc_of_omitted_dyads(
                         self.graph.x, 
                         self.lorenz, 
-                        self.graph.omitted_dyads[ind])['auc']
+                        self.graph.omitted_dyads[ind],
+                        prior=self.clamiter.prior,
+                        # use_prior=True if self.clamiter.prior is not None else False)['auc']
+                        use_prior=False if self.clamiter.prior is not None else False)['auc']
                 return auc_score
 
             auc_test = calc_auc_and_append(self, 'test')
