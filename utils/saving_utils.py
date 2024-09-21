@@ -26,13 +26,15 @@ class SaveRun:
 
         # the first lines in the file is the base config to which we make deltas
         with open(self.save_path, 'w') as file:
+            hypers_path = os.path.join('..', 'hypers', 'hypers_link_prediction' + '.yaml')
+            with open(hypers_path, 'r') as hypers_file:
+                params_dict = yaml.safe_load(hypers_file)
             if self.global_config_base:
-                hypers_path = os.path.join('..', 'hypers', 'hypers_link_prediction' + '.yaml')
-                with open(hypers_path, 'r') as hypers_file:
-                    params_dict = yaml.safe_load(hypers_file)
                 configs_dict = deepcopy(params_dict['MightyConfigs'+'_' + model_name])
-                first_entry = {'base_config': configs_dict}
-                json.dump(first_entry, file, indent=4)
+            else:
+                configs_dict = deepcopy(params_dict[ds_name + '_' + model_name])
+            first_entry = {'base_config': configs_dict}
+            json.dump(first_entry, file, indent=4)
     
     def update_file(self, acc, config_triplets):
         with open(self.save_path, 'r') as file:

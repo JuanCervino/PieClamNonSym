@@ -26,7 +26,7 @@ photo_iegam:
         T: 1
     feat_opt:
         lr: 0.000001
-        n_iter: 20000
+        n_iter: 10000
         
 
 photo_pclam:
@@ -97,7 +97,7 @@ MightyConfigs_iegam:
         num_layers_mlp: 2
     feat_opt: 
         lr: 0.000001
-        n_iter: 2000
+        n_iter: 7000
         early_stop: 0
     
 
