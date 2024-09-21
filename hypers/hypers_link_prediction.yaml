@@ -7,7 +7,7 @@
 
 photo_bigclam:
     clamiter_init:
-        dim_feat: 40
+        dim_feat: 46
         dim_attr: 500
         s_reg: 0.0
         l1_reg: 1
@@ -31,7 +31,7 @@ photo_iegam:
 
 photo_pclam:
     clamiter_init:
-        dim_feat: 40
+        dim_feat: 46
         dim_attr: 100
         s_reg: 0.0
         l1_reg: 1

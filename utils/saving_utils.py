@@ -4,6 +4,7 @@ import os
 from copy import deepcopy
 
 class SaveRun:
+
     #todo: this class will save the file for a run. it will save a dictionary of scores based on derivatives
     # todo; there should also be a number iteration?
     '''we save the a base config (either model specific or global) and change it with deltas'''
