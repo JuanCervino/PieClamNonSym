@@ -1030,10 +1030,9 @@ class AccTrack:
     
     
         elif task == 'link_prediction':
-            #* the code needs to work on datasets on which the dyads to omit is not known, therefore, val and test dyads to omit need to be sent down separately as if the test nodes are really not known, so that there can be an option to check only the validation nodes...
             self.lorenz = kwargs.get('lorenz', None)
-            if self.graph.omitted_dyads is None or self.lorenz is None:
-                raise ValueError('in AccTrack, omitted_dyads and lorenz should be given')
+            if self.graph.omitted_dyads_test is None or self.lorenz is None:
+                raise ValueError('in AccTrack, omitted_dyads_test and lorenz should be given')
             
             self.accuracies_test = {'auc': []}    
 
@@ -1090,11 +1089,11 @@ class AccTrack:
             # the test and val set are independent of each other as the test set is "given" and the validation is chosen 
             # todo: add another method for when there is a prior in which you multiply with the prior probability
             def calc_auc_and_append(self, test_or_val):
-                ind = 0 if test_or_val == 'test' else 1
+                omitted_tup = self.graph.omitted_dyads_test if test_or_val == 'test' else self.graph.omitted_dyads_val
                 auc_score = lp.roc_of_omitted_dyads(
                         self.graph.x, 
                         self.lorenz, 
-                        self.graph.omitted_dyads[ind],
+                        omitted_tup,
                         prior=self.clamiter.prior,
                         # use_prior=True if self.clamiter.prior is not None else False)['auc']
                         use_prior=False if self.clamiter.prior is not None else False)['auc']
@@ -1107,11 +1106,9 @@ class AccTrack:
                 self.accuracies_test[keys] += [locals()[f'{keys}_test']]*measurement_interval
                 self.accuracies_test[keys][-1] += eps
 
-            if self.graph.omitted_dyads[1][0].numel() != 0:
+            if hasattr(self.graph, 'omitted_dyads_val'):
                 auc_val = calc_auc_and_append(self, 'val')
-                for keys in self.accuracies_val.keys():
-                    # self.accuracies_val += [locals()[f'{keys}_val']]*measurement_interval
-                    # self.accuracies_val[-1] += eps    
+                for keys in self.accuracies_val.keys(): 
                     self.accuracies_val[keys] += [locals()[f'{keys}_val']]*measurement_interval
                     self.accuracies_val[keys][-1] += eps    
 

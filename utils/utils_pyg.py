@@ -269,6 +269,7 @@ def dropout_edge_undirected(edge_index, p=0.5):
 
 def edge_mask_drop_and_rearange(edge_index, p):
     '''
+    drops edges with probability p.
     returns the edge index rearaged and the mask for the dropped edges
     it's important to get the rearanged edge_index to get the correct mask because it's hard to get it for undirected'''
     row, col = edge_index
@@ -277,9 +278,7 @@ def edge_mask_drop_and_rearange(edge_index, p):
     row_directed, col_directed = edge_index_directed
     
     edge_mask_directed_retain = torch.rand(row_directed.size(0), device=edge_index.device) >= p
-    # edge_index_directed_retained = edge_index_directed[:, edge_mask_directed_drop]
-
-    # edge_index_retained = torch.cat([edge_index_directed_retained, edge_index_directed_retained.flip(0)], dim=1)
+    
     edge_mask_retain = torch.cat([edge_mask_directed_retain, edge_mask_directed_retain])
     edge_index_orig_rearange = torch.cat([edge_index_directed, edge_index_directed.flip(0)], dim=1)
     #! very important to use the new edge index otherwise the positions of the dropped edges is not correct!

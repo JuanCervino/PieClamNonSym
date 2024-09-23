@@ -323,23 +323,7 @@ class Trainer():
             
             if verbose:
                 printd(f'\n init_node_feats took {time.time() - t} seconds')
-        # ====================================================================================
-        
-        # OMIT DYADS
-        # omitted_dyads = None
-        # if dyads_to_omit:
-        #     '''omitting dyads happens indirectly with an algebraic trick. omitted dyads are in the edge index flagged as 0.  the dyads were omitted. if there is no information about the test set, there will be only validation.'''
-        #     self.data.edge_index, self.data.edge_attr = self.omit_dyads(dyads_to_omit)
-        #     # for a real dataset, there will be missing dyads for the test set and we will append the validation set to them which we will choose however we want, so for the experiment we can just pick 1/3 of the edges and 1/3 of the non edges in dyads_to_omit[0] and [1] as the validation omitted and the rest to be test omitted.
-        #     # ORDER in each is (edges, non_edges)
-                        
-        #     omitted_val = ([dyads_to_omit[0][:, :round(dyads_to_omit[0].shape[1]*val_rel_size)], dyads_to_omit[1][:, :round(dyads_to_omit[1].shape[1]*val_rel_size)]])
 
-        #     omitted_test = ([dyads_to_omit[0][:, round(dyads_to_omit[0].shape[1]*val_rel_size):], dyads_to_omit[1][:, round(dyads_to_omit[1].shape[1]*val_rel_size):]])
-
-        #     omitted_dyads = (omitted_test, omitted_val)
-        
-        # ====================================================================================
         self.data.to(self.device) 
     
         # OPTIMIZATION

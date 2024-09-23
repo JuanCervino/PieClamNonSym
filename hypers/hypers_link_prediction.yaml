@@ -14,7 +14,7 @@ photo_bigclam:
         T: 1
     feat_opt:
         lr: 0.000001
-        n_iter: 20000
+        n_iter: 7000
         
 
 photo_iegam:
@@ -141,7 +141,7 @@ MightyConfigs_bigclam:
         num_layers_mlp: 2
     feat_opt: 
         lr: 0.000001
-        n_iter: 200
+        n_iter: 7000
         early_stop: 0
 
 

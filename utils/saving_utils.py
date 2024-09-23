@@ -1,7 +1,9 @@
+import pandas as pd
 import json
 import yaml
 import os
 from copy import deepcopy
+from utils.printing_utils import printd
 
 class SaveRun:
 
@@ -45,3 +47,69 @@ class SaveRun:
 
         with open(self.save_path, 'w') as file:
             json.dump(loaded_acc_configs, file, indent=4)
+
+
+    @staticmethod
+    def load_saved(file_path, export_path=None, print_base=False):
+        
+        # Load JSON data
+        with open(file_path) as f:
+            data = json.load(f)
+
+        # Separate base config and runs
+        base_config = data.pop("base_config")
+        if print_base:
+            printd(base_config)
+
+        # List to hold processed data for DataFrame
+        processed_data = []
+
+        # Iterate through each run acc
+        for acc_str, changes in data.items():
+            acc = eval(acc_str)
+            row = {}
+            if type(acc) == float:
+                row['acc'] = acc  # Convert acc key to a float
+            elif type(acc) == tuple:
+                row['test_acc'] = acc[0]
+                row['val_acc'] = acc[1]
+
+            for change in changes:
+                section, key, value = change
+                row[f"{section}_{key}"] = value
+            processed_data.append(row)
+
+        # Convert to DataFrame
+        df = pd.DataFrame(processed_data)
+        df.reset_index(drop=True, inplace=True)
+
+        # Fill missing columns (parameters that were not changed in some runs) with base config values
+        # for section, params in base_config.items():
+        #     for key, value in params.items():
+        #         column_name = f"{section}_{key}"
+        #         if column_name not in df.columns:
+        #             df[column_name] = value
+
+        # Group by unique parameter configurations and calculate mean and std of accs
+        if 'acc' in df.columns:
+            grouped = df.groupby([col for col in df.columns if col != 'acc']).agg(
+                avg_acc=('acc', 'mean'),
+                std_acc=('acc', 'std')
+            ).reset_index()
+            grouped = grouped.sort_values(by='avg_acc', ascending=False).reset_index(drop=True)
+        
+        elif 'val_acc' in df.columns:
+            grouped = df.groupby([col for col in df.columns if col not in ['test_acc', 'val_acc']]).agg(
+                avg_test_acc=('test_acc', 'mean'),
+                std_test_acc=('test_acc', 'std'),
+                avg_val_acc=('val_acc', 'mean'),
+                std_val_acc=('val_acc', 'std')
+            ).reset_index()
+            grouped = grouped.sort_values(by='avg_val_acc', ascending=False).reset_index(drop=True)
+       
+
+        # Save the grouped data to a CSV for further analysis
+        if export_path:
+            grouped.to_csv('grouped_accs.csv', index=False)
+
+        return grouped

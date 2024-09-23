@@ -10,13 +10,14 @@ from utils import utils
 from utils import utils_pyg as up
 
 
-def get_dyads_to_omit(edge_index, p_sample_edge, p_sample_non_edge=None):
+def get_dyads_to_omit_old(edge_index, p_sample_edge, p_sample_non_edge=None):
     
     if p_sample_edge == 0:
         return None
 
     assert p_sample_edge <= 1, 'p_sample_edge should be a probability'
 
+    #todo: omit dyads only from the dyads that have edge attr
     if p_sample_non_edge is None:
         p_sample_non_edge = p_sample_edge
     num_edges = edge_index.shape[1]
@@ -40,18 +41,68 @@ def get_dyads_to_omit(edge_index, p_sample_edge, p_sample_non_edge=None):
     return dyads_to_omit
 
 
+def get_dyads_to_omit(
+          edge_index, 
+          edge_attr, 
+          p_sample_edge, 
+          p_sample_non_edge=None, 
+        #   omitted_previously=(torch.empty(2, 0), torch.empty(2, 0))
+          ):
+    '''
+    algo: 
+    general idea: create 4 sets: A(omitted dyads) = {were 0 in the beginning}, B(retained edges) = {were 1 in the beginning and are still 1}, C(omitted_edges) = {were 1 in the beginning and are now 0}, D(omitted non edges) = {sampled non edges that are 0}
+
+    1. split the edges into attr 1 = (B or C) and attr 0 = A.
+    2. sample edges from (B or C) (this also rearanges them) - creating B and C.
+    3. sample D from the non edges using negative sampling.
+    4. concatenate [B, C, A, D] to get the new edge index, in this way the 0 attr edges are also arranged [edges, non edges]
+    5. return (C, D, new_edge_index, edge_attr)
+    
+    '''
+    # 0. pre-processing
+    if p_sample_edge == 0:
+        return ((torch.empty(2, 0), torch.empty(2, 0)), edge_index, edge_attr)
+   
+    assert p_sample_edge <= 1, 'p_sample_edge should be a probability'
+    if p_sample_non_edge is None:
+        p_sample_non_edge = p_sample_edge
+    
+    # 1. split the edges into attr 1 = (B or C) and attr 0 = A.
+    B_or_C = edge_index[:, edge_attr]
+    A = edge_index[:, ~edge_attr]
+    assert utils.is_undirected(B_or_C), 'B_or_C should be undirected'
+    assert utils.is_undirected(A), 'A should be undirected'
+    
+    # 2. sample edges from (B or C) (this also rearanges them) - creating B and C.
+    B_or_C_rearanged, edge_mask_retain = up.edge_mask_drop_and_rearange(B_or_C, p_sample_edge)
+    B = B_or_C_rearanged[:, edge_mask_retain]
+    C = B_or_C_rearanged[:, ~edge_mask_retain]
+
+    # 3. sample D from the non edges using negative sampling.
+    num_edges = edge_index.shape[1]
+    D = upg.sort_edge_index(upg.negative_sampling(
+                            edge_index, 
+                            num_neg_samples=math.floor(num_edges*p_sample_non_edge), 
+                            force_undirected=True))
+    
+    
+    
+    edge_index_rearanged = torch.cat([B, C, D, A], dim=1)
+    # edge_mask_retain will be the edge attr
+    edge_attr_rearanged = torch.cat([torch.ones(B.shape[1]), torch.zeros(C.shape[1]), torch.zeros(D.shape[1]), torch.zeros(A.shape[1])]).bool()
+
+    
+    dyads_to_omit = ((C, D), edge_index_rearanged, edge_attr_rearanged)
+    
+    return dyads_to_omit
+
 
 def omit_dyads(data, dyads_to_omit):
         
         ''' this function prepares the data for dyad ommition. it adds the non edges to omit to the edges array and creates a boolean mask for the edges to omit.
         dyads_to_omit: (edges_to_omit, non_edges_to_omit). dropped dyads get the edge attr 0 and the retained edges get the edge attr 1.
         PARAM: dyads_to_omit: tuple 4 elements:'''
-        
-        #! the edge index is rearanged in get dyads to omit. it's not a simple two hop densification. 
-        #! if a dyads to omit becomes an edge through densification we change the attr to 1. we can maybe multiply 
-        #! i am getting an edge_attr from the two hop. i move all of the edges 
-        # so i can just do coalesce and merge according to max: it's easy. edges and non edges to omit have attr 0. i take all of the 1s and densify them and give attr 1 to all. then i append to them the edges with edge attr 0 and coalesce with maximum. the omitted dyads that turned to edges are just edges now
-        
+            
         
         
         assert len(dyads_to_omit) == 4, 'dyads_to_omit should be a tuple (edges_to_omit, non_edges_to_omit, edge_index_rearanged, edge_mask_rearanged)'
@@ -77,10 +128,16 @@ def omit_dyads(data, dyads_to_omit):
 def omit_densify_split(
           data, 
           dyads_to_omit, 
-          val_rel_size=0.3, 
-          densify=False):
-
-        data_clone = data.clone()
+          val_rel_size=0.0, 
+          densify=False,
+          clone=True):
+        '''this function omits dyads from the data and densifies it. it also splits the omitted dyads into validation and test sets. the validation split is not used as the test set is split separately.
+        '''
+        if clone:
+            data_clone = data.clone()
+        else:
+            data_clone = data
+        #todo: make omit dyads handle a dataset that's already been omitted.
         data_clone.edge_index, data_clone.edge_attr = omit_dyads(data_clone, dyads_to_omit)
         #todo: densify: just do two hop densification and the attr for a densified node should be 1
 

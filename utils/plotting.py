@@ -625,6 +625,32 @@ def plot_test_accuracies(
 #     axes[2].set_title('prior_star')
 #     plt.show()
 
+def plot_graph_with_omitted(data, pos=None):
+    # Create an empty graph
+    G = nx.Graph()
+
+    # Add edges with attribute 0 in red
+    for i in range(data.edge_index.shape[1]):
+        src = data.edge_index[0][i].item()
+        tgt = data.edge_index[1][i].item()
+        if data.edge_attr[i].item() == 0:
+            G.add_edge(src, tgt, color='red')
+        else:
+            G.add_edge(src, tgt)
+
+    return_pos = False
+    if pos is None:
+        pos = nx.spring_layout(G)
+        return_pos = True
+    
+    edge_colors = [G[u][v]['color'] if 'color' in G[u][v] else 'gray' for u, v in G.edges()]
+    plt.figure(figsize=(3,3))
+    nx.draw(G, pos, with_labels=True, edge_color=edge_colors)
+    plt.show()
+    if return_pos:
+        return pos
+
+
 def plot_sparse_adj(edge_index, omitted_dyads=None, test_index=None, test_mask=None, ax=None, figsize=(3,3), title=''):
     W = to_dense_adj(edge_index)[0]
     return plot_adj(W, omitted_dyads, test_index, test_mask, ax, figsize, title)
