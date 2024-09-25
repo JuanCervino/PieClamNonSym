@@ -1,0 +1,225 @@
+{
+    "base_config": {
+        "clamiter_init": {
+            "dim_feat": 40,
+            "dim_attr": 100,
+            "s_reg": 0.0,
+            "l1_reg": 1,
+            "T": 1,
+            "hidden_dim": 64,
+            "num_coupling_blocks": 32,
+            "num_layers_mlp": 2
+        },
+        "feat_opt": {
+            "lr": 3e-06,
+            "n_iter": 500,
+            "early_stop": 0
+        },
+        "prior_opt": {
+            "n_iter": 1300,
+            "lr": 2e-07,
+            "noise_amp": 0.1,
+            "weight_decay": 0.1,
+            "early_stop": 0
+        },
+        "back_forth": {
+            "n_back_forth": 6,
+            "scheduler_step_size": 3,
+            "scheduler_gamma": 0.5,
+            "early_stop_fit": 0,
+            "first_func_in_fit": "fit_feats"
+        }
+    },
+    "(0.6417675607045564, 0.6458231485885324)": [
+        [
+            "feat_opt",
+            "lr",
+            1e-05
+        ],
+        [
+            "feat_opt",
+            "n_iter",
+            12
+        ],
+        [
+            "prior_opt",
+            "lr",
+            1e-05
+        ],
+        [
+            "prior_opt",
+            "noise_amp",
+            0.1
+        ],
+        [
+            "prior_opt",
+            "n_iter",
+            13
+        ],
+        [
+            "back_forth",
+            "n_back_forth",
+            7
+        ]
+    ],
+    "(0.6371973418393523, 0.6425861707839235)": [
+        [
+            "feat_opt",
+            "lr",
+            1e-05
+        ],
+        [
+            "feat_opt",
+            "n_iter",
+            12
+        ],
+        [
+            "prior_opt",
+            "lr",
+            5e-06
+        ],
+        [
+            "prior_opt",
+            "noise_amp",
+            0.1
+        ],
+        [
+            "prior_opt",
+            "n_iter",
+            13
+        ],
+        [
+            "back_forth",
+            "n_back_forth",
+            7
+        ]
+    ],
+    "(0.6419073943070962, 0.6481232866259815)": [
+        [
+            "feat_opt",
+            "lr",
+            1e-05
+        ],
+        [
+            "feat_opt",
+            "n_iter",
+            12
+        ],
+        [
+            "prior_opt",
+            "lr",
+            1e-06
+        ],
+        [
+            "prior_opt",
+            "noise_amp",
+            0.1
+        ],
+        [
+            "prior_opt",
+            "n_iter",
+            13
+        ],
+        [
+            "back_forth",
+            "n_back_forth",
+            7
+        ]
+    ],
+    "(0.6234412141861746, 0.6251945724427023)": [
+        [
+            "feat_opt",
+            "lr",
+            5e-06
+        ],
+        [
+            "feat_opt",
+            "n_iter",
+            12
+        ],
+        [
+            "prior_opt",
+            "lr",
+            1e-05
+        ],
+        [
+            "prior_opt",
+            "noise_amp",
+            0.1
+        ],
+        [
+            "prior_opt",
+            "n_iter",
+            13
+        ],
+        [
+            "back_forth",
+            "n_back_forth",
+            7
+        ]
+    ],
+    "(0.6115879743883065, 0.6165208149825491)": [
+        [
+            "feat_opt",
+            "lr",
+            5e-06
+        ],
+        [
+            "feat_opt",
+            "n_iter",
+            12
+        ],
+        [
+            "prior_opt",
+            "lr",
+            5e-06
+        ],
+        [
+            "prior_opt",
+            "noise_amp",
+            0.1
+        ],
+        [
+            "prior_opt",
+            "n_iter",
+            13
+        ],
+        [
+            "back_forth",
+            "n_back_forth",
+            7
+        ]
+    ],
+    "(0.617340333575323, 0.6140345180868837)": [
+        [
+            "feat_opt",
+            "lr",
+            5e-06
+        ],
+        [
+            "feat_opt",
+            "n_iter",
+            12
+        ],
+        [
+            "prior_opt",
+            "lr",
+            1e-06
+        ],
+        [
+            "prior_opt",
+            "noise_amp",
+            0.1
+        ],
+        [
+            "prior_opt",
+            "n_iter",
+            13
+        ],
+        [
+            "back_forth",
+            "n_back_forth",
+            7
+        ]
+    ]
+}

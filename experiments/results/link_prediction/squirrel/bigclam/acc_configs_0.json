@@ -1,0 +1,31 @@
+{
+    "base_config": {
+        "clamiter_init": {
+            "dim_feat": 40,
+            "dim_attr": 100,
+            "s_reg": 0.0,
+            "l1_reg": 1,
+            "T": 1,
+            "hidden_dim": 64,
+            "num_coupling_blocks": 32,
+            "num_layers_mlp": 2
+        },
+        "feat_opt": {
+            "lr": 1e-06,
+            "n_iter": 7000,
+            "early_stop": 0
+        }
+    },
+    "0.9779954242481206": [
+        [
+            "clamiter_init",
+            "dim_feat",
+            36
+        ],
+        [
+            "clamiter_init",
+            "l1_reg",
+            10
+        ]
+    ]
+}

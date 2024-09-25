@@ -74,6 +74,82 @@ photo_piegam:
         first_func_in_fit: 'fit_feats'
 
 
+
+#  dP""b8  dP"Yb  88""Yb    db    
+# dP   `" dP   Yb 88__dP   dPYb   
+# Yb      Yb   dP 88"Yb   dP__Yb  
+#  YboodP  YbodP  88  Yb dP""""Yb 
+
+cora_bigclam:
+    clamiter_init:
+        dim_feat: 46
+        dim_attr: 500
+        s_reg: 0.0
+        l1_reg: 1
+        T: 1
+    feat_opt:
+        lr: 0.000001
+        n_iter: 10000
+        
+
+cora_iegam:
+    clamiter_init:
+        dim_feat: 56
+        dim_attr: 500
+        s_reg: 0.0
+        l1_reg: 1
+        T: 1
+    feat_opt:
+        lr: 0.000001
+        n_iter: 10000
+        
+
+cora_pclam:
+    clamiter_init:
+        dim_feat: 46
+        dim_attr: 100
+        s_reg: 0.0
+        l1_reg: 1
+        T: 1
+        hidden_dim: 64
+        num_coupling_blocks: 32 
+        num_layers_mlp: 2
+    feat_opt:
+        lr: 0.00001
+        n_iter: 1500
+        
+    prior_opt:
+        lr: 0.00001
+        n_iter: 15000
+        noise_amp: 0.05
+        weight_decay: 0.1
+        
+    back_forth:
+        n_back_forth: 100
+        scheduler_step_size: 1
+        scheduler_gamma: 0.5
+        first_func_in_fit: 'fit_feats'
+        
+
+cora_piegam:
+    clamiter_init:
+       dim_feat : 56
+       s_reg : 0.0
+    feat_opt:
+        lr: 0.00001
+        n_iter: 1500
+    prior_opt:
+        lr: 0.00001
+        n_iter: 1500
+        noise_amp: 0.05
+        weight_decay: 0.1
+        
+    back_forth:
+        n_back_forth: 100
+        first_func_in_fit: 'fit_feats'
+
+
+
 # interesting values:
 # 0.01, 32, 32, 2: give more iterations in the second classify anomaly. seems to not saturate. seems that way also after many tries! not so sure that that is true. for 0.5 i think that 3 layer mlp might have been better
 # what happens when the loss climbs really high? is it good for anomaly detection? 

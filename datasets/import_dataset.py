@@ -4,7 +4,7 @@ from torch_geometric.datasets import KarateClub, Actor, IMDB, Amazon
 from torch_geometric.data import Data, HeteroData
 import matplotlib.pyplot as plt
 import networkx as nx
-from torch_geometric.datasets import SNAPDataset, PPI
+from torch_geometric.datasets import SNAPDataset, WebKB
 from torch_geometric.utils import to_networkx, to_dense_adj, to_undirected, remove_self_loops, is_undirected, contains_self_loops, remove_isolated_nodes, contains_isolated_nodes, subgraph
 from sklearn.decomposition import TruncatedSVD, PCA
 from sklearn.preprocessing import MaxAbsScaler
@@ -13,6 +13,7 @@ import os
 import scipy.io as sio
 import scipy.sparse as sp
 import numpy as np
+import pandas as pd
 import random
 from collections import Counter
 
@@ -27,10 +28,133 @@ def import_dataset(dataset_name, remove_data_feats=True, verbose=False):
     '''will import a dataset with the same name as the dataset_name parameter'''
     current_dir = os.path.dirname(os.path.abspath(__file__))
 
-    if dataset_name == 'ppi7':
-        ppi7_ds = PPI(root=os.path.join(current_dir,'PPI'))[7]  
-        data = ppi7_ds
+    if dataset_name == 'squirrel':
+        edges_df = pd.read_csv('../datasets/wikipedia/squirrel/musae_squirrel_edges.csv')
+        edges = edges_df.values.T  # Transpose to shape [2, num_edges]
+        edge_index = torch.tensor(edges, dtype=torch.long)
+
+        # Load labels
+        labels_df = pd.read_csv('../datasets/wikipedia/squirrel/musae_squirrel_target.csv')
+        labels = labels_df['target'].values  # Assuming the label column is named 'target'
+        y = torch.tensor(labels, dtype=torch.long)
+
+        # Load sparse features
+        import json
+        with open('../datasets/wikipedia/squirrel/musae_squirrel_features.json') as f:
+            features_dict = json.load(f)
+
+        # Assuming there are N nodes and each node's features are stored as a list of non-zero indices.
+        num_nodes = len(features_dict)
+        num_features = max(max(indices) for indices in features_dict.values()) + 1  # Assuming feature indices start at 0
+        sparse_features = sp.lil_matrix((num_nodes, num_features))
+
+
+
+        # Create the PyTorch Geometric Data object
+        edge_index = remove_self_loops(edge_index)[0]
+        edge_index = remove_isolated_nodes(edge_index)[0]
+        edge_index = to_undirected(edge_index)
+        
+        data = Data(x=None, raw_attr=sparse_features, edge_index=edge_index, y=y)
+
+    
+
+    elif dataset_name == 'crocodile':
+        edges_df = pd.read_csv('../datasets/wikipedia/crocodile/musae_crocodile_edges.csv')
+        edges = edges_df.values.T  # Transpose to shape [2, num_edges]
+        edge_index = torch.tensor(edges, dtype=torch.long)
+
+        # Load labels
+        labels_df = pd.read_csv('../datasets/wikipedia/crocodile/musae_crocodile_target.csv')
+        labels = labels_df['target'].values  # Assuming the label column is named 'target'
+        y = torch.tensor(labels, dtype=torch.long)
+
+        # Load sparse features
+        import json
+        with open('../datasets/wikipedia/crocodile/musae_crocodile_features.json') as f:
+            features_dict = json.load(f)
+
+        # Assuming there are N nodes and each node's features are stored as a list of non-zero indices.
+        num_nodes = len(features_dict)
+        num_features = max(max(indices) for indices in features_dict.values()) + 1  # Assuming feature indices start at 0
+        sparse_features = sp.lil_matrix((num_nodes, num_features))
+
+        edge_index = remove_self_loops(edge_index)[0]
+        edge_index = remove_isolated_nodes(edge_index)[0]
+        edge_index = to_undirected(edge_index)
+
+        # Create the PyTorch Geometric Data object
+        data = Data(x=None, raw_attr=sparse_features, edge_index=to_undirected(edge_index), y=y)
+
+    elif dataset_name == 'twich':
+        edges_df = pd.read_csv('../datasets/twitch/large_twitch_edges.csv')
+        edges = edges_df.values.T
+        edge_index = torch.tensor(edges, dtype=torch.long)
+        edge_index = remove_self_loops(edge_index)[0]
+        edge_index = remove_isolated_nodes(edge_index)[0]
+        edge_index = to_undirected(edge_index)
+        # attr = pd.read_csv('../datasets/twitch/large_twitch_features.csv')
+        data = Data(x=None, edge_index=edge_index)
+        
+
+    elif dataset_name == 'texas':
+        data = WebKB(root=os.path.join(current_dir,'WebKB'), name='texas')[0]
+        data.edge_index = remove_self_loops(data.edge_index)[0]
+        data.edge_index = remove_isolated_nodes(data.edge_index)[0]
+        data.edge_index = to_undirected(data.edge_index)
+        if hasattr(data, 'y'):
+            data.y = intersecting_tensor_from_non_intersecting_vec(data.y)
+
         data.x = None
+
+    elif dataset_name == 'cornell':
+        data = WebKB(root=os.path.join(current_dir,'WebKB'), name='cornell')[0]
+        data.edge_index = remove_self_loops(data.edge_index)[0]
+        data.edge_index = remove_isolated_nodes(data.edge_index)[0]
+        data.edge_index = to_undirected(data.edge_index)
+        if hasattr(data, 'y'):
+            data.y = intersecting_tensor_from_non_intersecting_vec(data.y)
+
+        data.x = None
+
+    elif dataset_name == 'wisconsin':
+        data = WebKB(root=os.path.join(current_dir,'WebKB'), name='wisconsin')[0]
+        data.edge_index = remove_self_loops(data.edge_index)[0]
+        data.edge_index = remove_isolated_nodes(data.edge_index)[0]
+        data.edge_index = to_undirected(data.edge_index)
+        if hasattr(data, 'y'):
+            data.y = intersecting_tensor_from_non_intersecting_vec(data.y)
+
+        data.x = None
+    
+
+    #todo: facebook 100
+    #todo: twich gamers
+    #todo: texas
+
+    elif dataset_name == 'cora':
+        cora = Data.from_dict(torch.load('../datasets/Cora/processed/data.pt')[0])
+        cora.raw_attr = sp.lil_matrix(cora.x.numpy())
+        cora.x = None
+        cora.y = intersecting_tensor_from_non_intersecting_vec(cora.y)
+        
+        data = cora
+
+    elif dataset_name == 'citeseer':
+        citeseer = Data.from_dict(torch.load('../datasets/CiteSeer/processed/data.pt')[0])
+        citeseer.raw_attr = citeseer.x
+        citeseer.x = None
+        data = citeseer
+        if hasattr(data, 'y'):
+            data.y = intersecting_tensor_from_non_intersecting_vec(data.y)
+
+
+    elif dataset_name == 'pubmed':
+        pubmed = Data.from_dict(torch.load('../datasets/PubMed/processed/data.pt')[0])
+        pubmed.x = None
+        data = pubmed
+        if hasattr(data, 'y'):
+            data.y = intersecting_tensor_from_non_intersecting_vec(data.y)
 
     elif dataset_name == 'actor':
         actor_ds = Actor(root=os.path.join(current_dir,'Actor'))[0]
@@ -40,6 +164,7 @@ def import_dataset(dataset_name, remove_data_feats=True, verbose=False):
         actor_ds.y = intersecting_tensor_from_non_intersecting_vec(actor_ds.y)
         actor_ds.x = None
         data = actor_ds
+    
     
     elif dataset_name == 'facebook348':
         ''' in the facebook ego networks, the last node is the ego node.
@@ -112,73 +237,7 @@ def import_dataset(dataset_name, remove_data_feats=True, verbose=False):
             plt.title('Graph Visualization with Spring Layout')
             plt.show()
 
-    elif dataset_name == 'amazonComputers':
-        dataset = Amazon(root=os.path.join(current_dir,'Amazon'), name='Computers')
-        data = dataset[0]
-        data.x = None
-        data.y = intersecting_tensor_from_non_intersecting_vec(data.y)
-
-    elif dataset_name == 'amazonPhoto':
-        dataset = Amazon(root=os.path.join(current_dir,'Amazon'), name='Photo')
-        data = dataset[0]
-        data.x = None
-        data.y = intersecting_tensor_from_non_intersecting_vec(data.y)
-
-    elif dataset_name == 'amazon_co_pur':
-        #! need some way of counting the number of nodes from edge_index
-       # Initialize lists for edges, nodes, and features
-        edge_list = []
-        node_features = {}
-        file_path = os.path.join(current_dir, 'com-amazon.ungraph.txt')
-
-        with open(file_path, 'r') as f:
-            for line in f:
-                if line.startswith('#'):  # Skip comment lines
-                    continue
-                parts = line.strip().split()
-                if len(parts) == 2:
-                    # Assuming the format is "source_node destination_node"
-                    src, dst = map(int, parts)
-                    edge_list.append([src, dst])
-                elif len(parts) > 2:
-                    # Assuming the format is "node_id feature1 feature2 ... featureN"
-                    node_id = int(parts[0])
-                    features = list(map(float, parts[1:]))
-                    node_features[node_id] = features
-
-        # Convert the edge list to a tensor
-        edge_index = torch.tensor(edge_list, dtype=torch.long).t().contiguous()
-
-        # Convert node features to a tensor
-        # Assumes all nodes have features and they are of equal length
-        if node_features:
-            node_ids = sorted(node_features.keys())
-            feature_matrix = [node_features[node_id] for node_id in node_ids]
-            x = torch.tensor(feature_matrix, dtype=torch.float)
-        else:
-            x = None
-        # Create the Data object
-
-        data = Data(edge_index=edge_index, x=x)
-
-
-    # Load the Karate Club dataset
-    elif dataset_name == 'cora':
-        cora = Data.from_dict(torch.load('../datasets/Cora/processed/data.pt')[0])
-        cora.x = None
-        cora.y = intersecting_tensor_from_non_intersecting_vec(cora.y)
-        
-        data = cora
-
-    elif dataset_name == 'citeseer':
-        citeseer = Data.from_dict(torch.load('../datasets/CiteSeer/processed/data.pt')[0])
-        citeseer.x = None
-        data = citeseer
     
-    elif dataset_name == 'pubmed':
-        pubmed = Data.from_dict(torch.load('../datasets/PubMed/processed/data.pt')[0])
-        pubmed.x = None
-        data = pubmed
 
     elif dataset_name == 'karate':    
         dataset = KarateClub()
@@ -275,6 +334,18 @@ def import_dataset(dataset_name, remove_data_feats=True, verbose=False):
         data.edge_index = remove_self_loops(data.edge_index)[0]
         data.edge_index = to_undirected(data.edge_index)
 
+    elif dataset_name == 'JohnsHopkins55':
+        data = load_data_matlab_format('facebook100','JohnsHopkins55')
+        data.edge_index = remove_self_loops(data.edge_index)[0]
+        data.edge_index = remove_isolated_nodes(data.edge_index)[0]
+        data.edge_index = to_undirected(data.edge_index)
+
+    elif dataset_name == 'Amherst41':
+        data = load_data_matlab_format('facebook100','Amherst41')
+        data.edge_index = remove_self_loops(data.edge_index)[0]
+        data.edge_index = remove_isolated_nodes(data.edge_index)[0]
+        data.edge_index = to_undirected(data.edge_index)
+
     elif dataset_name == 'BlogCatalog':
         data = load_data_matlab_format('anomaly', 'BlogCatalog')
         data.edge_index = remove_self_loops(data.edge_index)[0]
@@ -367,9 +438,7 @@ def load_data_(dataset, train_rate=0.3, val_rate=0.1):
 
 def load_data_matlab_format(path_in_datasets, dataset, train_rate=0.3, val_rate=0.1):
     """loads a dataset in .mat format"""
-    #todo: need to load data properly for semi supervised setting
-    #todo: must also do the star probability with mpnn
-    
+
     current_dir = os.path.dirname(os.path.abspath(__file__))
     data = sio.loadmat(os.path.join(current_dir, f"{path_in_datasets}/{dataset}.mat"))
     # dan: decompose data into labels attributes and network

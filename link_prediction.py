@@ -64,8 +64,10 @@ def get_dyads_to_omit(
         return ((torch.empty(2, 0), torch.empty(2, 0)), edge_index, edge_attr)
    
     assert p_sample_edge <= 1, 'p_sample_edge should be a probability'
+    
     if p_sample_non_edge is None:
-        p_sample_non_edge = p_sample_edge
+        # factor of 5 to replicate the paper.
+        p_sample_non_edge = 5*p_sample_edge
     
     # 1. split the edges into attr 1 = (B or C) and attr 0 = A.
     B_or_C = edge_index[:, edge_attr]

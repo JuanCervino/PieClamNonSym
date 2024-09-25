@@ -188,7 +188,7 @@ class Trainer():
         if self.attr_opt and not self.vanilla: # dim_attr is in the clamiter dict and transformation type is an input parameter 
             self.attr_transform = attr_transform
             if not hasattr(self.data, 'attr'):  
-                #! put transform attributes before clamiter and then add the attribute dimension
+                #todo: put transform attributes before clamiter and then add the attribute dimension
                 self.data.attr = transform_attributes(self.data.raw_attr, self.attr_transform, self.configs_dict['clamiter_init']['dim_attr'])
             #* delete raw_attr if it's not vanilla 
             if hasattr(self.data, 'raw_attr'):
@@ -295,6 +295,10 @@ class Trainer():
         '''
         #todo: print the classification score every few back and forth? in the fit functions? it does take some time...
         # SETUP AND INIT NODES
+        losses = None
+        accuracies_test = None
+        accuracies_val = None
+
         if plot_every == 1:
             if self.model_name == 'bigclam' or self.model_name == 'iegam':
                 raise ValueError('plot_every=1 is not supported for non prior models.')
@@ -408,13 +412,14 @@ class Trainer():
         finally:
             # self.data.edge_index = self.data.edge_index_original.to(self.device)
             # self.data.edge_attr = torch.ones(self.data.edge_index.shape[1]).bool().to(self.device)
-            printd(f'\n\n\nFINISHED train \n last accuracies:')
-            for key in accuracies_test.keys():
-                if accuracies_test[key] is not None:
-                    print(f'{key}: {accuracies_test[key][-1]}')
-                else:
-                    print(f'{key}: None')
-            printd(f'\n\n\n')
+            if accuracies_test is not None:    
+                printd(f'\n\n\nFINISHED train \n last accuracies:')
+                for key in accuracies_test.keys():
+                    if accuracies_test[key] is not None:
+                        print(f'{key}: {accuracies_test[key][-1]}')
+                    else:
+                        print(f'{key}: None')
+                printd(f'\n\n\n')
 
 
     def get_prob_graph(self, to_sparse=False, with_prior=False, ret_fufv=False):

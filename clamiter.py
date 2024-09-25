@@ -1106,11 +1106,12 @@ class AccTrack:
                 self.accuracies_test[keys] += [locals()[f'{keys}_test']]*measurement_interval
                 self.accuracies_test[keys][-1] += eps
 
-            if hasattr(self.graph, 'omitted_dyads_val'):
-                auc_val = calc_auc_and_append(self, 'val')
-                for keys in self.accuracies_val.keys(): 
-                    self.accuracies_val[keys] += [locals()[f'{keys}_val']]*measurement_interval
-                    self.accuracies_val[keys][-1] += eps    
+            if hasattr(self.graph, 'omitted_dyads_val'): 
+                if self.graph.omitted_dyads_val[0].numel() > 0:
+                    auc_val = calc_auc_and_append(self, 'val')
+                    for keys in self.accuracies_val.keys(): 
+                        self.accuracies_val[keys] += [locals()[f'{keys}_val']]*measurement_interval
+                        self.accuracies_val[keys][-1] += eps    
 
 
 
