@@ -335,13 +335,26 @@ def import_dataset(dataset_name, remove_data_feats=True, verbose=False):
         data.edge_index = to_undirected(data.edge_index)
 
     elif dataset_name == 'JohnsHopkins55':
-        data = load_data_matlab_format('facebook100','JohnsHopkins55')
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        data_dict = sio.loadmat(os.path.join(current_dir, f"{'facebook100'}/{dataset_name}.mat"))
+        adj = sp.coo_matrix(data_dict['A'])
+        edge_index = torch.tensor(adj.nonzero(), dtype=torch.long)
+        raw_attr = sp.lil_matrix(data_dict['local_info'])
+
+        data = Data(edge_index=edge_index, raw_attr=raw_attr, x=None)
         data.edge_index = remove_self_loops(data.edge_index)[0]
         data.edge_index = remove_isolated_nodes(data.edge_index)[0]
         data.edge_index = to_undirected(data.edge_index)
 
     elif dataset_name == 'Amherst41':
-        data = load_data_matlab_format('facebook100','Amherst41')
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        data_dict = sio.loadmat(os.path.join(current_dir, f"{'facebook100'}/{dataset_name}.mat"))
+        adj = sp.coo_matrix(data_dict['A'])
+        edge_index = torch.tensor(adj.nonzero(), dtype=torch.long)
+
+        raw_attr = sp.lil_matrix(data_dict['local_info'])
+
+        data = Data(edge_index=edge_index, raw_attr=raw_attr, x=None)
         data.edge_index = remove_self_loops(data.edge_index)[0]
         data.edge_index = remove_isolated_nodes(data.edge_index)[0]
         data.edge_index = to_undirected(data.edge_index)
