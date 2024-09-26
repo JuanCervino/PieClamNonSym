@@ -160,8 +160,8 @@ class SaveRun:
 
 
 def cross_val_link(
-        ds_names, 
-        models_list,
+        ds_name, 
+        model_name,
         range_triplets,
         n_reps,
         global_config_base,
@@ -178,94 +178,95 @@ def cross_val_link(
     # ============ OMIT TEST =============
 
     try:
-        for ds_name in ds_names:
-            ds = import_dataset(ds_name)
-            # OMIT TEST
-            ds_test_omitted = ds.clone()
-            ds_test_omitted.omitted_dyads_test, ds_test_omitted.edge_index, ds_test_omitted.edge_attr = lp.get_dyads_to_omit(
-                                                                                                                ds.edge_index, 
-                                                                                                                ds.edge_attr, 
-                                                                                                                test_p)
-            curr_file_dir = os.path.dirname(os.path.abspath(__file__))
-            for model_name in models_list:
-                save_path = os.path.join(curr_file_dir, 'results', 'link_prediction', ds_name, model_name, 'acc_configs.json')
-                run_saver = SaveRun(model_name, ds_name, global_config_base, save_path)
+        
+        ds = import_dataset(ds_name)
+        # OMIT TEST
+        ds_test_omitted = ds.clone()
+        ds_test_omitted.omitted_dyads_test, ds_test_omitted.edge_index, ds_test_omitted.edge_attr = lp.get_dyads_to_omit(
+                                                                                                            ds.edge_index, 
+                                                                                                            ds.edge_attr, 
+                                                                                                            test_p)
+        curr_file_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        save_path = os.path.join(curr_file_dir, 'results', 'link_prediction', ds_name, model_name, 'acc_configs.json')
+        run_saver = SaveRun(model_name, ds_name, global_config_base, save_path)
+        
+        
+        for values in itertools.product(*[triplet[2] for triplet in range_triplets]):
+            for _ in range(n_reps): 
+
+                ds_test_val_omitted = ds_test_omitted.clone()
                 
+                # OMIT VALIDATION DYADS
+                ds_test_val_omitted.omitted_dyads_val, ds_test_val_omitted.edge_index, ds_test_val_omitted.edge_attr = lp.get_dyads_to_omit(
+                                                                                        ds_test_omitted.edge_index, 
+                                                                                        ds_test_omitted.edge_attr, 
+                                                                                        ((val_p)/(1-test_p)))
                 
-                for values in itertools.product(*[triplet[2] for triplet in range_triplets]):
-                    for _ in range(n_reps): 
+                # ============ OMIT VALIDATION =============
 
-                        ds_test_val_omitted = ds_test_omitted.clone()
-                        
-                        # OMIT VALIDATION DYADS
-                        ds_test_val_omitted.omitted_dyads_val, ds_test_val_omitted.edge_index, ds_test_val_omitted.edge_attr = lp.get_dyads_to_omit(
-                                                                                                ds_test_omitted.edge_index, 
-                                                                                                ds_test_omitted.edge_attr, 
-                                                                                                ((val_p)/(1-test_p)))
-                        
-                        # ============ OMIT VALIDATION =============
-
-                        if densify:
-                            ds_test_val_omitted.edge_index, ds_test_val_omitted.edge_attr = up.my_two_hop(ds_test_val_omitted)
-                                                    
-                        outers = []
-                        inners = []
-                        for i in range(len(range_triplets)):
-                            outers.append(range_triplets[i][0])
-                            inners.append(range_triplets[i][1])
-                            
-                        config_triplets = [
-                            [outers[i], inners[i], values[i]] for i in range(len(range_triplets))
-                                    ]
-                        # if model_name in {'iegam', 'piegam'}:
-                        #     if 's_reg' in inners:
-                        #         ind_s = inners.index('s_reg')
-                        #         config_triplets.append([outers[ind_s], inners[ind_s], values[ind_s]])
+                if densify:
+                    ds_test_val_omitted.edge_index, ds_test_val_omitted.edge_attr = up.my_two_hop(ds_test_val_omitted)
+                                            
+                outers = []
+                inners = []
+                for i in range(len(range_triplets)):
+                    outers.append(range_triplets[i][0])
+                    inners.append(range_triplets[i][1])
+                    
+                config_triplets = [
+                    [outers[i], inners[i], values[i]] for i in range(len(range_triplets))
+                            ]
+                # if model_name in {'iegam', 'piegam'}:
+                #     if 's_reg' in inners:
+                #         ind_s = inners.index('s_reg')
+                #         config_triplets.append([outers[ind_s], inners[ind_s], values[ind_s]])
 
 
 
 
 
-                        trainer = Trainer(
-                                    dataset=ds_test_val_omitted,
-                                    model_name=model_name,
-                                    task='link_prediction',
-                                    config_triplets_to_change=config_triplets,
-                                    mighty_configs_dict=global_config_base,
-                                    attr_opt=attr_opt,
-                                    device=device,
+                trainer = Trainer(
+                            dataset=ds_test_val_omitted,
+                            model_name=model_name,
+                            task='link_prediction',
+                            config_triplets_to_change=config_triplets,
+                            mighty_configs_dict=global_config_base,
+                            attr_opt=attr_opt,
+                            device=device,
+                )
+
+                losses, acc_test, acc_val = trainer.train(
+                            init_type='small_gaus',
+                            init_feats=True,
+                            acc_every=20,
+                            plot_every=-1,
+                            verbose=False,
+                            verbose_in_funcs=False
                         )
-
-                        losses, acc_test, acc_val = trainer.train(
-                                    init_type='small_gaus',
-                                    init_feats=True,
-                                    acc_every=20,
-                                    plot_every=-1,
-                                    verbose=False,
-                                    verbose_in_funcs=False
-                                )
-                        #todo: i need a way to print nothing. verbose should be a number between 0 and 2. verbose 2 is the verbose we have now. verbose 1 is the not verbose we have now. verbose 0 is print nothing nothing.
-                        #todo: change iegam to ieclam everywhere.
-                        
-                        last_acc_test = acc_test['auc'][-1]
-                        if acc_val['auc']:
-                            last_acc_val = acc_val['auc'][-1]
-                            run_saver.update_file((last_acc_test, last_acc_val), config_triplets)
-                        else:
-                            last_acc_val = None
-                            run_saver.update_file(last_acc_test, config_triplets)
+                #todo: i need a way to print nothing. verbose should be a number between 0 and 2. verbose 2 is the verbose we have now. verbose 1 is the not verbose we have now. verbose 0 is print nothing nothing.
+                #todo: change iegam to ieclam everywhere.
+                
+                last_acc_test = acc_test['auc'][-1]
+                if acc_val['auc']:
+                    last_acc_val = acc_val['auc'][-1]
+                    run_saver.update_file((last_acc_test, last_acc_val), config_triplets)
+                else:
+                    last_acc_val = None
+                    run_saver.update_file(last_acc_test, config_triplets)
 
 
-                        del ds_test_val_omitted
-                        torch.cuda.empty_cache()
+                del ds_test_val_omitted
+                ds_test_val_omitted = None
+                torch.cuda.empty_cache()
     except Exception as e:
         raise e
     finally:
-        if ds:
+        if ds is not None:
             del ds
-        if ds_test_omitted:
+        if ds_test_omitted is not None:
             del ds_test_omitted
-        if ds_test_val_omitted:
+        if ds_test_val_omitted is not None:
             del ds_test_val_omitted
         torch.cuda.empty_cache()
         printd('\n\nFinished CrossVal!\n\n')    

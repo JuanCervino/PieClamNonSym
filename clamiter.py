@@ -1250,7 +1250,7 @@ class AccTrack:
                           **kwargs):
         
         if self.accuracies_test.keys() != ['losses']:
-            plot_test_accuracies(self.accuracies_test, n_iter_first, n_iter_second, n_back_forth)
+            plot_test_accuracies(self.accuracies_test, self.accuracies_val, n_iter_first, n_iter_second, n_back_forth)
 
         things_to_plot = []
         if self.graph.x.shape[1] <= 6:

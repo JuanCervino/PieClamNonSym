@@ -556,10 +556,12 @@ def plot_optimization_stage(
 
 def plot_test_accuracies(
                 acc_test, 
+                acc_val, 
                 n_iter_1st, 
                 n_iter_2nd, 
                 n_back_forth, 
-                figsize=3):
+                figsize=3,
+                ):
 
     n_lists = len(acc_test)
     figsize = (figsize * n_lists, figsize)  # Make the figure wider if there are more lists
@@ -567,9 +569,13 @@ def plot_test_accuracies(
     if n_lists == 1:
         axes = [axes]
     for i, (key, value) in enumerate(acc_test.items()):
-        axes[i].plot(value)
+        axes[i].plot(value, label='test')
         axes[i].set_title(f'{key}')
-    
+        axes[i].plot(list(acc_val.values())[0], label='val')
+        if list(acc_val.values())[0]:
+            axes[i].legend()
+
+        #* plot vertical lines that separate the feature optimization and the prior optimization
         if n_iter_1st is not None and n_iter_2nd is not None:
             n_iter_total = n_iter_1st + n_iter_2nd
             feat_stops = [n_iter_1st - 1 + i*n_iter_total for i in range(n_back_forth)]

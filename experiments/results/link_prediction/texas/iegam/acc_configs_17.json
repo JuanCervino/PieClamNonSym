@@ -1,22 +1,26 @@
 {
-    "date_time": "2024-09-26 03:17:40",
+    "date_time": "2024-09-26 03:41:16",
     "base_config": {
         "clamiter_init": {
-            "dim_feat": 16,
+            "dim_feat": 56,
             "s_reg": 0.0,
             "l1_reg": 1,
-            "T": 1
+            "T": 1,
+            "hidden_dim": 64,
+            "num_coupling_blocks": 32,
+            "num_layers_mlp": 2
         },
         "feat_opt": {
-            "lr": 3e-06,
-            "n_iter": 13000
+            "lr": 1e-06,
+            "n_iter": 7000,
+            "early_stop": 0
         }
     },
-    "0.740002": [
+    "0.7663130890597868": [
         [
             "clamiter_init",
             "dim_feat",
-            22
+            16
         ],
         [
             "clamiter_init",
@@ -39,11 +43,11 @@
             3e-06
         ]
     ],
-    "0.8197142302158275": [
+    "0.7464668970478789": [
         [
             "clamiter_init",
             "dim_feat",
-            22
+            16
         ],
         [
             "clamiter_init",
@@ -66,11 +70,11 @@
             3e-06
         ]
     ],
-    "0.8259012805755397": [
+    "0.7549015286529397": [
         [
             "clamiter_init",
             "dim_feat",
-            22
+            16
         ],
         [
             "clamiter_init",
@@ -93,11 +97,11 @@
             3e-06
         ]
     ],
-    "0.8578437266187051": [
+    "0.7668092438600844": [
         [
             "clamiter_init",
             "dim_feat",
-            22
+            16
         ],
         [
             "clamiter_init",
@@ -120,11 +124,11 @@
             3e-06
         ]
     ],
-    "0.680433654676259": [
+    "0.7065264356239147": [
         [
             "clamiter_init",
             "dim_feat",
-            22
+            16
         ],
         [
             "clamiter_init",
@@ -147,11 +151,11 @@
             3e-06
         ]
     ],
-    "0.7989948057553957": [
+    "0.8345343741007194": [
         [
             "clamiter_init",
             "dim_feat",
-            22
+            16
         ],
         [
             "clamiter_init",

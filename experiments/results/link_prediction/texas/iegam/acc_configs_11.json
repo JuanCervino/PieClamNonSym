@@ -1,26 +1,22 @@
 {
-    "date_time": "2024-09-25 21:42:02",
+    "date_time": "2024-09-26 03:29:26",
     "base_config": {
         "clamiter_init": {
-            "dim_feat": 56,
+            "dim_feat": 16,
             "s_reg": 0.0,
             "l1_reg": 1,
-            "T": 1,
-            "hidden_dim": 64,
-            "num_coupling_blocks": 32,
-            "num_layers_mlp": 2
+            "T": 1
         },
         "feat_opt": {
-            "lr": 1e-06,
-            "n_iter": 7000,
-            "early_stop": 0
+            "lr": 3e-06,
+            "n_iter": 13000
         }
     },
-    "(0.6355567141234381, 0.7188717318007664)": [
+    "0.6938149496402879": [
         [
             "clamiter_init",
             "dim_feat",
-            6
+            24
         ],
         [
             "clamiter_init",
@@ -28,188 +24,26 @@
             0.0
         ],
         [
-            "feat_opt",
-            "l1_reg",
-            0.0
-        ],
-        [
-            "feat_opt",
-            "n_iter",
-            100
-        ],
-        [
-            "feat_opt",
-            "lr",
-            1e-05
-        ]
-    ],
-    "(0.5302935562287013, 0.4373583218390804)": [
-        [
             "clamiter_init",
-            "dim_feat",
-            6
-        ],
-        [
-            "clamiter_init",
-            "s_reg",
-            0.0
-        ],
-        [
-            "feat_opt",
-            "l1_reg",
-            0.0
-        ],
-        [
-            "feat_opt",
-            "n_iter",
-            100
-        ],
-        [
-            "feat_opt",
-            "lr",
-            3e-06
-        ]
-    ],
-    "(0.5963670132525558, 0.6912245705329154)": [
-        [
-            "clamiter_init",
-            "dim_feat",
-            6
-        ],
-        [
-            "clamiter_init",
-            "s_reg",
-            0.0
-        ],
-        [
-            "feat_opt",
-            "l1_reg",
-            0.01
-        ],
-        [
-            "feat_opt",
-            "n_iter",
-            100
-        ],
-        [
-            "feat_opt",
-            "lr",
-            1e-05
-        ]
-    ],
-    "(0.49413301098068907, 0.4981547093596058)": [
-        [
-            "clamiter_init",
-            "dim_feat",
-            6
-        ],
-        [
-            "clamiter_init",
-            "s_reg",
-            0.0
-        ],
-        [
-            "feat_opt",
-            "l1_reg",
-            0.01
-        ],
-        [
-            "feat_opt",
-            "n_iter",
-            100
-        ],
-        [
-            "feat_opt",
-            "lr",
-            3e-06
-        ]
-    ],
-    "(0.6508918144642181, 0.7301744137931034)": [
-        [
-            "clamiter_init",
-            "dim_feat",
-            6
-        ],
-        [
-            "clamiter_init",
-            "s_reg",
-            0.0
-        ],
-        [
-            "feat_opt",
-            "l1_reg",
-            0.1
-        ],
-        [
-            "feat_opt",
-            "n_iter",
-            100
-        ],
-        [
-            "feat_opt",
-            "lr",
-            1e-05
-        ]
-    ],
-    "(0.46705993260128725, 0.4624404236453202)": [
-        [
-            "clamiter_init",
-            "dim_feat",
-            6
-        ],
-        [
-            "clamiter_init",
-            "s_reg",
-            0.0
-        ],
-        [
-            "feat_opt",
-            "l1_reg",
-            0.1
-        ],
-        [
-            "feat_opt",
-            "n_iter",
-            100
-        ],
-        [
-            "feat_opt",
-            "lr",
-            3e-06
-        ]
-    ],
-    "(0.41518564255963647, 0.4821448571428571)": [
-        [
-            "clamiter_init",
-            "dim_feat",
-            6
-        ],
-        [
-            "clamiter_init",
-            "s_reg",
-            0.0
-        ],
-        [
-            "feat_opt",
             "l1_reg",
             1
         ],
         [
             "feat_opt",
             "n_iter",
-            100
+            16000
         ],
         [
             "feat_opt",
             "lr",
-            1e-05
+            2e-06
         ]
     ],
-    "(0.4346858318818628, 0.6551744137931035)": [
+    "0.7707933669064748": [
         [
             "clamiter_init",
             "dim_feat",
-            6
+            24
         ],
         [
             "clamiter_init",
@@ -217,26 +51,26 @@
             0.0
         ],
         [
-            "feat_opt",
+            "clamiter_init",
             "l1_reg",
             1
         ],
         [
             "feat_opt",
             "n_iter",
-            100
+            16000
         ],
         [
             "feat_opt",
             "lr",
-            3e-06
+            2e-06
         ]
     ],
-    "(0.5708085126845893, 0.5771092796934867)": [
+    "0.8033113525179857": [
         [
             "clamiter_init",
             "dim_feat",
-            6
+            24
         ],
         [
             "clamiter_init",
@@ -244,262 +78,100 @@
             0.0
         ],
         [
-            "feat_opt",
-            "l1_reg",
-            10
-        ],
-        [
-            "feat_opt",
-            "n_iter",
-            100
-        ],
-        [
-            "feat_opt",
-            "lr",
-            1e-05
-        ]
-    ],
-    "(0.47595807724346834, 0.5321336614420064)": [
-        [
             "clamiter_init",
-            "dim_feat",
-            6
-        ],
-        [
-            "clamiter_init",
-            "s_reg",
-            0.0
-        ],
-        [
-            "feat_opt",
-            "l1_reg",
-            10
-        ],
-        [
-            "feat_opt",
-            "n_iter",
-            100
-        ],
-        [
-            "feat_opt",
-            "lr",
-            3e-06
-        ]
-    ],
-    "(0.6571394479363878, 0.7382465141065832)": [
-        [
-            "clamiter_init",
-            "dim_feat",
-            6
-        ],
-        [
-            "clamiter_init",
-            "s_reg",
-            0.01
-        ],
-        [
-            "feat_opt",
-            "l1_reg",
-            0.0
-        ],
-        [
-            "feat_opt",
-            "n_iter",
-            100
-        ],
-        [
-            "feat_opt",
-            "lr",
-            1e-05
-        ]
-    ],
-    "(0.5443034009844756, 0.52079307505071)": [
-        [
-            "clamiter_init",
-            "dim_feat",
-            6
-        ],
-        [
-            "clamiter_init",
-            "s_reg",
-            0.01
-        ],
-        [
-            "feat_opt",
-            "l1_reg",
-            0.0
-        ],
-        [
-            "feat_opt",
-            "n_iter",
-            100
-        ],
-        [
-            "feat_opt",
-            "lr",
-            3e-06
-        ]
-    ],
-    "(0.6118914358197654, 0.7758640689655174)": [
-        [
-            "clamiter_init",
-            "dim_feat",
-            6
-        ],
-        [
-            "clamiter_init",
-            "s_reg",
-            0.01
-        ],
-        [
-            "feat_opt",
-            "l1_reg",
-            0.01
-        ],
-        [
-            "feat_opt",
-            "n_iter",
-            100
-        ],
-        [
-            "feat_opt",
-            "lr",
-            1e-05
-        ]
-    ],
-    "(0.6429402809541841, 0.5781629195402299)": [
-        [
-            "clamiter_init",
-            "dim_feat",
-            6
-        ],
-        [
-            "clamiter_init",
-            "s_reg",
-            0.01
-        ],
-        [
-            "feat_opt",
-            "l1_reg",
-            0.01
-        ],
-        [
-            "feat_opt",
-            "n_iter",
-            100
-        ],
-        [
-            "feat_opt",
-            "lr",
-            3e-06
-        ]
-    ],
-    "(0.3835688307459295, 0.396553724137931)": [
-        [
-            "clamiter_init",
-            "dim_feat",
-            6
-        ],
-        [
-            "clamiter_init",
-            "s_reg",
-            0.01
-        ],
-        [
-            "feat_opt",
-            "l1_reg",
-            0.1
-        ],
-        [
-            "feat_opt",
-            "n_iter",
-            100
-        ],
-        [
-            "feat_opt",
-            "lr",
-            1e-05
-        ]
-    ],
-    "(0.5526335789473684, 0.6846284367816092)": [
-        [
-            "clamiter_init",
-            "dim_feat",
-            6
-        ],
-        [
-            "clamiter_init",
-            "s_reg",
-            0.01
-        ],
-        [
-            "feat_opt",
-            "l1_reg",
-            0.1
-        ],
-        [
-            "feat_opt",
-            "n_iter",
-            100
-        ],
-        [
-            "feat_opt",
-            "lr",
-            3e-06
-        ]
-    ],
-    "(0.4716036660355925, 0.43678360919540227)": [
-        [
-            "clamiter_init",
-            "dim_feat",
-            6
-        ],
-        [
-            "clamiter_init",
-            "s_reg",
-            0.01
-        ],
-        [
-            "feat_opt",
             "l1_reg",
             1
         ],
         [
             "feat_opt",
             "n_iter",
-            100
+            16000
         ],
         [
             "feat_opt",
             "lr",
-            1e-05
+            2e-06
         ]
     ],
-    "(0.5035991223021583, 0.5474157931034483)": [
+    "0.7893545179856116": [
         [
             "clamiter_init",
             "dim_feat",
-            6
+            24
         ],
         [
             "clamiter_init",
             "s_reg",
-            0.01
+            0.0
         ],
         [
-            "feat_opt",
+            "clamiter_init",
             "l1_reg",
             1
         ],
         [
             "feat_opt",
             "n_iter",
-            100
+            16000
         ],
         [
             "feat_opt",
             "lr",
-            3e-06
+            2e-06
+        ]
+    ],
+    "0.7566926474820145": [
+        [
+            "clamiter_init",
+            "dim_feat",
+            24
+        ],
+        [
+            "clamiter_init",
+            "s_reg",
+            0.0
+        ],
+        [
+            "clamiter_init",
+            "l1_reg",
+            1
+        ],
+        [
+            "feat_opt",
+            "n_iter",
+            16000
+        ],
+        [
+            "feat_opt",
+            "lr",
+            2e-06
+        ]
+    ],
+    "0.7949660287769784": [
+        [
+            "clamiter_init",
+            "dim_feat",
+            24
+        ],
+        [
+            "clamiter_init",
+            "s_reg",
+            0.0
+        ],
+        [
+            "clamiter_init",
+            "l1_reg",
+            1
+        ],
+        [
+            "feat_opt",
+            "n_iter",
+            16000
+        ],
+        [
+            "feat_opt",
+            "lr",
+            2e-06
         ]
     ]
 }

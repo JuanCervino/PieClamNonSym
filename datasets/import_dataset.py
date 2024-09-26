@@ -9,6 +9,8 @@ from torch_geometric.utils import to_networkx, to_dense_adj, to_undirected, remo
 from sklearn.decomposition import TruncatedSVD, PCA
 from sklearn.preprocessing import MaxAbsScaler
 
+import json
+
 import os
 import scipy.io as sio
 import scipy.sparse as sp
@@ -39,15 +41,16 @@ def import_dataset(dataset_name, remove_data_feats=True, verbose=False):
         y = torch.tensor(labels, dtype=torch.long)
 
         # Load sparse features
-        import json
         with open('../datasets/wikipedia/squirrel/musae_squirrel_features.json') as f:
             features_dict = json.load(f)
 
         # Assuming there are N nodes and each node's features are stored as a list of non-zero indices.
         num_nodes = len(features_dict)
         num_features = max(max(indices) for indices in features_dict.values()) + 1  # Assuming feature indices start at 0
-        sparse_features = sp.lil_matrix((num_nodes, num_features))
+        raw_attr = sp.lil_matrix((num_nodes, num_features))
 
+        for node_id, features in features_dict.items():
+            raw_attr[node_id, :] = features
 
 
         # Create the PyTorch Geometric Data object
@@ -55,7 +58,7 @@ def import_dataset(dataset_name, remove_data_feats=True, verbose=False):
         edge_index = remove_isolated_nodes(edge_index)[0]
         edge_index = to_undirected(edge_index)
         
-        data = Data(x=None, raw_attr=sparse_features, edge_index=edge_index, y=y)
+        data = Data(x=None, raw_attr=raw_attr, edge_index=edge_index, y=y)
 
     
 
@@ -70,38 +73,34 @@ def import_dataset(dataset_name, remove_data_feats=True, verbose=False):
         y = torch.tensor(labels, dtype=torch.long)
 
         # Load sparse features
-        import json
         with open('../datasets/wikipedia/crocodile/musae_crocodile_features.json') as f:
             features_dict = json.load(f)
 
         # Assuming there are N nodes and each node's features are stored as a list of non-zero indices.
         num_nodes = len(features_dict)
         num_features = max(max(indices) for indices in features_dict.values()) + 1  # Assuming feature indices start at 0
-        sparse_features = sp.lil_matrix((num_nodes, num_features))
+        raw_attr = sp.lil_matrix((num_nodes, num_features))
+
+        for node_id, features in features_dict.items():
+            raw_attr[node_id, :] = features
 
         edge_index = remove_self_loops(edge_index)[0]
         edge_index = remove_isolated_nodes(edge_index)[0]
         edge_index = to_undirected(edge_index)
 
         # Create the PyTorch Geometric Data object
-        data = Data(x=None, raw_attr=sparse_features, edge_index=to_undirected(edge_index), y=y)
+        data = Data(x=None, raw_attr=raw_attr, edge_index=to_undirected(edge_index), y=y)
 
-    elif dataset_name == 'twich':
-        edges_df = pd.read_csv('../datasets/twitch/large_twitch_edges.csv')
-        edges = edges_df.values.T
-        edge_index = torch.tensor(edges, dtype=torch.long)
-        edge_index = remove_self_loops(edge_index)[0]
-        edge_index = remove_isolated_nodes(edge_index)[0]
-        edge_index = to_undirected(edge_index)
-        # attr = pd.read_csv('../datasets/twitch/large_twitch_features.csv')
-        data = Data(x=None, edge_index=edge_index)
-        
+    
 
     elif dataset_name == 'texas':
         data = WebKB(root=os.path.join(current_dir,'WebKB'), name='texas')[0]
         data.edge_index = remove_self_loops(data.edge_index)[0]
         data.edge_index = remove_isolated_nodes(data.edge_index)[0]
         data.edge_index = to_undirected(data.edge_index)
+        dense_attr_np = data.x.numpy()
+        data.raw_attr = sp.lil_matrix(dense_attr_np)
+        
         if hasattr(data, 'y'):
             data.y = intersecting_tensor_from_non_intersecting_vec(data.y)
 
@@ -112,6 +111,7 @@ def import_dataset(dataset_name, remove_data_feats=True, verbose=False):
         data.edge_index = remove_self_loops(data.edge_index)[0]
         data.edge_index = remove_isolated_nodes(data.edge_index)[0]
         data.edge_index = to_undirected(data.edge_index)
+        data
         if hasattr(data, 'y'):
             data.y = intersecting_tensor_from_non_intersecting_vec(data.y)
 

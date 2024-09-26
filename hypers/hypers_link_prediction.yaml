@@ -148,6 +148,58 @@ cora_piegam:
         n_back_forth: 100
         first_func_in_fit: 'fit_feats'
 
+# 888888 888888 Yb  dP    db    .dP"Y8 
+#   88   88__    YbdP    dPYb   `Ybo." 
+#   88   88""    dPYb   dP__Yb  o.`Y8b 
+#   88   888888 dP  Yb dP""""Yb 8bodP' 
+                                     
+                                     
+     
+texas_iegam:
+    clamiter_init:
+        dim_feat: 24
+        s_reg: 0.0
+        l1_reg: 1
+        T: 1
+    feat_opt:
+        lr: 0.000003
+        n_iter: 13000
+                                        
+
+
+texas_bigclam:
+    clamiter_init:
+        dim_feat: 24
+        s_reg: 0.0
+        l1_reg: 1
+        T: 1
+    feat_opt:
+        lr: 0.000003
+        n_iter: 13000
+                         
+
+texas_piegam:
+    clamiter_init:
+        dim_feat: 24
+        s_reg: 0.0
+        l1_reg: 1
+        T: 1
+    feat_opt:
+        lr: 0.000003
+        n_iter: 1000
+                         
+
+texas_pclam:
+    clamiter_init:
+        dim_feat: 24
+        s_reg: 0.0
+        l1_reg: 1
+        T: 1
+    feat_opt:
+        lr: 0.000003
+        n_iter: 1000
+                         
+
 
 
 # interesting values:
