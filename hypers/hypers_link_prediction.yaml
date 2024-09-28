@@ -187,6 +187,8 @@ texas_piegam:
     feat_opt:
         lr: 0.000003
         n_iter: 1000
+    back_forth:
+        first_func_in_fit: 'fit_prior'
                          
 
 texas_pclam:
@@ -198,7 +200,8 @@ texas_pclam:
     feat_opt:
         lr: 0.000003
         n_iter: 1000
-                         
+    back_forth:
+        first_func_in_fit: 'fit_prior'
 
 
 

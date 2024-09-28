@@ -1,0 +1,65 @@
+{
+    "base_config": {
+        "clamiter_init": {
+            "dim_feat": 56,
+            "dim_attr": 100,
+            "s_reg": 0.0,
+            "l1_reg": 1,
+            "T": 1,
+            "hidden_dim": 64,
+            "num_coupling_blocks": 32,
+            "num_layers_mlp": 2
+        },
+        "feat_opt": {
+            "lr": 3e-06,
+            "n_iter": 500,
+            "early_stop": 0
+        },
+        "prior_opt": {
+            "n_iter": 1300,
+            "lr": 2e-06,
+            "noise_amp": 0.05,
+            "weight_decay": 0.1,
+            "early_stop": 0
+        },
+        "back_forth": {
+            "n_back_forth": 6,
+            "scheduler_step_size": 3,
+            "scheduler_gamma": 0.5,
+            "early_stop_fit": 0,
+            "first_func_in_fit": "fit_feats"
+        }
+    },
+    "0.6262764209305103": [
+        [
+            "feat_opt",
+            "lr",
+            1e-05
+        ],
+        [
+            "feat_opt",
+            "n_iter",
+            10
+        ],
+        [
+            "prior_opt",
+            "lr",
+            1e-05
+        ],
+        [
+            "prior_opt",
+            "noise_amp",
+            0.1
+        ],
+        [
+            "prior_opt",
+            "n_iter",
+            12
+        ],
+        [
+            "back_forth",
+            "n_back_forth",
+            7
+        ]
+    ]
+}

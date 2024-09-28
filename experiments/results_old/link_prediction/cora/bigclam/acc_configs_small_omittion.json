@@ -1,0 +1,91 @@
+{
+    "base_config": {
+        "clamiter_init": {
+            "dim_feat": 40,
+            "dim_attr": 100,
+            "s_reg": 0.0,
+            "l1_reg": 1,
+            "T": 1,
+            "hidden_dim": 64,
+            "num_coupling_blocks": 32,
+            "num_layers_mlp": 2
+        },
+        "feat_opt": {
+            "lr": 1e-06,
+            "n_iter": 7000,
+            "early_stop": 0
+        }
+    },
+    "(0.854720458081415, 0.8393957211981568)": [
+        [
+            "clamiter_init",
+            "dim_feat",
+            36
+        ],
+        [
+            "clamiter_init",
+            "l1_reg",
+            10
+        ]
+    ],
+    "(0.8687900272496121, 0.8229650958676438)": [
+        [
+            "clamiter_init",
+            "dim_feat",
+            36
+        ],
+        [
+            "clamiter_init",
+            "l1_reg",
+            10
+        ]
+    ],
+    "(0.8668850724512335, 0.80316080641893)": [
+        [
+            "clamiter_init",
+            "dim_feat",
+            36
+        ],
+        [
+            "clamiter_init",
+            "l1_reg",
+            10
+        ]
+    ],
+    "(0.8563421329636556, 0.8443673121072477)": [
+        [
+            "clamiter_init",
+            "dim_feat",
+            36
+        ],
+        [
+            "clamiter_init",
+            "l1_reg",
+            10
+        ]
+    ],
+    "(0.8579118047695032, 0.8271870214740276)": [
+        [
+            "clamiter_init",
+            "dim_feat",
+            36
+        ],
+        [
+            "clamiter_init",
+            "l1_reg",
+            10
+        ]
+    ],
+    "(0.8634186568590689, 0.8396113921439544)": [
+        [
+            "clamiter_init",
+            "dim_feat",
+            36
+        ],
+        [
+            "clamiter_init",
+            "l1_reg",
+            10
+        ]
+    ]
+}

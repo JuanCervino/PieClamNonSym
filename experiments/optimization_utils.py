@@ -24,7 +24,7 @@ class SaveRun:
     # todo; there should also be a number iteration?
     '''we save the a base config (either model specific or global) and change it with deltas'''
 
-    def __init__(self, model_name, ds_name, global_config_base, save_path):
+    def __init__(self, model_name, ds_name, global_config_base, save_path, config_ranges=None):
         self.model_name = model_name
         self.ds_name = ds_name
         self.global_config_base = global_config_base
@@ -43,6 +43,8 @@ class SaveRun:
 
 
         first_entry = {'date_time': datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+        if config_ranges is not None:
+            first_entry['config_ranges'] = config_ranges
 
         # Load your configuration
         curr_file_dir = os.path.dirname(os.path.abspath(__file__))
@@ -94,16 +96,23 @@ class SaveRun:
 
 
     @staticmethod
-    def load_saved(file_path, export_path=None, print_base=False):
-        
+    def load_saved(file_path, export_path=None, print_base=False, print_config_ranges=False, print_date_time=False, sort_by='val_acc'):
         # Load JSON data
         with open(file_path) as f:
             data = json.load(f)
 
         # Separate base config and runs
+        if "date_time" in data.keys():
+            date_time = data.pop("date_time")
+        if "config_ranges" in data.keys():
+            config_ranges = data.pop("config_ranges")
         base_config = data.pop("base_config")
         if print_base:
-            printd(base_config)
+            print(base_config)
+        if print_config_ranges:
+            print(config_ranges)
+        if print_date_time:
+            print(date_time)
 
         # List to hold processed data for DataFrame
         processed_data = []
@@ -122,42 +131,48 @@ class SaveRun:
                 section, key, value = change
                 row[f"{section}_{key}"] = value
             processed_data.append(row)
-
+        
         # Convert to DataFrame
         df = pd.DataFrame(processed_data)
         df.reset_index(drop=True, inplace=True)
 
-        # Fill missing columns (parameters that were not changed in some runs) with base config values
-        # for section, params in base_config.items():
-        #     for key, value in params.items():
-        #         column_name = f"{section}_{key}"
-        #         if column_name not in df.columns:
-        #             df[column_name] = value
-
-        # Group by unique parameter configurations and calculate mean and std of accs
+        # Group by unique parameter configurations and calculate mean, std, and count
         if 'acc' in df.columns:
             grouped = df.groupby([col for col in df.columns if col != 'acc']).agg(
                 avg_acc=('acc', 'mean'),
-                std_acc=('acc', 'std')
+                std_acc=('acc', 'std'),
+                count=('acc', 'size')  # Add count of occurrences
             ).reset_index()
+            
+            # Rearrange columns so mean, std, and count are first
+            cols = ['avg_acc', 'std_acc', 'count'] + [col for col in grouped.columns if col not in ['avg_acc', 'std_acc', 'count']]
+            grouped = grouped[cols]
+
+            # Sort by avg_acc
             grouped = grouped.sort_values(by='avg_acc', ascending=False).reset_index(drop=True)
-        
+
         elif 'val_acc' in df.columns:
             grouped = df.groupby([col for col in df.columns if col not in ['test_acc', 'val_acc']]).agg(
                 avg_test_acc=('test_acc', 'mean'),
                 std_test_acc=('test_acc', 'std'),
                 avg_val_acc=('val_acc', 'mean'),
-                std_val_acc=('val_acc', 'std')
+                std_val_acc=('val_acc', 'std'),
+                count=('val_acc', 'size')  # Add count of occurrences
             ).reset_index()
-            grouped = grouped.sort_values(by='avg_val_acc', ascending=False).reset_index(drop=True)
-       
 
-        # Save the grouped data to a CSV for further analysis
-        if export_path:
-            grouped.to_csv('grouped_accs.csv', index=False)
+            # Rearrange columns so mean, std, and count are first
+            cols = ['avg_test_acc', 'std_test_acc', 'avg_val_acc', 'std_val_acc', 'count'] + [col for col in grouped.columns if col not in ['avg_test_acc', 'std_test_acc', 'avg_val_acc', 'std_val_acc', 'count']]
+            grouped = grouped[cols]
+
+            # Sort by specified column
+            if sort_by == 'val_acc':
+                grouped = grouped.sort_values(by='avg_val_acc', ascending=False).reset_index(drop=True)
+            elif sort_by == 'test_acc':
+                grouped = grouped.sort_values(by='avg_test_acc', ascending=False).reset_index(drop=True)
 
         return grouped
 
+   
 
 def cross_val_link(
         ds_name, 
@@ -169,7 +184,8 @@ def cross_val_link(
         attr_opt,
         test_p,
         val_p,
-        device):
+        device,
+        plot_every=10000):
     
     ds = None
     ds_test_omitted = None
@@ -179,6 +195,11 @@ def cross_val_link(
 
     try:
         
+        curr_file_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        save_path = os.path.join(curr_file_dir, 'results', 'link_prediction', ds_name, model_name, 'acc_configs.json')
+        run_saver = SaveRun(model_name, ds_name, global_config_base, save_path, config_ranges=range_triplets)
+        #!   
         ds = import_dataset(ds_name)
         # OMIT TEST
         ds_test_omitted = ds.clone()
@@ -186,14 +207,10 @@ def cross_val_link(
                                                                                                             ds.edge_index, 
                                                                                                             ds.edge_attr, 
                                                                                                             test_p)
-        curr_file_dir = os.path.dirname(os.path.abspath(__file__))
-        
-        save_path = os.path.join(curr_file_dir, 'results', 'link_prediction', ds_name, model_name, 'acc_configs.json')
-        run_saver = SaveRun(model_name, ds_name, global_config_base, save_path)
-        
-        
+        #!
         for values in itertools.product(*[triplet[2] for triplet in range_triplets]):
             for _ in range(n_reps): 
+        
 
                 ds_test_val_omitted = ds_test_omitted.clone()
                 
@@ -232,7 +249,7 @@ def cross_val_link(
                             task='link_prediction',
                             config_triplets_to_change=config_triplets,
                             mighty_configs_dict=global_config_base,
-                            attr_opt=attr_opt,
+                            attr_opt=False,
                             device=device,
                 )
 
@@ -240,7 +257,7 @@ def cross_val_link(
                             init_type='small_gaus',
                             init_feats=True,
                             acc_every=20,
-                            plot_every=-1,
+                            plot_every=plot_every,
                             verbose=False,
                             verbose_in_funcs=False
                         )
