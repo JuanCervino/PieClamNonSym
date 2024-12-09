@@ -400,7 +400,6 @@ class Trainer():
 
                 return losses, accuracies_test, accuracies_val
             # ===============================================================
-            
 
 
 
@@ -415,10 +414,18 @@ class Trainer():
             if accuracies_test is not None:    
                 printd(f'\n\n\nFINISHED train \n last accuracies:')
                 for key in accuracies_test.keys():
-                    if accuracies_test[key] is not None:
-                        print(f'{key}: {accuracies_test[key][-1]}')
+                    print('test')
+                    if accuracies_test[key]:
+                        print(f'{key=}: {accuracies_test[key][-1]}')
                     else:
                         print(f'{key}: None')
+                if accuracies_val is not None:
+                    print('val')
+                    for key in accuracies_val.keys():
+                        if accuracies_val[key]:
+                            print(f'{key=}: {accuracies_val[key][-1]}')
+                        else:
+                            print(f'{key}: None')
                 printd(f'\n\n\n')
 
 

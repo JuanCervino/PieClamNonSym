@@ -1099,12 +1099,12 @@ class AccTrack:
                         use_prior=False if self.clamiter.prior is not None else False)['auc']
                 return auc_score
 
-            auc_test = calc_auc_and_append(self, 'test')
-                
-            
-            for keys in self.accuracies_test.keys():
-                self.accuracies_test[keys] += [locals()[f'{keys}_test']]*measurement_interval
-                self.accuracies_test[keys][-1] += eps
+            if self.graph.omitted_dyads_test[0].numel() > 0:
+                auc_test = calc_auc_and_append(self, 'test')
+
+                for keys in self.accuracies_test.keys():
+                    self.accuracies_test[keys] += [locals()[f'{keys}_test']]*measurement_interval
+                    self.accuracies_test[keys][-1] += eps
 
             if hasattr(self.graph, 'omitted_dyads_val'): 
                 if self.graph.omitted_dyads_val[0].numel() > 0:

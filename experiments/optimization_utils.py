@@ -8,8 +8,11 @@ from copy import deepcopy
 import itertools
 
 import sys
-if '..' not in sys.path:
-    sys.path.insert(0, '..')
+current_dir = os.path.dirname(os.path.abspath(__file__))
+if os.path.join(current_dir, '..') not in sys.path:
+    sys.path.insert(0, os.path.join(current_dir, '..'))
+# if '..' not in sys.path:
+#     sys.path.insert(0, '..')
 
 from utils.printing_utils import printd
 from utils import utils_pyg as up
@@ -181,10 +184,10 @@ def cross_val_link(
         n_reps,
         global_config_base,
         densify,
-        attr_opt,
         test_p,
         val_p,
         device,
+        attr_opt=False,
         plot_every=10000):
     
     ds = None
@@ -264,15 +267,17 @@ def cross_val_link(
                 #todo: i need a way to print nothing. verbose should be a number between 0 and 2. verbose 2 is the verbose we have now. verbose 1 is the not verbose we have now. verbose 0 is print nothing nothing.
                 #todo: change iegam to ieclam everywhere.
                 
-                last_acc_test = acc_test['auc'][-1]
+                if acc_test['auc']:
+                    last_acc_test = acc_test['auc'][-1]
+                else:
+                    last_acc_test = None
+                
                 if acc_val['auc']:
-                    last_acc_val = acc_val['auc'][-1]
-                    run_saver.update_file((last_acc_test, last_acc_val), config_triplets)
+                    last_acc_val = acc_val['auc'][-1]                    
                 else:
                     last_acc_val = None
-                    run_saver.update_file(last_acc_test, config_triplets)
-
-
+                run_saver.update_file((last_acc_test, last_acc_val), config_triplets)
+                
                 del ds_test_val_omitted
                 ds_test_val_omitted = None
                 torch.cuda.empty_cache()
