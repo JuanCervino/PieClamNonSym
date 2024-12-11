@@ -1,0 +1,6 @@
+1. Print classification intermediate results
+
+2. finish semi supervised stuff
+
+3. run on server
+

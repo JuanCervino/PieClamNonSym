@@ -1,0 +1,69 @@
+# order in file name: hidden_dim, num_coupling_blocks, num_layers_mlp, noise_amp
+
+
+# additional configs:
+# facebook dataset
+
+# BIGCLAM CONFIG
+
+#  "clamiter_init": {
+#        "dim_feat": 17,
+#        "s_reg": 0.0,
+#        "l1_reg": 1,
+#        "T": 1
+#    },
+#    "feat_opt": {
+#        "lr": 1e-05,
+#        "n_iter": 20000,
+#        "dropout_edge": 0.0,
+#        "dropout_node": 0.0
+#    }
+
+# anomaly_classify_base: 
+#     n_iter: 50000
+#     lr: 0.0000005
+
+
+# PCLAM CONFIG
+
+#    "clamiter_init": {
+#        "dim_feat": 17,
+#        "l1_reg": 1,
+#        "s_reg": 0.0,
+#        "prior": "None",
+#        "hidden_dim": 32,
+#        "num_coupling_blocks": 32,
+#        "num_layers_mlp": 3,
+#        "T": 1
+#    },
+#    "feat_opt": {
+#        "lr": 5e-08,
+#        "n_iter": 5000,
+#        "dropout_edge": 0.0,
+#        "dropout_node": 0.0
+#    },
+#    "prior_opt": {
+#        "n_iter": 300000,
+#        "lr": 1e-06,
+#        "noise_amp": 0.05,
+#        "weight_decay": 1
+#    },
+#    "back_forth": {
+#        "n_back_forth": 1,
+#        "scheduler_step_size": 600,
+#        "scheduler_gamma": 0.5
+#    }
+
+
+# anomaly_classify_prior:
+#     n_iter: 60000
+#     lr: 0.0000005
+
+# avg_deg, base_auc, vanilla_star, prior, prior_star 
+
+0.2 0.771 0.784 0.717 0.783
+0.5 0.952 0.952 0.883 0.957
+1.0 0.949 0.943 0.971 0.947
+2.0 0.859 0.999 1.000 1.000   
+4.0 0.900 0.983 0.994 1.000
+7.0 0.973 0.998 1.000 1.000

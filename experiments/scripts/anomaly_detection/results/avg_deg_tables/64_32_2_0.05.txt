@@ -1,0 +1,68 @@
+# dataset: facebook348
+
+# BASE CONFIG
+#"clamiter_init": {
+#    "dim_feat": 17,
+#    "s_reg": 0.0,
+#    "l1_reg": 1,
+#    "T": 1
+#},
+#"feat_opt": {
+#    "lr": 1e-05,
+#    "n_iter": 20000,
+#    "dropout_edge": 0.0,
+#    "dropout_node": 0.0
+#}
+
+# anomaly_classify_base:
+#     facebook348: 
+#         n_iter: 50000
+#         lr: 0.0000005
+
+
+# SECONDARY PCLAM CONFIG
+
+#"clamiter_init": {
+#    "dim_feat": 17,
+#    "l1_reg": 1,
+#    "s_reg": 0.0,
+#    "prior": "None",
+#    "hidden_dim": 64,
+#    "num_coupling_blocks": 32,
+#    "num_layers_mlp": 2,
+#    "T": 1
+#},
+#"feat_opt": {
+#    "lr": 5e-08,
+#    "n_iter": 5000,
+#    "dropout_edge": 0.0,
+#    "dropout_node": 0.0
+#},
+#"prior_opt": {
+#    "n_iter": 300000,
+#    "lr": 1e-06,
+#    "noise_amp": 0.05,
+#    "weight_decay": 1
+#},
+#"back_forth": {
+#    "n_back_forth": 1,
+#    "scheduler_step_size": 600,
+#    "scheduler_gamma": 0.5
+#}
+# anomaly_classify_prior:
+#     facebook348:
+#         n_iter: 60000
+#         lr: 0.0000005
+
+
+# avg_deg, base_vanilla_star, vanilla_star, prior, prior_star
+
+0.2    0.828989   0.830053   0.6117   0.869946   
+0.5    0.998214   0.995535   0.9249   0.994642   
+1      0.983571   0.984642   0.9764   0.994285   
+1.5    0.820192   0.951923   1.0000   1.0           
+2      0.898355   0.980      1.0000   1.0           
+2.5    0.809090   0.993939   1.0000   1.0           
+3      0.884558   0.9368     1.0000   0.9893           
+4      0.9832     0.9822     1.0      0.9967
+7      0.9505     0.9378     1.0      0.97180

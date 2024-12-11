@@ -202,7 +202,7 @@ def cross_val_link(
         
         save_path = os.path.join(curr_file_dir, 'results', 'link_prediction', ds_name, model_name, 'acc_configs.json')
         run_saver = SaveRun(model_name, ds_name, global_config_base, save_path, config_ranges=range_triplets)
-        #!   
+        #! 
         ds = import_dataset(ds_name)
         # OMIT TEST
         ds_test_omitted = ds.clone()
@@ -214,15 +214,14 @@ def cross_val_link(
         for values in itertools.product(*[triplet[2] for triplet in range_triplets]):
             for _ in range(n_reps): 
         
-
                 ds_test_val_omitted = ds_test_omitted.clone()
                 
                 # OMIT VALIDATION DYADS
                 ds_test_val_omitted.omitted_dyads_val, ds_test_val_omitted.edge_index, ds_test_val_omitted.edge_attr = lp.get_dyads_to_omit(
-                                                                                        ds_test_omitted.edge_index, 
-                                                                                        ds_test_omitted.edge_attr, 
-                                                                                        ((val_p)/(1-test_p)))
-                
+                                            ds_test_omitted.edge_index, 
+                                            ds_test_omitted.edge_attr, 
+                                            ((val_p)/(1-test_p)))
+
                 # ============ OMIT VALIDATION =============
 
                 if densify:

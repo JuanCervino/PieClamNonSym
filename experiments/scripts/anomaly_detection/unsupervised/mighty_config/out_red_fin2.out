@@ -1,0 +1,926 @@
+
+
+/home/daniel.z/pieclam/scripts/unsupervised/mighty_config/mighty_config.py:106:::  
+
+ round_num= 0 
+
+
+
+
+/home/daniel.z/pieclam/trainer.py:382:::  
+ starting optimization of piegam on ellipticGGAD on device cuda
+
+
+/home/daniel.z/pieclam/trainer.py:383:::  
+ configs_dict: 
+{
+    "clamiter_init": {
+        "dim_feat": 30,
+        "dim_attr": 93,
+        "s_reg": 0.0,
+        "l1_reg": 1,
+        "T": 1,
+        "hidden_dim": 64,
+        "num_coupling_blocks": 32,
+        "num_layers_mlp": 2
+    },
+    "feat_opt": {
+        "lr": 2e-06,
+        "n_iter": 500,
+        "early_stop": 0
+    },
+    "prior_opt": {
+        "n_iter": 1300,
+        "lr": 1e-06,
+        "noise_amp": 0.01,
+        "weight_decay": 0.1,
+        "early_stop": 0
+    },
+    "back_forth": {
+        "n_back_forth": 7,
+        "scheduler_step_size": 10,
+        "scheduler_gamma": 0.5,
+        "early_stop_fit": 0,
+        "first_func_in_fit": "fit_feats"
+    }
+}
+
+
+/home/daniel.z/pieclam/trainer.py:387:::  
+ train_model_on_params, initializing feats with small_gaus
+
+
+/home/daniel.z/pieclam/trainer.py:395:::  
+ init_node_feats took 0.011377096176147461 seconds
+
+
+/home/daniel.z/pieclam/clamiter.py:987:::  
+fit, task='anomaly_detection'
+
+
+/home/daniel.z/pieclam/clamiter.py:1025:::  
+in fit,
+first_func_in_fit='fit_feats'
+second_function_name='fit_prior'
+back and forth 1/7
+
+
+/home/daniel.z/pieclam/clamiter.py:1134:::  
+ starting fit_feats
+
+
+/home/daniel.z/pieclam/clamiter.py:271:::  
+ in fit_feats, using device cuda
+
+early_stop= 0
+
+performance_metric= None
+
+
+/home/daniel.z/pieclam/clamiter.py:328:::  
+fit_feats start. 
+ best_vanilla_link_auc= None, best_prior_link_auc= None
+
+ first_vanilla_star_anomaly_auc= 0.5017491339601904
+ first_prior_anomaly_auc= 0.2648726271618442
+ first_prior_star_anomaly_auc= 0.5016246053207132
+
+
+/home/daniel.z/pieclam/clamiter.py:519:::  
+                                       
+fit feats, intermediate values iter 100:
+ANOMALY VALS:
+last vanilla auc: 0.4635707099862601; count_not_improved_vanilla_star_anomaly= 10 ;iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.26130177128832677; count_not_improved_prior_anomaly= 10; iter_best_prior_anomaly= 0 
+last prior star auc 0.4468400156931284 ; count_not_improved_prior_star_anomaly= 10 ; iter_best_prior_star_anomaly= 0
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:519:::  
+                                       
+fit feats, intermediate values iter 200:
+ANOMALY VALS:
+last vanilla auc: 0.44777476116688586; count_not_improved_vanilla_star_anomaly= 20 ;iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.26131778874464134; count_not_improved_prior_anomaly= 20; iter_best_prior_anomaly= 0 
+last prior star auc 0.41160109335868156 ; count_not_improved_prior_star_anomaly= 20 ; iter_best_prior_star_anomaly= 0
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:519:::  
+                                       
+fit feats, intermediate values iter 300:
+ANOMALY VALS:
+last vanilla auc: 0.43977058445087797; count_not_improved_vanilla_star_anomaly= 30 ;iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.2612358567729546; count_not_improved_prior_anomaly= 30; iter_best_prior_anomaly= 0 
+last prior star auc 0.39828577649879265 ; count_not_improved_prior_star_anomaly= 30 ; iter_best_prior_star_anomaly= 0
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:519:::  
+                                       
+fit feats, intermediate values iter 400:
+ANOMALY VALS:
+last vanilla auc: 0.4369563469155576; count_not_improved_vanilla_star_anomaly= 40 ;iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.2611448400038775; count_not_improved_prior_anomaly= 40; iter_best_prior_anomaly= 0 
+last prior star auc 0.39376878147728567 ; count_not_improved_prior_star_anomaly= 40 ; iter_best_prior_star_anomaly= 0
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:584:::  
+fit_feats optmization loop ended after 500 iterations
+
+
+/home/daniel.z/pieclam/clamiter.py:636:::  fit_feats end
+
+
+max anomaly aucs:
+0.5017491339601904 at iter 0
+0.2648726271618442 at iter 0
+0.5016246053207132 at iter 0
+last anomaly aucs:
+0.43634506122200956
+0.26108683474807803
+0.39198183136976317
+
+
+
+
+/home/daniel.z/pieclam/clamiter.py:1145:::  
+in fit, fit_feats took 53.65188407897949 seconds
+
+
+/home/daniel.z/pieclam/clamiter.py:1155:::  
+ starting fit_prior
+
+
+/home/daniel.z/pieclam/clamiter.py:717:::  
+ in fit_prior, using devicecuda:0
+
+early_stop= 0
+
+performance_metric= None
+
+
+/home/daniel.z/pieclam/clamiter.py:724:::  
+ in fit_prior, early_stop= 0
+
+
+/home/daniel.z/pieclam/clamiter.py:763:::  
+fit_prior start, best_prior_link_auc= None
+ (vanilla link auc doesnt change)
+ first_vanilla_anomaly_auc= 0.43631611887810046,first_prior_anomaly_auc= 0.2610814513877134, first_prior_star_anomaly_auc= 0.39185241369864465
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 100:
+ANOMALY VALS:
+last vanilla auc: 0.4363161188781004 iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.2609463007090844 iter_best_prior_anomaly= 20
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.39270467258800135 iter_best_prior_star_anomaly= 100
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 200:
+ANOMALY VALS:
+last vanilla auc: 0.4363161128497014 iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.26085500060525124 iter_best_prior_anomaly= 20
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.3935740521307015 iter_best_prior_star_anomaly= 200
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 300:
+ANOMALY VALS:
+last vanilla auc: 0.4363161128497014 iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.26074698375081207 iter_best_prior_anomaly= 20
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.39449349752763296 iter_best_prior_star_anomaly= 300
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 400:
+ANOMALY VALS:
+last vanilla auc: 0.43631611887810046 iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.2605446103942139 iter_best_prior_anomaly= 20
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.39546092898111856 iter_best_prior_star_anomaly= 400
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 500:
+ANOMALY VALS:
+last vanilla auc: 0.43631611284970134 iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.2603415558285215 iter_best_prior_anomaly= 20
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.39648155502795007 iter_best_prior_star_anomaly= 500
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 600:
+ANOMALY VALS:
+last vanilla auc: 0.4363161188781004 iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.260278137070362 iter_best_prior_anomaly= 20
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.3975577749709551 iter_best_prior_star_anomaly= 600
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 700:
+ANOMALY VALS:
+last vanilla auc: 0.4363161128497014 iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.26036554282839947 iter_best_prior_anomaly= 20
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.39870145872789203 iter_best_prior_star_anomaly= 700
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 800:
+ANOMALY VALS:
+last vanilla auc: 0.4363161188781005 iter_best_vanilla_star_anomaly= 800 
+last prior auc 0.26046867065119733 iter_best_prior_anomaly= 20
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.3999094233040546 iter_best_prior_star_anomaly= 800
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 900:
+ANOMALY VALS:
+last vanilla auc: 0.43631611284970134 iter_best_vanilla_star_anomaly= 800 
+last prior auc 0.26073091203890586 iter_best_prior_anomaly= 20
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.4011886375287615 iter_best_prior_star_anomaly= 900
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 1000:
+ANOMALY VALS:
+last vanilla auc: 0.43631611887810046 iter_best_vanilla_star_anomaly= 800 
+last prior auc 0.261070033599885 iter_best_prior_anomaly= 20
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.402558542988996 iter_best_prior_star_anomaly= 1000
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 1100:
+ANOMALY VALS:
+last vanilla auc: 0.4363161128497014 iter_best_vanilla_star_anomaly= 800 
+last prior auc 0.2616629809034786 iter_best_prior_anomaly= 1100
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.4040347773519317 iter_best_prior_star_anomaly= 1100
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 1200:
+ANOMALY VALS:
+last vanilla auc: 0.43631611284970134 iter_best_vanilla_star_anomaly= 800 
+last prior auc 0.262047206946259 iter_best_prior_anomaly= 1200
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.4056253825019207 iter_best_prior_star_anomaly= 1200
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:910:::  
+fit_prior optmization loop ended after 1300 iterations
+
+max values 
+max_vanilla_star_anomaly= 0.4363161188781005 at iter 80
+max_prior_anomaly= 0.26238694340394275 at iter 129
+max_prior_star_anomaly= 0.40714641389830525 at iter 129
+last values
+accuracies_anomaly['vanilla_star'][-1]= 0.4363161188781005
+accuracies_anomaly['prior'][-1]= 0.26238694340394275
+accuracies_anomaly['prior_star'][-1]= 0.40714641389830525
+
+
+
+/home/daniel.z/pieclam/clamiter.py:1167:::  
+in fit, fit_prior took 111.77423024177551 seconds
+back and forth 2/7
+
+
+/home/daniel.z/pieclam/clamiter.py:1134:::  
+ starting fit_feats
+
+
+/home/daniel.z/pieclam/clamiter.py:271:::  
+ in fit_feats, using device cuda
+
+early_stop= 0
+
+performance_metric= None
+
+
+/home/daniel.z/pieclam/clamiter.py:328:::  
+fit_feats start. 
+ best_vanilla_link_auc= None, best_prior_link_auc= None
+
+ first_vanilla_star_anomaly_auc= 0.4363161128497014
+ first_prior_anomaly_auc= 0.26239794523223564
+ first_prior_star_anomaly_auc= 0.40730693208019797
+
+
+/home/daniel.z/pieclam/clamiter.py:519:::  
+                                       
+fit feats, intermediate values iter 100:
+ANOMALY VALS:
+last vanilla auc: 0.4359819586895514; count_not_improved_vanilla_star_anomaly= 10 ;iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.262348976546634; count_not_improved_prior_anomaly= 10; iter_best_prior_anomaly= 0 
+last prior star auc 0.40634584250252836 ; count_not_improved_prior_star_anomaly= 10 ; iter_best_prior_star_anomaly= 0
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:519:::  
+                                       
+fit feats, intermediate values iter 200:
+ANOMALY VALS:
+last vanilla auc: 0.43578852544876606; count_not_improved_vanilla_star_anomaly= 20 ;iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.2623019128351368; count_not_improved_prior_anomaly= 20; iter_best_prior_anomaly= 0 
+last prior star auc 0.40572700322495237 ; count_not_improved_prior_star_anomaly= 20 ; iter_best_prior_star_anomaly= 0
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:519:::  
+                                       
+fit feats, intermediate values iter 300:
+ANOMALY VALS:
+last vanilla auc: 0.43574606743415417; count_not_improved_vanilla_star_anomaly= 30 ;iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.26224948384847213; count_not_improved_prior_anomaly= 30; iter_best_prior_anomaly= 0 
+last prior star auc 0.4053922462248959 ; count_not_improved_prior_star_anomaly= 30 ; iter_best_prior_star_anomaly= 0
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:519:::  
+                                       
+fit feats, intermediate values iter 400:
+ANOMALY VALS:
+last vanilla auc: 0.4353966493675727; count_not_improved_vanilla_star_anomaly= 40 ;iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.2621944144230171; count_not_improved_prior_anomaly= 40; iter_best_prior_anomaly= 0 
+last prior star auc 0.4048510587556709 ; count_not_improved_prior_star_anomaly= 40 ; iter_best_prior_star_anomaly= 0
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:584:::  
+fit_feats optmization loop ended after 500 iterations
+
+
+/home/daniel.z/pieclam/clamiter.py:636:::  fit_feats end
+
+
+max anomaly aucs:
+0.4363161128497014 at iter 0
+0.26239794523223564 at iter 0
+0.40730693208019797 at iter 0
+last anomaly aucs:
+0.4349205625798461
+0.26214219643031966
+0.40428824139060215
+
+
+
+
+/home/daniel.z/pieclam/clamiter.py:1145:::  
+in fit, fit_feats took 53.66557264328003 seconds
+
+
+/home/daniel.z/pieclam/clamiter.py:1155:::  
+ starting fit_prior
+
+
+/home/daniel.z/pieclam/clamiter.py:717:::  
+ in fit_prior, using devicecuda:0
+
+early_stop= 0
+
+performance_metric= None
+
+
+/home/daniel.z/pieclam/clamiter.py:724:::  
+ in fit_prior, early_stop= 0
+
+
+/home/daniel.z/pieclam/clamiter.py:763:::  
+fit_prior start, best_prior_link_auc= None
+ (vanilla link auc doesnt change)
+ first_vanilla_anomaly_auc= 0.4348829513980822,first_prior_anomaly_auc= 0.26213775350020907, first_prior_star_anomaly_auc= 0.40423701808375034
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 100:
+ANOMALY VALS:
+last vanilla auc: 0.4348829574264813 iter_best_vanilla_star_anomaly= 40 
+last prior auc 0.26229809083012984 iter_best_prior_anomaly= 100
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.40613437832014077 iter_best_prior_star_anomaly= 100
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 200:
+ANOMALY VALS:
+last vanilla auc: 0.4348829513980822 iter_best_vanilla_star_anomaly= 40 
+last prior auc 0.2623563131082956 iter_best_prior_anomaly= 200
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.40818505882994083 iter_best_prior_star_anomaly= 200
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 300:
+ANOMALY VALS:
+last vanilla auc: 0.4348829513980822 iter_best_vanilla_star_anomaly= 40 
+last prior auc 0.26283499813601907 iter_best_prior_anomaly= 300
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.4104157895346028 iter_best_prior_star_anomaly= 300
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 400:
+ANOMALY VALS:
+last vanilla auc: 0.4348829574264813 iter_best_vanilla_star_anomaly= 40 
+last prior auc 0.2634643569699627 iter_best_prior_anomaly= 400
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.41288037992417725 iter_best_prior_star_anomaly= 400
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 500:
+ANOMALY VALS:
+last vanilla auc: 0.4348829574264813 iter_best_vanilla_star_anomaly= 410 
+last prior auc 0.266665575526436 iter_best_prior_anomaly= 500
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.41566299247800476 iter_best_prior_star_anomaly= 500
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 600:
+ANOMALY VALS:
+last vanilla auc: 0.4348829513980822 iter_best_vanilla_star_anomaly= 410 
+last prior auc 0.27780586408901964 iter_best_prior_anomaly= 600
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.4188339243575776 iter_best_prior_star_anomaly= 600
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 700:
+ANOMALY VALS:
+last vanilla auc: 0.4348829574264813 iter_best_vanilla_star_anomaly= 410 
+last prior auc 0.36029421481066726 iter_best_prior_anomaly= 700
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.42248328204371416 iter_best_prior_star_anomaly= 700
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 800:
+ANOMALY VALS:
+last vanilla auc: 0.43488295742648125 iter_best_vanilla_star_anomaly= 410 
+last prior auc 0.4131017969934204 iter_best_prior_anomaly= 800
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.4265597578319755 iter_best_prior_star_anomaly= 800
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 900:
+ANOMALY VALS:
+last vanilla auc: 0.43488295742648125 iter_best_vanilla_star_anomaly= 410 
+last prior auc 0.5000393353038964 iter_best_prior_anomaly= 900
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.4312079790443203 iter_best_prior_star_anomaly= 900
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 1000:
+ANOMALY VALS:
+last vanilla auc: 0.4348829574264813 iter_best_vanilla_star_anomaly= 410 
+last prior auc 0.58302659030373 iter_best_prior_anomaly= 1000
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.43627189454256265 iter_best_prior_star_anomaly= 1000
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 1100:
+ANOMALY VALS:
+last vanilla auc: 0.4348829574264812 iter_best_vanilla_star_anomaly= 410 
+last prior auc 0.6384102882587525 iter_best_prior_anomaly= 1100
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.4414693692220809 iter_best_prior_star_anomaly= 1100
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 1200:
+ANOMALY VALS:
+last vanilla auc: 0.43488295742648125 iter_best_vanilla_star_anomaly= 410 
+last prior auc 0.673627339561393 iter_best_prior_anomaly= 1200
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.44684003980672465 iter_best_prior_star_anomaly= 1200
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:910:::  
+fit_prior optmization loop ended after 1300 iterations
+
+max values 
+max_vanilla_star_anomaly= 0.4348829634548803 at iter 41
+max_prior_anomaly= 0.690276596211561 at iter 129
+max_prior_star_anomaly= 0.45248993377924196 at iter 129
+last values
+accuracies_anomaly['vanilla_star'][-1]= 0.4348829513980822
+accuracies_anomaly['prior'][-1]= 0.690276596211561
+accuracies_anomaly['prior_star'][-1]= 0.45248993377924196
+
+
+
+/home/daniel.z/pieclam/clamiter.py:1167:::  
+in fit, fit_prior took 111.31035041809082 seconds
+back and forth 3/7
+
+
+/home/daniel.z/pieclam/clamiter.py:1134:::  
+ starting fit_feats
+
+
+/home/daniel.z/pieclam/clamiter.py:271:::  
+ in fit_feats, using device cuda
+
+early_stop= 0
+
+performance_metric= None
+
+
+/home/daniel.z/pieclam/clamiter.py:328:::  
+fit_feats start. 
+ best_vanilla_link_auc= None, best_prior_link_auc= None
+
+ first_vanilla_star_anomaly_auc= 0.4348829513980822
+ first_prior_anomaly_auc= 0.6914289126359585
+ first_prior_star_anomaly_auc= 0.4531086283752403
+
+
+/home/daniel.z/pieclam/clamiter.py:519:::  
+                                       
+fit feats, intermediate values iter 100:
+ANOMALY VALS:
+last vanilla auc: 0.43446225956936013; count_not_improved_vanilla_star_anomaly= 10 ;iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.6913745545615931; count_not_improved_prior_anomaly= 10; iter_best_prior_anomaly= 0 
+last prior star auc 0.4529755032386972 ; count_not_improved_prior_star_anomaly= 10 ; iter_best_prior_star_anomaly= 0
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:519:::  
+                                       
+fit feats, intermediate values iter 200:
+ANOMALY VALS:
+last vanilla auc: 0.43428767713244965; count_not_improved_vanilla_star_anomaly= 20 ;iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.6913351107465135; count_not_improved_prior_anomaly= 20; iter_best_prior_anomaly= 0 
+last prior star auc 0.4530483323277963 ; count_not_improved_prior_star_anomaly= 20 ; iter_best_prior_star_anomaly= 0
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:519:::  
+                                       
+fit feats, intermediate values iter 300:
+ANOMALY VALS:
+last vanilla auc: 0.4341349416137494; count_not_improved_vanilla_star_anomaly= 30 ;iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.6912937077017379; count_not_improved_prior_anomaly= 30; iter_best_prior_anomaly= 0 
+last prior star auc 0.4530231758184999 ; count_not_improved_prior_star_anomaly= 30 ; iter_best_prior_star_anomaly= 0
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:519:::  
+                                       
+fit feats, intermediate values iter 400:
+ANOMALY VALS:
+last vanilla auc: 0.43403151237099824; count_not_improved_vanilla_star_anomaly= 40 ;iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.6912471865461565; count_not_improved_prior_anomaly= 40; iter_best_prior_anomaly= 0 
+last prior star auc 0.4530713005282324 ; count_not_improved_prior_star_anomaly= 40 ; iter_best_prior_star_anomaly= 0
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:584:::  
+fit_feats optmization loop ended after 500 iterations
+
+
+/home/daniel.z/pieclam/clamiter.py:636:::  fit_feats end
+
+
+max anomaly aucs:
+0.4348829513980822 at iter 0
+0.6914289126359585 at iter 0
+0.4531464083521782 at iter 490
+last anomaly aucs:
+0.43404061525358584
+0.6912279438963423
+0.4531464083521782
+
+
+
+
+/home/daniel.z/pieclam/clamiter.py:1145:::  
+in fit, fit_feats took 53.644280433654785 seconds
+
+
+/home/daniel.z/pieclam/clamiter.py:1155:::  
+ starting fit_prior
+
+
+/home/daniel.z/pieclam/clamiter.py:717:::  
+ in fit_prior, using devicecuda:0
+
+early_stop= 0
+
+performance_metric= None
+
+
+/home/daniel.z/pieclam/clamiter.py:724:::  
+ in fit_prior, early_stop= 0
+
+
+/home/daniel.z/pieclam/clamiter.py:763:::  
+fit_prior start, best_prior_link_auc= None
+ (vanilla link auc doesnt change)
+ first_vanilla_anomaly_auc= 0.4340456791088001,first_prior_anomaly_auc= 0.6912270577216799, first_prior_star_anomaly_auc= 0.45315440803773677
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 100:
+ANOMALY VALS:
+last vanilla auc: 0.4340456911655982 iter_best_vanilla_star_anomaly= 60 
+last prior auc 0.7027317750645159 iter_best_prior_anomaly= 100
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.4609485191599402 iter_best_prior_star_anomaly= 100
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 200:
+ANOMALY VALS:
+last vanilla auc: 0.4340456911655982 iter_best_vanilla_star_anomaly= 60 
+last prior auc 0.7108436431014136 iter_best_prior_anomaly= 200
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.4695639273139045 iter_best_prior_star_anomaly= 200
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 300:
+ANOMALY VALS:
+last vanilla auc: 0.4340456911655982 iter_best_vanilla_star_anomaly= 210 
+last prior auc 0.7154487612604465 iter_best_prior_anomaly= 300
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.4784120798989544 iter_best_prior_star_anomaly= 300
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 400:
+ANOMALY VALS:
+last vanilla auc: 0.4340456851371991 iter_best_vanilla_star_anomaly= 210 
+last prior auc 0.7179538685201341 iter_best_prior_anomaly= 400
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.4868687603055482 iter_best_prior_star_anomaly= 400
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 500:
+ANOMALY VALS:
+last vanilla auc: 0.43404567910880004 iter_best_vanilla_star_anomaly= 210 
+last prior auc 0.7183898905676773 iter_best_prior_anomaly= 460
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.49561820388431455 iter_best_prior_star_anomaly= 500
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 600:
+ANOMALY VALS:
+last vanilla auc: 0.4340456911655982 iter_best_vanilla_star_anomaly= 210 
+last prior auc 0.7172751853250441 iter_best_prior_anomaly= 460
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.5040030920864482 iter_best_prior_star_anomaly= 600
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 700:
+ANOMALY VALS:
+last vanilla auc: 0.4340456911655982 iter_best_vanilla_star_anomaly= 210 
+last prior auc 0.7129929904187038 iter_best_prior_anomaly= 460
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.5113801766465607 iter_best_prior_star_anomaly= 700
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 800:
+ANOMALY VALS:
+last vanilla auc: 0.43404568513719916 iter_best_vanilla_star_anomaly= 210 
+last prior auc 0.7052913790517472 iter_best_prior_anomaly= 460
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.517714625474857 iter_best_prior_star_anomaly= 800
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 900:
+ANOMALY VALS:
+last vanilla auc: 0.4340456851371991 iter_best_vanilla_star_anomaly= 210 
+last prior auc 0.6981258069012148 iter_best_prior_anomaly= 460
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.5222559631717867 iter_best_prior_star_anomaly= 900
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 1000:
+ANOMALY VALS:
+last vanilla auc: 0.4340456851371991 iter_best_vanilla_star_anomaly= 210 
+last prior auc 0.6894543105223536 iter_best_prior_anomaly= 460
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.5247757616399946 iter_best_prior_star_anomaly= 1000
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 1100:
+ANOMALY VALS:
+last vanilla auc: 0.4340456791088001 iter_best_vanilla_star_anomaly= 210 
+last prior auc 0.6828461482629289 iter_best_prior_anomaly= 460
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.5269476069425937 iter_best_prior_star_anomaly= 1100
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 1200:
+ANOMALY VALS:
+last vanilla auc: 0.4340456911655982 iter_best_vanilla_star_anomaly= 210 
+last prior auc 0.6779228029740746 iter_best_prior_anomaly= 460
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.5296662099551536 iter_best_prior_star_anomaly= 1200
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:910:::  
+fit_prior optmization loop ended after 1300 iterations
+
+max values 
+max_vanilla_star_anomaly= 0.43404570322239633 at iter 21
+max_prior_anomaly= 0.7185123152958811 at iter 46
+max_prior_star_anomaly= 0.5324455189462938 at iter 129
+last values
+accuracies_anomaly['vanilla_star'][-1]= 0.4340456851371991
+accuracies_anomaly['prior'][-1]= 0.673555004801017
+accuracies_anomaly['prior_star'][-1]= 0.5324455189462938
+
+
+
+/home/daniel.z/pieclam/clamiter.py:1167:::  
+in fit, fit_prior took 111.56330156326294 seconds
+back and forth 4/7
+
+
+/home/daniel.z/pieclam/clamiter.py:1134:::  
+ starting fit_feats
+
+
+/home/daniel.z/pieclam/clamiter.py:271:::  
+ in fit_feats, using device cuda
+
+early_stop= 0
+
+performance_metric= None
+
+
+/home/daniel.z/pieclam/clamiter.py:328:::  
+fit_feats start. 
+ best_vanilla_link_auc= None, best_prior_link_auc= None
+
+ first_vanilla_star_anomaly_auc= 0.4340456851371991
+ first_prior_anomaly_auc= 0.6731737688441726
+ first_prior_star_anomaly_auc= 0.5327258817015904
+
+
+/home/daniel.z/pieclam/clamiter.py:519:::  
+                                       
+fit feats, intermediate values iter 100:
+ANOMALY VALS:
+last vanilla auc: 0.4338700718440487; count_not_improved_vanilla_star_anomaly= 10 ;iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.672881090069587; count_not_improved_prior_anomaly= 10; iter_best_prior_anomaly= 0 
+last prior star auc 0.5327831153223095 ; count_not_improved_prior_star_anomaly= 0 ; iter_best_prior_star_anomaly= 100
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:519:::  
+                                       
+fit feats, intermediate values iter 200:
+ANOMALY VALS:
+last vanilla auc: 0.4336199776804553; count_not_improved_vanilla_star_anomaly= 20 ;iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.6725473880393669; count_not_improved_prior_anomaly= 20; iter_best_prior_anomaly= 0 
+last prior star auc 0.5327547637615089 ; count_not_improved_prior_star_anomaly= 10 ; iter_best_prior_star_anomaly= 100
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:519:::  
+                                       
+fit feats, intermediate values iter 300:
+ANOMALY VALS:
+last vanilla auc: 0.4333137772067678; count_not_improved_vanilla_star_anomaly= 30 ;iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.6722782139927341; count_not_improved_prior_anomaly= 30; iter_best_prior_anomaly= 0 
+last prior star auc 0.5326890059845123 ; count_not_improved_prior_star_anomaly= 20 ; iter_best_prior_star_anomaly= 100
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:519:::  
+                                       
+fit feats, intermediate values iter 400:
+ANOMALY VALS:
+last vanilla auc: 0.43333074112173553; count_not_improved_vanilla_star_anomaly= 40 ;iter_best_vanilla_star_anomaly= 0 
+last prior auc 0.6720313872214336; count_not_improved_prior_anomaly= 40; iter_best_prior_anomaly= 0 
+last prior star auc 0.5327968178733833 ; count_not_improved_prior_star_anomaly= 28 ; iter_best_prior_star_anomaly= 400
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:584:::  
+fit_feats optmization loop ended after 500 iterations
+
+
+/home/daniel.z/pieclam/clamiter.py:636:::  fit_feats end
+
+
+max anomaly aucs:
+0.4340456851371991 at iter 0
+0.6731737688441726 at iter 0
+0.5328785689930982 at iter 490
+last anomaly aucs:
+0.43331568820927135
+0.6718627367292029
+0.5328785689930982
+
+
+
+
+/home/daniel.z/pieclam/clamiter.py:1145:::  
+in fit, fit_feats took 53.47848439216614 seconds
+
+
+/home/daniel.z/pieclam/clamiter.py:1155:::  
+ starting fit_prior
+
+
+/home/daniel.z/pieclam/clamiter.py:717:::  
+ in fit_prior, using devicecuda:0
+
+early_stop= 0
+
+performance_metric= None
+
+
+/home/daniel.z/pieclam/clamiter.py:724:::  
+ in fit_prior, early_stop= 0
+
+
+/home/daniel.z/pieclam/clamiter.py:763:::  
+fit_prior start, best_prior_link_auc= None
+ (vanilla link auc doesnt change)
+ first_vanilla_anomaly_auc= 0.43332244604462267,first_prior_anomaly_auc= 0.6718453689114978, first_prior_star_anomaly_auc= 0.5328886545047332
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 100:
+ANOMALY VALS:
+last vanilla auc: 0.43332243398782455 iter_best_vanilla_star_anomaly= 70 
+last prior auc 0.6675156340501341 iter_best_prior_anomaly= 0
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.5360724931867034 iter_best_prior_star_anomaly= 100
+                                       
+
+
+/home/daniel.z/pieclam/clamiter.py:882:::  
+                                       
+fit prior, intermediate values iter 200:
+ANOMALY VALS:
+last vanilla auc: 0.4333224460446227 iter_best_vanilla_star_anomaly= 190 
+last prior auc 0.663164486315293 iter_best_prior_anomaly= 0
+last prior star auc accuracies_anomaly['prior_star'][i//auc_every]= 0.5391126992325607 iter_best_prior_star_anomaly= 200
+                                       

@@ -254,7 +254,7 @@ class PCLAMIter(MessagePassing):
 # 88""   88   88         YbdPYbdP   88"Yb   dP__Yb  88"""  88"""  88""   88"Yb  
 # 88     88   88          YP  YP    88  Yb dP""""Yb 88     88     888888 88  Yb 
                                                                               
-                                                                              
+                                                                             
     def fit_wrapper(self, 
                     graph, 
                     n_iter, 
@@ -268,7 +268,9 @@ class PCLAMIter(MessagePassing):
                     plot_every=100000,
                     **kwargs
                     ):
-            
+            '''The algorithm optimizes the features and prior back to back in alternation. the fit functions are similar and are both represeted by this wrapper function.'''
+
+
             def iter_step_feat():
                 clamiter_grad = self(graph, node_mask)
                 self.debug_last_grad = clamiter_grad
