@@ -25,7 +25,6 @@ import os
 import shutil
 import matplotlib.pyplot as plt
 
-#todo: maybe make fit_feat stop before it plateaus
 
 def vanilla_model(model_name):
     if model_name == 'bigclam' or model_name == 'pclam':
@@ -140,6 +139,7 @@ def unshuffle_node_feats(node_feats, perm):
     return node_feats[inv_perm]
 
 
+#! not in use
 def omit_dyads(data, dyads_to_omit):
         
         ''' this function prepares the data for node ommition. it adds the non edges to omit to the edges array and creates a boolean mask for the edges to omit.
@@ -147,8 +147,6 @@ def omit_dyads(data, dyads_to_omit):
 
         assert len(dyads_to_omit) == 2, 'dyads_to_omit should be a tuple (edges_to_omit, non_edges_to_omit)'
 
-        #! need to assert that the dyads to omit[0] are edges of the graph and that dyads_to_omit[1] are non edges.
-        #! need to assert that the dyads to omit are unique
         omitted_dyads_tot = torch.cat([dyads_to_omit[0], dyads_to_omit[1]], dim=1)
         assert is_undirected(omitted_dyads_tot), 'edges in dyads_to_omit should be undirected'
         
@@ -174,26 +172,25 @@ def omit_dyads(data, dyads_to_omit):
         #? TESTED that every omitted node appears once
         #? TESTED that retained_with_omitted_non_edges[:,edge_mask.bool()] == omitted_dyads_tot
         
-        # change the data object, remember we kept the original edges in edge_index_original
-        #! we stopped here, asserting sanity on omitted edges and there is some bug in which things get duplicated.
         data.edge_index = retained_with_omitted_non_edges
         data.edge_attr = edge_mask
     
-# def several_omits(data, num_sets, percentage_edges, percentage_non_edges=None, same_number=True):
-#     '''returns a list of lists of dyads to omit. seems unimpotant at the moment since the original omittion is random'''
-#     if percentage_non_edges is None:
-#         same_number = True
-#     num_edges = data.edge_index.shape[1]
-#     num_non_edges = data.x.shape[0]*(data.x.shape[0]-1) - num_edges
-#     num_edges_to_omit = floor(percentage_edges*num_edges)
-#     num_non_edges_to_omit = floor(percentage_non_edges*num_non_edges)
-#     if same_number:
-#         num_non_edges_to_omit = num_edges_to_omit
-#     dyad_sets = []
-#     for i in range(num_sets):
-#         dyads_to_omit = get_dyads_to_omit(data.edge_index, floor(num_edges_to_omit), floor(num_non_edges_to_omit))
-#         dyad_sets.append(dyads_to_omit)
-#     return dyad_sets
+#! not in use
+def several_omits(data, num_sets, percentage_edges, percentage_non_edges=None, same_number=True):
+    '''returns a list of lists of dyads to omit. seems unimpotant at the moment since the original omittion is random'''
+    if percentage_non_edges is None:
+        same_number = True
+    num_edges = data.edge_index.shape[1]
+    num_non_edges = data.x.shape[0]*(data.x.shape[0]-1) - num_edges
+    num_edges_to_omit = floor(percentage_edges*num_edges)
+    num_non_edges_to_omit = floor(percentage_non_edges*num_non_edges)
+    if same_number:
+        num_non_edges_to_omit = num_edges_to_omit
+    dyad_sets = []
+    for i in range(num_sets):
+        dyads_to_omit = get_dyads_to_omit(data.edge_index, floor(num_edges_to_omit), floor(num_non_edges_to_omit))
+        dyad_sets.append(dyads_to_omit)
+    return dyad_sets
 
 
 def edge_mask_of_selected_edges(edge_index, edges_to_omit):
@@ -204,10 +201,10 @@ def edge_mask_of_selected_edges(edge_index, edges_to_omit):
     edge_mask = eq_tens.sum(dim=1)
     return edge_mask.bool()
 
-
+#! used in tests.py
 def sample_edges(edge_index, num_samples):
     '''samples edges from the edge_index'''
-    #! problem: it can sample both sides of an edge and then it's not a fixed number of nodes
+    
 
     canonical_edge_index = torch.stack([
     torch.min(edge_index, dim=0)[0],
@@ -229,6 +226,7 @@ def sample_edges(edge_index, num_samples):
     # sampled_edge_index = to_undirected(edge_index[:, perm[:num_samples]])
     return to_undirected(sampled_edges)
 
+#! not in use: only in tests. the function moved to "link_prediction.py"
 def get_dyads_to_omit(edge_index, p_sample_edge, p_sample_non_edge=None):
     
     if p_sample_edge == 0:
@@ -309,6 +307,7 @@ def save_feats_prior_hypers(x, prior, configs_dict, folder_path, overwrite=False
         json.dump(configs_dict, f, indent=4)
 
 
+#! not in use
 def save_feats_edges_prior_hypers(data, prior, config_dict, folder_path, overwrite=False):
     base_dir_path = '../checkpoints/' + folder_path
     dir_path = base_dir_path
@@ -328,10 +327,11 @@ def save_feats_edges_prior_hypers(data, prior, config_dict, folder_path, overwri
         json.dump(config_dict, f, indent=4)
 
 
-
+#! not in use
 def extremes(lst):
     return [min(lst), max(lst)]
 
+#! move to plotting
 def plot_roc_curve(fpr, tpr, thresholds):
     '''false positive rate on the x axis'''
     fpr_tpr_vec = torch.cat((torch.tensor(fpr).view(-1, 1), torch.tensor(tpr).view(-1, 1)), dim=1)
@@ -361,9 +361,9 @@ def plot_roc_curve(fpr, tpr, thresholds):
 # 88 88 Y88 88   88   
 # 88 88  Y8 88   88   
 
-#! i think that maybe the problem with anomaly planting is that the anomaly set can be larger than a community.
+
 def k_minimal_neighborhoods(data, k):   
-    '''returns the k minimal neighborhoods of the graph. the node initialization method that was used by bigclam'''
+    '''returns the k minimal neighborhoods of the graph. the node initialization method that was used by bigclam, NOT IN USE HERE'''
     # if not hasattr(data, 'node_mask') or (hasattr(data, 'node_mask') and data.node_mask is None):
     #     node_mask = torch.ones(data.num_nodes).bool()
     # else:
@@ -387,6 +387,8 @@ def k_minimal_neighborhoods(data, k):
     minimal_neighborhoods = neighborhoods[:k]
     return minimal_neighborhoods
 
+
+#todo: move this section to it's own file 
 # 8888b.  88 .dP"Y8 888888    db    88b 88  dP""b8 888888 
 #  8I  Yb 88 `Ybo."   88     dPYb   88Yb88 dP   `" 88__   
 #  8I  dY 88 o.`Y8b   88    dP__Yb  88 Y88 Yb      88""   
@@ -458,6 +460,7 @@ def relative_l2_distance_data(data, lorenz, verbose=False):
     #     printd(f"\nl2 distance: {rel_l2_dist}")
     return rel_l2_dist
 
+#! not in use: only in tests.py
 def get_fat_ds_test_OLD(ds, train_node_mask, test_node_mask):
     '''densifies the dataset with the test addition such that the subgraph of the train set is the same as in training.
     in here think of adding and removing edges'''
@@ -510,7 +513,6 @@ def get_fat_ds_test_OLD(ds, train_node_mask, test_node_mask):
     fat_test_data.edge_index = fat_test_data.edge_index[:, ~edge_mask]
     fat_test_data.edge_attr = fat_test_data.edge_attr[~edge_mask]
     # =================================================================
-    # todo: ron's suggestion was to make the densification in the test set only through the train nodes so that if two normals are connected through an anomaly they won't get connected in the test set. the densification happens only through train nodes. 
     
     
 
@@ -539,7 +541,7 @@ def get_fat_ds_test_OLD(ds, train_node_mask, test_node_mask):
     
 
 def densify_ds_via_train_nodes(ds, train_node_mask, test_node_mask):
-    '''densification through training nodes'''
+    '''densification through training nodes. if two nodes are connected via a node that is in the training set they have a densified edge'''
     #algo: (imagine line separating train and test, graph expands and contracts...)
     # 1. densify train 
 
@@ -607,7 +609,7 @@ def densify_ds_via_train_nodes(ds, train_node_mask, test_node_mask):
             # 4. densify (without test edges) 
                          #(maybe don't need entire train graph, only use xi...)
     fat_tau_data = TwoHop()(tau_data)
-    #! don't know if the next one is a good idea.... might as well just do it at the end
+    
     fat_tau_data.edge_attr = torch.ones_like(fat_tau_data.edge_attr)
 
             # 5. xi: 1-hop from test in tau (remove densification from test in train)

@@ -272,7 +272,7 @@ class Trainer():
             init_type='small_gaus', 
             val_rel_size=0.3,
             init_feats=False, 
-            acc_every=20, 
+            acc_every=200, 
             performance_metric=None,
             prior_fit_mask=None, 
             plot_every=-1, 
@@ -316,10 +316,13 @@ class Trainer():
         printd(f'\n {datetime.now().strftime("%Y-%m-%d %H:%M:%S")} starting optimization of {self.model_name} on {self.dataset_name} on device {self.device}')
         print('\n configs_dict: \n' + json.dumps(self.configs_dict, indent=4))
           
+          
         if init_feats or (self.data.x is None):
             if verbose:
                 printd(f'\n train_model_on_params, initializing feats with {init_type}')
             t = time.time()
+
+
             self.data.x = self.clamiter.init_node_feats(
                                             graph_given=self.data, 
                                             init_type=init_type, 

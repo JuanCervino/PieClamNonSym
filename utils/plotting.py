@@ -651,7 +651,7 @@ def plot_graph_with_omitted(data, pos=None):
     
     edge_colors = [G[u][v]['color'] if 'color' in G[u][v] else 'gray' for u, v in G.edges()]
     plt.figure(figsize=(3,3))
-    nx.draw(G, pos, with_labels=True, edge_color=edge_colors)
+    nx.draw(G, pos, with_labels=True, edge_color=edge_colors, node_color='white') 
     plt.show()
     if return_pos:
         return pos

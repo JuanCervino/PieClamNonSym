@@ -187,6 +187,7 @@ def cross_val_link(
         test_p,
         val_p,
         device,
+        test_dyads_to_omit=None,
         attr_opt=False,
         plot_every=10000):
     
@@ -206,11 +207,18 @@ def cross_val_link(
         ds = import_dataset(ds_name)
         # OMIT TEST
         ds_test_omitted = ds.clone()
-        ds_test_omitted.omitted_dyads_test, ds_test_omitted.edge_index, ds_test_omitted.edge_attr = lp.get_dyads_to_omit(
-                                                                                                            ds.edge_index, 
-                                                                                                            ds.edge_attr, 
-                                                                                                            test_p)
-        #!
+        if test_dyads_to_omit is None:
+            ds_test_omitted.omitted_dyads_test, ds_test_omitted.edge_index, ds_test_omitted.edge_attr = lp.get_dyads_to_omit(
+                                                ds.edge_index, 
+                                                ds.edge_attr, 
+                                                test_p)
+            
+        else:
+            assert type(test_dyads_to_omit) == torch.tensor
+            assert test_dyads_to_omit.shape[0] == 2
+            ds_test_omitted.omitted_dyads_test = test_dyads_to_omit
+            
+#!
         for values in itertools.product(*[triplet[2] for triplet in range_triplets]):
             for _ in range(n_reps): 
         

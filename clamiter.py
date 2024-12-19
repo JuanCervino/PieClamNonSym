@@ -60,6 +60,7 @@ class PCLAMIter(MessagePassing):
                  lr=0.01,
                  aggr='add', 
                  device=torch.device('cpu')):
+        '''clamiter is the message passing network that runs the clam process'''
         
         super(PCLAMIter, self).__init__(aggr=aggr)
         self.dim_feat = dim_feat
@@ -1052,7 +1053,7 @@ class AccTrack:
                 self.metric_cut = lambda data : utils.cut_distance_data(data, self.clamiter.lorenz)
                 self.accuracies_test = {'cut': [], 'log_cut': []}
 
-            self.accuracies_val = []
+            self.accuracies_val = {'l2': []}
 
             self.patiance_steps = 0
 
@@ -1119,7 +1120,7 @@ class AccTrack:
 
         elif self.task == 'distance':
             l2_norm = utils.relative_l2_distance_data(self.graph, self.clamiter.lorenz, verbose=False).cpu().item()
-            self.accuracies_val += [l2_norm]*measurement_interval
+            self.accuracies_val['l2'] += [l2_norm]*measurement_interval
           
             
             # estimation on what has been
