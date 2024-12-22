@@ -143,7 +143,7 @@ def plot_2dgraph(graph,
         
         edge_color = 'black' 
         if draw_edges:
-            width = 35/num_edges
+            width = 30/num_edges
         else:
             width = 0.0
          # Draw edges first
@@ -417,6 +417,7 @@ def plot_optimization_stage(
 
     # plot SBM and original adj
     if 'adj' in things_to_plot:
+        #todo; this should be the function "plot sparse adj"
         w_opt = get_prob_graph(graph_cpu.x, lorenz=lorenz, prior=None)
         # w_opt = get_prob_graph(graph.x, lorenz=lorenz, prior=prior).cpu()
         w_gt = to_dense_adj(graph_cpu.edge_index)[0]
@@ -424,14 +425,13 @@ def plot_optimization_stage(
 
         w_cut[w_cut<0] = 0
         fig1, axes1 = plt.subplots(1,2)
+    
         im_gt = plot_adj(w_gt, ax=axes1[0])
         im_opt = plot_adj(w_cut, omitted_dyads, ax=axes1[1])
 
+
         axes1[0].set_title('ground truth adj')
         axes1[1].set_title('optimized adj')
-
-        my_colorbar(im_gt, ax=axes1[0], vmin=0, vmax=1)
-        my_colorbar(im_opt, ax=axes1[1], vmin=0, vmax=1)
 
         plt.subplots_adjust(wspace=0.5)
         
@@ -480,7 +480,7 @@ def plot_optimization_stage(
                         **kwargs) 
                     
                     plot_relu_lines(lorenz=lorenz, ax=axes3[row, col])
-                    #todo: plot conditional probability on the plane. can test this when have prior say now
+                    
                 
                 # the last two features
                 row = (num_feats // 2) // num_cols
@@ -497,48 +497,8 @@ def plot_optimization_stage(
 
         else: #* 2 features
             
-            if prior: 
-                draw_nodes_on_prior = kwargs.get('draw_nodes_on_prior', True)
-                if lorenz:
-                    x_fig_lim = [-0.01, 2.7]
-                    y_fig_lim = [-1.7, 1.7]
-                else:
-                    x_fig_lim = [-0.1, 2]
-                    y_fig_lim = [-0.1, 2]   
-                _, axes = plt.subplots(1, 2, figsize=(7, 3))
-                
+            plot_graph_2_feats(graph_cpu, community_affiliation=community_affiliation_cpu, prior=prior, lorenz=lorenz, **kwargs)  
 
-                # plot prior with the 2d graph
-                # plot_prob(prior.model.log_prob, device=next(prior.model.parameters()).device, ax=axes[0], title='prior', x_fig_lim=x_fig_lim, y_fig_lim=y_fig_lim)
-                if draw_nodes_on_prior:
-                    plot_prob(prior.forward_ll, device=next(prior.model.parameters()).device, ax=axes[0], title='prior', x_fig_lim=x_fig_lim, y_fig_lim=y_fig_lim)
-                
-                # if draw_nodes_on_prior:
-                plot_2dgraph(
-                    graph_cpu, community_affiliation=community_affiliation_cpu,
-                    lorenz_fig_lims=lorenz, ax=axes[0], 
-                    figsize=(3,3),
-                    **kwargs)      
-                
-                plot_xy_axes(axes[0], line_range=2)
-                
-                # plot just the prior
-                # im_prob = plot_prob(prior.model.log_prob, device=next(prior.model.parameters()).device, ax=axes[1], title='prior', x_fig_lim=x_fig_lim, y_fig_lim=y_fig_lim)
-                
-                im_prob = plot_prob(prior.forward_ll, device=next(prior.model.parameters()).device, ax=axes[1], title='prior', x_fig_lim=x_fig_lim, y_fig_lim=y_fig_lim)
-                
-                my_colorbar(im_prob, ax=axes[1])
-                plot_xy_axes(axes[1], line_range=2)
-
-            else:
-                plot_2dgraph(
-                    graph_cpu,
-                    community_affiliation=community_affiliation_cpu,
-                    lorenz_fig_lims=lorenz, 
-                    figsize=(3,3),
-                    **kwargs)
-                plot_relu_lines(lorenz=lorenz, ax=plt.gca())
-                
     
     #* plot losses
     if 'losses' in things_to_plot:
@@ -554,6 +514,48 @@ def plot_optimization_stage(
     if prior:
         prior.model.train()   
 
+def plot_graph_2_feats(graph, community_affiliation=None, prior=None, lorenz=False, draw_nodes_on_prior=True, **kwargs):    
+    if prior: 
+        draw_nodes_on_prior = draw_nodes_on_prior
+        if lorenz:
+            x_fig_lim = [-0.01, 2.7]
+            y_fig_lim = [-1.7, 1.7]
+        else:
+            x_fig_lim = [-0.1, 2]
+            y_fig_lim = [-0.1, 2]   
+        _, axes = plt.subplots(1, 2, figsize=(7, 3))
+        
+
+        if draw_nodes_on_prior:
+            plot_prob(prior.forward_ll, device=next(prior.model.parameters()).device, ax=axes[0], title='prior', x_fig_lim=x_fig_lim, y_fig_lim=y_fig_lim)
+        
+        
+        im_prob = plot_prob(prior.forward_ll, device=next(prior.model.parameters()).device, ax=axes[0], title='prior', x_fig_lim=x_fig_lim, y_fig_lim=y_fig_lim)
+        my_colorbar(im_prob, ax=axes[0])
+        
+        # plot_xy_axes(axes[0], line_range=2)
+        plot_relu_lines(lorenz=lorenz, ax=axes[0])
+        plot_2dgraph(
+            graph, community_affiliation=community_affiliation,
+            lorenz_fig_lims=lorenz, ax=axes[1], 
+            figsize=(3,3),
+            **kwargs)      
+        # plot just the prior
+        # im_prob = plot_prob(prior.model.log_prob, device=next(prior.model.parameters()).device, ax=axes[1], title='prior', x_fig_lim=x_fig_lim, y_fig_lim=y_fig_lim)
+        
+        
+        # plot_xy_axes(axes[1], line_range=2)
+
+    else:
+        plot_2dgraph(
+            graph,
+            community_affiliation=community_affiliation,
+            lorenz_fig_lims=lorenz, 
+            figsize=(3,3),
+            **kwargs)
+        plot_relu_lines(lorenz=lorenz, ax=plt.gca())
+    
+    return
 
 
 def plot_test_accuracies(
@@ -573,9 +575,10 @@ def plot_test_accuracies(
     for i, (key, value) in enumerate(acc_test.items()):
         axes[i].plot(value, label='test')
         axes[i].set_title(f'{key}')
-        axes[i].plot(list(acc_val.values())[0], label='val')
-        if list(acc_val.values())[0]:
-            axes[i].legend()
+        if acc_val is not None:
+            axes[i].plot(list(acc_val.values())[0], label='val')
+            if list(acc_val.values())[0]:
+                axes[i].legend()
 
         #* plot vertical lines that separate the feature optimization and the prior optimization
         if n_iter_1st is not None and n_iter_2nd is not None:
@@ -595,43 +598,6 @@ def plot_test_accuracies(
 
 
 
-# def plot_test_accuracies(acc_test, n_iter_feats, n_iter_prior, n_back_forth, figsize=(9,3)):
-#     n_iter_total = n_iter_feats + n_iter_prior
-#     feat_stops = [n_iter_feats - 1 + i*n_iter_total for i in range(n_back_forth)]
-#     prior_stops = [n_iter_total*i - 1 for i in range(1, n_back_forth+1)]
-
-#     _, axes = plt.subplots(1, 3, figsize=figsize)
-#     axes[0].plot(acc_test['vanilla_star'])
-#     for stop in feat_stops:
-#         axes[0].plot(stop, acc_test['vanilla_star'][stop], 'bo', markersize=7)
-
-#         # Plot large red points at prior_stops
-#     for stop in prior_stops:
-#         axes[0].plot(stop, acc_test['vanilla_star'][stop],'ro', markersize=7)
-
-#     axes[0].set_title('vanilla')
-
-#     axes[1].plot(acc_test['prior'])
-#     for stop in feat_stops:
-#         axes[1].plot(stop, acc_test['prior'][stop], 'bo', markersize=7)
-
-#         # Plot large red points at prior_stops
-#     for stop in prior_stops:
-#         axes[1].plot(stop, acc_test['prior'][stop],'ro', markersize=7)
-
-#     axes[1].set_title('prior')
-
-
-#     axes[2].plot(acc_test['prior_star'], label='test')
-#     for stop in feat_stops:
-#         axes[2].plot(stop, acc_test['prior_star'][stop], 'bo', markersize=7)
-
-#         # Plot large red points at prior_stops
-#     for stop in prior_stops:
-#         axes[2].plot(stop, acc_test['prior_star'][stop],'ro', markersize=7)
-
-#     axes[2].set_title('prior_star')
-#     plt.show()
 
 def plot_graph_with_omitted(data, pos=None):
     # Create an empty graph
@@ -686,7 +652,6 @@ def plot_adj(w, omitted_dyads=None, test_index=None, test_mask=None, ax=None, fi
         ax.scatter(omitted_test_non_edges[0], omitted_test_non_edges[1], color='red', s=5/w.shape[1])
         # ax.scatter(dyads_to_omit_np[0][0], dyads_to_omit_np[0][1], color='red', s=5/w.shape[1])
         # ax.scatter(dyads_to_omit_np[1][0], dyads_to_omit_np[1][1], color='red', s=5/w.shape[1])
-
     if test_mask is not None:
         test_index = torch.where(test_mask)[0]
 
@@ -696,6 +661,7 @@ def plot_adj(w, omitted_dyads=None, test_index=None, test_mask=None, ax=None, fi
                 ax.scatter(node, 0, color='red', s=10000/w.shape[1])  # Mark at the beginning of the row
                 ax.scatter(0, node, color='red', s=10000/w.shape[0])  # Mark at the top of the column
     
+    my_colorbar(im, ax=ax, vmin=0, vmax=1)
     ax.set_title(title)
     
     return im

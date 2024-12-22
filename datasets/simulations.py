@@ -81,6 +81,7 @@ def sample_normflows_dist(num_samples, name_shape, lorenz=False, device='cpu'):
 
     graph = clam_edges_from_feats(node_feats, lorenz)
     graph.name = name_shape
+    graph.edge_attr = torch.ones(graph.edge_index.shape[1], dtype=torch.bool)
     return graph, dist
 
 

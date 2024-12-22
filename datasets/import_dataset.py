@@ -389,6 +389,7 @@ def import_dataset(dataset_name, remove_data_feats=True, verbose=False):
     elif dataset_name == 'smallBipart':
         data = simulate_dataset('smallBipart', verbose=verbose)
 
+
     else:
         raise NotImplementedError(f'dataset {dataset_name} not implemented yet')
     data.edge_attr = torch.ones(data.edge_index.shape[1], dtype=torch.bool) 
