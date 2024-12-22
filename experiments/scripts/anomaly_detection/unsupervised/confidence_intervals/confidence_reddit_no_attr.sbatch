@@ -13,4 +13,4 @@ source ~/miniconda3/etc/profile.d/conda.sh
 conda activate finegrain                  
 
 # Run the Python script with n_iter set to 1700
-python -u confidence_intervals_no_attr.py --model_name 'piegam' --ds_name 'redditGGAD' --num_rounds 10
+python -u confidence_intervals_no_attr.py --model_name 'pieclam' --ds_name 'redditGGAD' --num_rounds 10

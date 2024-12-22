@@ -13,17 +13,17 @@ source ~/miniconda3/etc/profile.d/conda.sh
 conda activate finegrain                  
 
 # Run the Python script with n_iter set to 1700
-python -u find_communities.py --model_name 'iegam' --ds_name 'ellipticGGAD' --ks 10 2 10 3 10 4 10 5 10 6 10 7 10 8 10 9 10 10 10 15 10 16 10 17 10 18 --n_iter 50 100 170 200 500 
+python -u find_communities.py --model_name 'ieclam' --ds_name 'ellipticGGAD' --ks 10 2 10 3 10 4 10 5 10 6 10 7 10 8 10 9 10 10 10 15 10 16 10 17 10 18 --n_iter 50 100 170 200 500 
 
 # Run the Python script with n_iter set to 2000
-python -u find_communities.py --model_name 'iegam' --ds_name 'photoGGAD' --ks --ks 10 2 10 3 10 4 10 5 10 6 10 7 10 8 10 9 10 10 10 15 10 16 10 17 10 18 --n_iter 50 100 170 200 500 
+python -u find_communities.py --model_name 'ieclam' --ds_name 'photoGGAD' --ks --ks 10 2 10 3 10 4 10 5 10 6 10 7 10 8 10 9 10 10 10 15 10 16 10 17 10 18 --n_iter 50 100 170 200 500 
 
 # Run the Python script with n_iter set to 2500
-python -u find_communities.py --model_name 'iegam' --ds_name 'tfFinanceGGAD' --ks 10 2 10 3 10 4 10 5 10 6 10 7 10 8 10 9 10 10 10 15 10 16 10 17 10 18 --n_iter 50 100 170 200 500
+python -u find_communities.py --model_name 'ieclam' --ds_name 'tfFinanceGGAD' --ks 10 2 10 3 10 4 10 5 10 6 10 7 10 8 10 9 10 10 10 15 10 16 10 17 10 18 --n_iter 50 100 170 200 500
 
-python -u find_communities.py --model_name 'iegam' --ds_name 'ACM' --ks 10 5 --ks 10 2 10 3 10 4 10 5 10 6 10 7 10 8 10 9 10 10 10 15 10 16 10 17 10 18 --n_iter 50 100 170 200 500
+python -u find_communities.py --model_name 'ieclam' --ds_name 'ACM' --ks 10 5 --ks 10 2 10 3 10 4 10 5 10 6 10 7 10 8 10 9 10 10 10 15 10 16 10 17 10 18 --n_iter 50 100 170 200 500
 
 
-python -u find_communities.py --model_name 'iegam' --ds_name 'Flickr' --ks 10 --ks 10 2 10 3 10 4 10 5 10 6 10 7 10 8 10 9 10 10 10 15 10 16 10 17 10 18 --n_iter 50 100 170 200 500
+python -u find_communities.py --model_name 'ieclam' --ds_name 'Flickr' --ks 10 --ks 10 2 10 3 10 4 10 5 10 6 10 7 10 8 10 9 10 10 10 15 10 16 10 17 10 18 --n_iter 50 100 170 200 500
 
-python -u find_communities.py --model_name 'iegam' --ds_name 'BlogCatalog' --ks 10 2 10 3 10 4 10 5 10 6 10 7 10 8 10 9 10 10 10 15 10 16 10 17 10 18 --n_iter 50 100 170 200 500
+python -u find_communities.py --model_name 'ieclam' --ds_name 'BlogCatalog' --ks 10 2 10 3 10 4 10 5 10 6 10 7 10 8 10 9 10 10 10 15 10 16 10 17 10 18 --n_iter 50 100 170 200 500

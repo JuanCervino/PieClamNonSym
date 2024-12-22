@@ -12,4 +12,4 @@
 source ~/miniconda3/etc/profile.d/conda.sh                
 conda activate finegrain                  
 
-python -u densification_criteria.py --model_name 'iegam'
+python -u densification_criteria.py --model_name 'ieclam'

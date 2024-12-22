@@ -1,7 +1,7 @@
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -330,7 +330,7 @@ accuracies_anomaly["prior_star"][-1]= 0.46030112572204246
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 140.55548977851868 seconds
 
 
@@ -347,7 +347,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -686,7 +686,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4550567177665098
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 165.44056701660156 seconds
 
 
@@ -703,7 +703,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -948,7 +948,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4716878454624739
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 98.72693061828613 seconds
 
 
@@ -965,7 +965,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -1210,7 +1210,7 @@ accuracies_anomaly["prior_star"][-1]= 0.46269214827629707
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 105.69984006881714 seconds
 
 
@@ -1227,7 +1227,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -1880,7 +1880,7 @@ accuracies_anomaly["prior_star"][-1]= 0.46502083094974966
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 379.6857466697693 seconds
 
 
@@ -1897,7 +1897,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -2580,7 +2580,7 @@ accuracies_anomaly["prior_star"][-1]= 0.47105596004883254
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 413.5860390663147 seconds
 
 
@@ -2597,7 +2597,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -2976,7 +2976,7 @@ accuracies_anomaly["prior_star"][-1]= 0.46030762164239497
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 193.67187213897705 seconds
 
 
@@ -2993,7 +2993,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -3192,7 +3192,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4642552553043381
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 42.58288264274597 seconds
 
 
@@ -3209,7 +3209,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -3438,7 +3438,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4646462678003933
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 80.5458517074585 seconds
 
 
@@ -3455,7 +3455,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -4569,7 +4569,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4656478968095811
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 785.0666463375092 seconds
 
 
@@ -4586,7 +4586,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -5500,7 +5500,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4697324686634706
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 581.1515786647797 seconds
 
 
@@ -5517,7 +5517,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -6461,7 +6461,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4578293232550177
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 628.3776071071625 seconds
 
 
@@ -6478,7 +6478,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -8106,7 +8106,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 1157.8570108413696 seconds
 
 
@@ -8123,7 +8123,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -9751,7 +9751,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 1161.2199788093567 seconds
 
 
@@ -9768,7 +9768,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -11396,7 +11396,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 1163.7944116592407 seconds
 
 
@@ -11413,7 +11413,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -13041,7 +13041,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 1140.1367921829224 seconds
 
 
@@ -13058,7 +13058,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -14686,7 +14686,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 1163.0123164653778 seconds
 
 
@@ -14703,7 +14703,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -16331,7 +16331,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 1163.021374464035 seconds
 
 
@@ -16348,7 +16348,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -18376,7 +18376,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 1557.5309479236603 seconds
 
 
@@ -18393,7 +18393,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -20421,7 +20421,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 1553.6997468471527 seconds
 
 
@@ -20438,7 +20438,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -24181,7 +24181,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 2905.756382226944 seconds
 
 
@@ -24198,7 +24198,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -27941,7 +27941,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 2879.3654396533966 seconds
 
 
@@ -27958,7 +27958,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -31701,7 +31701,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 2850.174191236496 seconds
 
 
@@ -31718,7 +31718,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -35461,7 +35461,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 2898.963112592697 seconds
 
 
@@ -35478,7 +35478,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -35857,7 +35857,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4597535825000744
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 217.18403720855713 seconds
 
 
@@ -35874,7 +35874,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -36133,7 +36133,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4599412307799337
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 121.32616448402405 seconds
 
 
@@ -36150,7 +36150,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -36559,7 +36559,7 @@ accuracies_anomaly["prior_star"][-1]= 0.46051465291040283
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 259.04433155059814 seconds
 
 
@@ -36576,7 +36576,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -36995,7 +36995,7 @@ accuracies_anomaly["prior_star"][-1]= 0.45494041983761874
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 280.38304257392883 seconds
 
 
@@ -37012,7 +37012,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -37550,7 +37550,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4612495300935035
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 347.92480993270874 seconds
 
 
@@ -37567,7 +37567,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -38320,7 +38320,7 @@ accuracies_anomaly["prior_star"][-1]= 0.46868274888909284
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 523.1976118087769 seconds
 
 
@@ -38337,7 +38337,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -38766,7 +38766,7 @@ accuracies_anomaly["prior_star"][-1]= 0.45922070748535376
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 264.639333486557 seconds
 
 
@@ -38783,7 +38783,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -38982,7 +38982,7 @@ accuracies_anomaly["prior_star"][-1]= 0.46182358086142605
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 45.00585055351257 seconds
 
 
@@ -38999,7 +38999,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -39258,7 +39258,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4626423811445644
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 117.29151678085327 seconds
 
 
@@ -39275,7 +39275,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -39534,7 +39534,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4641678746983064
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 103.9903929233551 seconds
 
 
@@ -39551,7 +39551,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -40169,7 +40169,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4665532395154798
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 422.03703141212463 seconds
 
 
@@ -40186,7 +40186,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -40874,7 +40874,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4606694024968641
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 508.31358551979065 seconds
 
 
@@ -40891,7 +40891,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -44634,7 +44634,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 3171.9059925079346 seconds
 
 
@@ -44651,7 +44651,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  

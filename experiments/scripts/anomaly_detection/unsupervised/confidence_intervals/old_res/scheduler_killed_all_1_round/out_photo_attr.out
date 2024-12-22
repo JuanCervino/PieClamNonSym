@@ -1,7 +1,7 @@
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -812,7 +812,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:480:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 556.6598737239838 seconds
 
 
@@ -829,7 +829,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -1640,7 +1640,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:480:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 576.2729609012604 seconds
 
 
@@ -1657,7 +1657,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -2468,7 +2468,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:480:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 577.10622215271 seconds
 
 
@@ -2485,7 +2485,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -3296,7 +3296,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:480:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 559.8428113460541 seconds
 
 
@@ -3313,7 +3313,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -4124,7 +4124,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:480:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 577.3244745731354 seconds
 
 
@@ -4141,7 +4141,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -4952,7 +4952,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:480:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 576.8316946029663 seconds
 
 
@@ -4969,7 +4969,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -5780,7 +5780,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:480:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 576.3454747200012 seconds
 
 
@@ -5797,7 +5797,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -6608,7 +6608,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:480:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 576.6110570430756 seconds
 
 
@@ -6625,7 +6625,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -7436,7 +7436,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:480:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 565.5813663005829 seconds
 
 
@@ -7453,7 +7453,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of piegam on photoGGAD on device cuda
+ starting optimization of pieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -8264,7 +8264,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:480:::  
-train_model_on_params on piegam photoGGAD 
+train_model_on_params on pieclam photoGGAD 
 took 564.9116797447205 seconds
 
 

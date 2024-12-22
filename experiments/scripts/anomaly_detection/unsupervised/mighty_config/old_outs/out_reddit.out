@@ -1,7 +1,7 @@
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -254,7 +254,7 @@ accuracies_anomaly["prior_star"][-1]= 0.40033163604025335
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 92.51791977882385 seconds
 
 
@@ -271,7 +271,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -470,7 +470,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4025406130634956
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 41.333492040634155 seconds
 
 
@@ -487,7 +487,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -740,7 +740,7 @@ accuracies_anomaly["prior_star"][-1]= 0.40451053834760436
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 94.90290880203247 seconds
 
 
@@ -757,7 +757,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -1010,7 +1010,7 @@ accuracies_anomaly["prior_star"][-1]= 0.40367848904890863
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 94.5954487323761 seconds
 
 
@@ -1027,7 +1027,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -1280,7 +1280,7 @@ accuracies_anomaly["prior_star"][-1]= 0.41174950877312166
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 92.45993518829346 seconds
 
 
@@ -1297,7 +1297,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -1550,7 +1550,7 @@ accuracies_anomaly["prior_star"][-1]= 0.40513016868972884
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 94.9749104976654 seconds
 
 
@@ -1567,7 +1567,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -1742,7 +1742,7 @@ accuracies_anomaly["prior_star"][-1]= 0.40553828070077924
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 19.859827041625977 seconds
 
 
@@ -1759,7 +1759,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -1948,7 +1948,7 @@ accuracies_anomaly["prior_star"][-1]= 0.40663061076818724
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 29.234862327575684 seconds
 
 
@@ -1965,7 +1965,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -2268,7 +2268,7 @@ accuracies_anomaly["prior_star"][-1]= 0.40972541729839107
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 145.60179162025452 seconds
 
 
@@ -2285,7 +2285,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -2588,7 +2588,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4078660116288764
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 146.88587284088135 seconds
 
 
@@ -2605,7 +2605,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -2908,7 +2908,7 @@ accuracies_anomaly["prior_star"][-1]= 0.40579328637729317
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 145.94012093544006 seconds
 
 
@@ -2925,7 +2925,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -3228,7 +3228,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4091070735641199
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 145.81994032859802 seconds
 
 
@@ -3245,7 +3245,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -4873,7 +4873,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 1489.1426401138306 seconds
 
 
@@ -4890,7 +4890,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -6518,7 +6518,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 1483.705558538437 seconds
 
 
@@ -6535,7 +6535,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -8163,7 +8163,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 1484.1642603874207 seconds
 
 
@@ -8180,7 +8180,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -9808,7 +9808,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 1486.891923904419 seconds
 
 
@@ -9825,7 +9825,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -11453,7 +11453,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 1486.0942599773407 seconds
 
 
@@ -11470,7 +11470,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -13098,7 +13098,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 1496.009191274643 seconds
 
 
@@ -13115,7 +13115,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -15143,7 +15143,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 1904.0663528442383 seconds
 
 
@@ -15160,7 +15160,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -18903,7 +18903,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 3554.3303530216217 seconds
 
 
@@ -18920,7 +18920,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -22024,7 +22024,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4024447607784286
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 2880.9749801158905 seconds
 
 
@@ -22041,7 +22041,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -25784,7 +25784,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 3545.8495643138885 seconds
 
 
@@ -25801,7 +25801,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -29544,7 +29544,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 3572.244879245758 seconds
 
 
@@ -29561,7 +29561,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -33304,7 +33304,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 3570.5932443141937 seconds
 
 
@@ -33321,7 +33321,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -33510,7 +33510,7 @@ accuracies_anomaly["prior_star"][-1]= 0.40668722151373016
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 30.29582715034485 seconds
 
 
@@ -33527,7 +33527,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -33716,7 +33716,7 @@ accuracies_anomaly["prior_star"][-1]= 0.40428177947129684
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 24.240045309066772 seconds
 
 
@@ -33733,7 +33733,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -33986,7 +33986,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4039590982217021
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 94.78662991523743 seconds
 
 
@@ -34003,7 +34003,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -34256,7 +34256,7 @@ accuracies_anomaly["prior_star"][-1]= 0.40338192593873484
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 93.90916180610657 seconds
 
 
@@ -34273,7 +34273,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -34526,7 +34526,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4054599262825165
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 94.84703207015991 seconds
 
 
@@ -34543,7 +34543,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -34796,7 +34796,7 @@ accuracies_anomaly["prior_star"][-1]= 0.40494438251571974
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 93.67993927001953 seconds
 
 
@@ -34813,7 +34813,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -35002,7 +35002,7 @@ accuracies_anomaly["prior_star"][-1]= 0.40597804326501963
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 31.047573566436768 seconds
 
 
@@ -35019,7 +35019,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -35208,7 +35208,7 @@ accuracies_anomaly["prior_star"][-1]= 0.40628991700864703
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 26.83441710472107 seconds
 
 
@@ -35225,7 +35225,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -35484,7 +35484,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4040086326240522
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 101.92016673088074 seconds
 
 
@@ -35501,7 +35501,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -35750,7 +35750,7 @@ accuracies_anomaly["prior_star"][-1]= 0.40567363184694105
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 92.58400988578796 seconds
 
 
@@ -35767,7 +35767,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -36070,7 +36070,7 @@ accuracies_anomaly["prior_star"][-1]= 0.41049043432793264
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 146.73273944854736 seconds
 
 
@@ -36087,7 +36087,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -36390,7 +36390,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4065387469674653
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam redditGGAD 
+train_model_on_params on pieclam redditGGAD 
 took 146.72365736961365 seconds
 
 
@@ -36407,7 +36407,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on redditGGAD on device cuda
+ starting optimization of pieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  

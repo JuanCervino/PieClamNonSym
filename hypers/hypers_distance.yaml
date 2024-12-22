@@ -11,7 +11,7 @@ smallBipart_bigclam:
         n_iter: 7000
         lr: 0.00001
 
-smallBipart_iegam:
+smallBipart_ieclam:
     clamiter_init:
         dim_feat: 2
     feat_opt:
@@ -31,7 +31,7 @@ bipartite_bigclam:
         n_iter: 7000
         lr: 0.00001
 
-bipartite_iegam:
+bipartite_ieclam:
     clamiter_init:
         dim_feat: 2
     feat_opt:
@@ -54,7 +54,7 @@ sbm3x3_bigclam:
         lr: 0.00001
         n_iter: 4000
 
-sbm3x3_iegam:
+sbm3x3_ieclam:
     clamiter_init:
         dim_feat: 4
         s_reg: 0.0
@@ -87,7 +87,7 @@ sbm3x3_pclam:
         first_func_in_fit: 'fit_prior'
         early_stop_fit: 0
 
-sbm3x3_piegam:
+sbm3x3_pieclam:
     clamiter_init:
         dim_feat: 4
         l1_reg: 0.0
@@ -127,7 +127,7 @@ sbm3x3HalfCenter_bigclam:
         lr: 0.00001
         n_iter: 10000
 
-sbm3x3HalfCenter_iegam:
+sbm3x3HalfCenter_ieclam:
     clamiter_init:
         dim_feat: 4
         s_reg: 0.0
@@ -160,7 +160,7 @@ sbm3x3HalfCenter_pclam:
         first_func_in_fit: 'fit_prior'
         early_stop_fit: 0
 
-sbm3x3HalfCenter_piegam:
+sbm3x3HalfCenter_pieclam:
     clamiter_init:
         dim_feat: 4
         l1_reg: 0.0
@@ -200,7 +200,7 @@ sbm3x3HalfDiag_bigclam:
         lr: 0.00001
         n_iter: 10000
 
-sbm3x3HalfDiag_iegam:
+sbm3x3HalfDiag_ieclam:
     clamiter_init:
         dim_feat: 4
         s_reg: 0.0
@@ -233,7 +233,7 @@ sbm3x3HalfDiag_pclam:
         first_func_in_fit: 'fit_prior'
         early_stop_fit: 0
 
-sbm3x3HalfDiag_piegam:
+sbm3x3HalfDiag_pieclam:
     clamiter_init:
         dim_feat: 4
         l1_reg: 0.0
@@ -274,7 +274,7 @@ TwoMoons_bigclam:
         lr: 0.00001
         n_iter: 10000
 
-TwoMoons_iegam:
+TwoMoons_ieclam:
     clamiter_init:
         dim_feat: 2
         s_reg: 0.0
@@ -306,7 +306,7 @@ TwoMoons_pclam:
         first_func_in_fit: 'fit_prior'
         early_stop_fit: 0
 
-TwoMoons_piegam:
+TwoMoons_pieclam:
     clamiter_init:
         dim_feat: 4
         l1_reg: 0.0
@@ -345,7 +345,7 @@ Circ_bigclam:
         lr: 0.00001
         n_iter: 10000
 
-Circ_iegam:
+Circ_ieclam:
     clamiter_init:
         dim_feat: 4
         s_reg: 0.0
@@ -377,7 +377,7 @@ Circ_pclam:
         first_func_in_fit: 'fit_prior'
         early_stop_fit: 0
 
-Circ_piegam:
+Circ_pieclam:
     clamiter_init:
         dim_feat: 4
         l1_reg: 0.0
@@ -415,7 +415,7 @@ ChubGaus_bigclam:
         lr: 0.00001
         n_iter: 40000
 
-ChubGaus_iegam:
+ChubGaus_ieclam:
     clamiter_init:
         dim_feat: 4
         s_reg: 0.0
@@ -448,7 +448,7 @@ ChubGaus_pclam:
         first_func_in_fit: 'fit_prior'
         early_stop_fit: 0
 
-ChubGaus_piegam:
+ChubGaus_pieclam:
     clamiter_init:
         dim_feat: 4
         l1_reg: 0.0
@@ -481,7 +481,7 @@ ChubGaus_piegam:
 
 # global config
 
-MightyConfigs_iegam:
+MightyConfigs_ieclam:
     clamiter_init: 
         dim_feat: 30
         dim_attr: 64
@@ -497,7 +497,7 @@ MightyConfigs_iegam:
         early_stop: 0
     
 
-MightyConfigs_piegam:
+MightyConfigs_pieclam:
     clamiter_init: 
         dim_feat: 30
         dim_attr: 100

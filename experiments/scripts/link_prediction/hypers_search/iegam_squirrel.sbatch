@@ -12,6 +12,6 @@
 source ~/miniconda3/etc/profile.d/conda.sh                
 conda activate clam                  
 
-python -u hypers_search.py --model_name iegam --ds_name squirrel --dim_feats 56 60 66 70 76 80 90 100 --global_config_base --n_reps 10 --s_reg 0.1 0.01 0.0 --l1_regs 1 0.01 --n_iters_feats 4500
+python -u hypers_search.py --model_name ieclam --ds_name squirrel --dim_feats 56 60 66 70 76 80 90 100 --global_config_base --n_reps 10 --s_reg 0.1 0.01 0.0 --l1_regs 1 0.01 --n_iters_feats 4500
 
 

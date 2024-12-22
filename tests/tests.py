@@ -52,7 +52,7 @@ def calc_grad_no_tricks(x, edge_array, non_edge_array, lorenz):
     return grads
 
 def test_omit_dyads_trainer_and_no_tricks(verbose=False, ds_name='smallBipart'):
-    trainer_clam = Trainer(dataset_name=ds_name, model_name='iegam', device='cpu')
+    trainer_clam = Trainer(dataset_name=ds_name, model_name='ieclam', device='cpu')
     param_dict = {'dim_feat': 2,  
                     's_reg': 0.0,
                     'l1_reg': 0.0}

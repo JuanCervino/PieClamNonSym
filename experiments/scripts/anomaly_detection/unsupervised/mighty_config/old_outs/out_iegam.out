@@ -1,7 +1,7 @@
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of iegam on redditGGAD on device cuda
+ starting optimization of ieclam on redditGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -50,7 +50,7 @@ first_vanilla_star_anomaly_auc= 0.4027759336398548
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of iegam on ellipticGGAD on device cuda
+ starting optimization of ieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -322,7 +322,7 @@ max_vanilla_star_anomaly= 0.4974852533302082 at iter 0
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of iegam on ellipticGGAD on device cuda
+ starting optimization of ieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -594,7 +594,7 @@ max_vanilla_star_anomaly= 0.4967745955064795 at iter 0
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of iegam on ellipticGGAD on device cuda
+ starting optimization of ieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -866,7 +866,7 @@ max_vanilla_star_anomaly= 0.4847987889187415 at iter 0
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of iegam on ellipticGGAD on device cuda
+ starting optimization of ieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -1138,7 +1138,7 @@ max_vanilla_star_anomaly= 0.5096998267196973 at iter 0
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of iegam on ellipticGGAD on device cuda
+ starting optimization of ieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -1410,7 +1410,7 @@ max_vanilla_star_anomaly= 0.49240576647718204 at iter 0
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of iegam on ellipticGGAD on device cuda
+ starting optimization of ieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -1682,7 +1682,7 @@ max_vanilla_star_anomaly= 0.5061274516896157 at iter 0
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of iegam on ellipticGGAD on device cuda
+ starting optimization of ieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -1954,7 +1954,7 @@ max_vanilla_star_anomaly= 0.4991542578100321 at iter 0
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of iegam on ellipticGGAD on device cuda
+ starting optimization of ieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -2226,7 +2226,7 @@ max_vanilla_star_anomaly= 0.49803155288184 at iter 0
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of iegam on photoGGAD on device cuda
+ starting optimization of ieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -2498,7 +2498,7 @@ max_vanilla_star_anomaly= 0.5604954585134903 at iter 10
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of iegam on photoGGAD on device cuda
+ starting optimization of ieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -2770,7 +2770,7 @@ max_vanilla_star_anomaly= 0.5918603812979519 at iter 125
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of iegam on photoGGAD on device cuda
+ starting optimization of ieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -3042,7 +3042,7 @@ max_vanilla_star_anomaly= 0.562266958857355 at iter 16
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of iegam on photoGGAD on device cuda
+ starting optimization of ieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -3314,7 +3314,7 @@ max_vanilla_star_anomaly= 0.5786150949263509 at iter 119
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of iegam on photoGGAD on device cuda
+ starting optimization of ieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -3586,7 +3586,7 @@ max_vanilla_star_anomaly= 0.623874686571843 at iter 63
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of iegam on photoGGAD on device cuda
+ starting optimization of ieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -3858,7 +3858,7 @@ max_vanilla_star_anomaly= 0.5850571620036435 at iter 121
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of iegam on photoGGAD on device cuda
+ starting optimization of ieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  
@@ -4130,7 +4130,7 @@ max_vanilla_star_anomaly= 0.5787485756123034 at iter 65
 
 
 /home/daniel.z/pieclam/trainer.py:382:::  
- starting optimization of iegam on photoGGAD on device cuda
+ starting optimization of ieclam on photoGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:383:::  

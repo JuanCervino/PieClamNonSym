@@ -13,4 +13,4 @@ source ~/miniconda3/etc/profile.d/conda.sh
 conda activate finegrain                  
 
 # Run the Python script with n_iter set to 1700
-python -u mighty_config.py --model_name 'piegam' --ds_name 'photoGGAD' --n_iters_feats 500  --n_iters_prior 1300 --dim_feats 30 --noise_amp 0.01 0.05 --dim_attr 100 50 --lr_prior 0.00001 0.000001 0.0001 --lr_feats 0.0000025 0.000002 
+python -u mighty_config.py --model_name 'pieclam' --ds_name 'photoGGAD' --n_iters_feats 500  --n_iters_prior 1300 --dim_feats 30 --noise_amp 0.01 0.05 --dim_attr 100 50 --lr_prior 0.00001 0.000001 0.0001 --lr_feats 0.0000025 0.000002 

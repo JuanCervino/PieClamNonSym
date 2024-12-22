@@ -1,7 +1,7 @@
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -190,7 +190,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4931194746708373
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 18.328857421875 seconds
 
 
@@ -207,7 +207,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -460,7 +460,7 @@ accuracies_anomaly["prior_star"][-1]= 0.5006766998517979
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 81.9384834766388 seconds
 
 
@@ -477,7 +477,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -730,7 +730,7 @@ accuracies_anomaly["prior_star"][-1]= 0.5190877681853892
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 82.50243949890137 seconds
 
 
@@ -747,7 +747,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -1000,7 +1000,7 @@ accuracies_anomaly["prior_star"][-1]= 0.49447101159912205
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 82.23807978630066 seconds
 
 
@@ -1017,7 +1017,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -1270,7 +1270,7 @@ accuracies_anomaly["prior_star"][-1]= 0.5048178302200269
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 82.37792015075684 seconds
 
 
@@ -1287,7 +1287,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -1540,7 +1540,7 @@ accuracies_anomaly["prior_star"][-1]= 0.5055613367902585
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 82.20433712005615 seconds
 
 
@@ -1557,7 +1557,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -1736,7 +1736,7 @@ accuracies_anomaly["prior_star"][-1]= 0.501419603582123
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 10.30773138999939 seconds
 
 
@@ -1753,7 +1753,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -1962,7 +1962,7 @@ accuracies_anomaly["prior_star"][-1]= 0.5013929520298585
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 42.45933485031128 seconds
 
 
@@ -1979,7 +1979,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -2278,7 +2278,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4960870204227692
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 123.95226216316223 seconds
 
 
@@ -2295,7 +2295,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -2574,7 +2574,7 @@ accuracies_anomaly["prior_star"][-1]= 0.49597849718280856
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 104.83539414405823 seconds
 
 
@@ -2591,7 +2591,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -2894,7 +2894,7 @@ accuracies_anomaly["prior_star"][-1]= 0.505926247842436
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 131.91032361984253 seconds
 
 
@@ -2911,7 +2911,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -3214,7 +3214,7 @@ accuracies_anomaly["prior_star"][-1]= 0.49587220445050173
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 132.2701427936554 seconds
 
 
@@ -3231,7 +3231,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -4859,7 +4859,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 1124.6831126213074 seconds
 
 
@@ -4876,7 +4876,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -6504,7 +6504,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 1117.5303292274475 seconds
 
 
@@ -6521,7 +6521,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -8149,7 +8149,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 1099.134098291397 seconds
 
 
@@ -8166,7 +8166,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -9794,7 +9794,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 1096.3970880508423 seconds
 
 
@@ -9811,7 +9811,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -11439,7 +11439,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 1096.6243641376495 seconds
 
 
@@ -11456,7 +11456,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -13084,7 +13084,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 1097.6313149929047 seconds
 
 
@@ -13101,7 +13101,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -15129,7 +15129,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 1495.0422966480255 seconds
 
 
@@ -15146,7 +15146,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -17174,7 +17174,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 1482.5347366333008 seconds
 
 
@@ -17191,7 +17191,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -19219,7 +19219,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 1497.106070280075 seconds
 
 
@@ -19236,7 +19236,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -22979,7 +22979,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 2784.086243867874 seconds
 
 
@@ -22996,7 +22996,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -26739,7 +26739,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 2788.808541059494 seconds
 
 
@@ -26756,7 +26756,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -30499,7 +30499,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 2828.816078901291 seconds
 
 
@@ -30516,7 +30516,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -30705,7 +30705,7 @@ accuracies_anomaly["prior_star"][-1]= 0.5050125475098131
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 17.061354637145996 seconds
 
 
@@ -30722,7 +30722,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -30975,7 +30975,7 @@ accuracies_anomaly["prior_star"][-1]= 0.512280270882495
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 82.05322670936584 seconds
 
 
@@ -30992,7 +30992,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -31237,7 +31237,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4998186657561373
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 79.24147415161133 seconds
 
 
@@ -31254,7 +31254,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -31483,7 +31483,7 @@ accuracies_anomaly["prior_star"][-1]= 0.49641451320195285
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 62.665406942367554 seconds
 
 
@@ -31500,7 +31500,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -31753,7 +31753,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4948028930528247
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 81.94737434387207 seconds
 
 
@@ -31770,7 +31770,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -32023,7 +32023,7 @@ accuracies_anomaly["prior_star"][-1]= 0.5085997584299926
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 82.05539608001709 seconds
 
 
@@ -32040,7 +32040,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -32229,7 +32229,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4988611751327092
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 19.07072687149048 seconds
 
 
@@ -32246,7 +32246,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -32435,7 +32435,7 @@ accuracies_anomaly["prior_star"][-1]= 0.5057066332645132
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 13.075410604476929 seconds
 
 
@@ -32452,7 +32452,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -32755,7 +32755,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4962798508236481
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 129.3188931941986 seconds
 
 
@@ -32772,7 +32772,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -33075,7 +33075,7 @@ accuracies_anomaly["prior_star"][-1]= 0.49417475798389116
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 129.32808351516724 seconds
 
 
@@ -33092,7 +33092,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -33395,7 +33395,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4963780052172177
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 129.4999659061432 seconds
 
 
@@ -33412,7 +33412,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -33715,7 +33715,7 @@ accuracies_anomaly["prior_star"][-1]= 0.49025539433205095
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 128.96331405639648 seconds
 
 
@@ -33732,7 +33732,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -37475,7 +37475,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 2993.2717990875244 seconds
 
 
@@ -37492,7 +37492,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -40341,7 +40341,7 @@ accuracies_anomaly["prior_star"][-1]= 0.5052963343957784
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 2236.3638558387756 seconds
 
 
@@ -40358,7 +40358,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -44101,7 +44101,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ellipticGGAD 
+train_model_on_params on pieclam ellipticGGAD 
 took 2993.140057325363 seconds
 
 
@@ -44118,7 +44118,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ellipticGGAD on device cuda
+ starting optimization of pieclam on ellipticGGAD on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  

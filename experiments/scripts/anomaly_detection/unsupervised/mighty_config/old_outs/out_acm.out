@@ -1,7 +1,7 @@
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -360,7 +360,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4891643683656679
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 169.5042688846588 seconds
 
 
@@ -377,7 +377,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -901,7 +901,7 @@ accuracies_anomaly["prior_star"][-1]= 0.4729405798156926
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 274.6416506767273 seconds
 
 
@@ -918,7 +918,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -2546,7 +2546,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 1069.6484727859497 seconds
 
 
@@ -2563,7 +2563,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -3877,7 +3877,7 @@ accuracies_anomaly["prior_star"][-1]= 0.5068560614456445
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 827.0343894958496 seconds
 
 
@@ -3894,7 +3894,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -5522,7 +5522,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 1060.8923876285553 seconds
 
 
@@ -5539,7 +5539,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -7167,7 +7167,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 1079.0004796981812 seconds
 
 
@@ -7184,7 +7184,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -7573,7 +7573,7 @@ accuracies_anomaly["prior_star"][-1]= 0.5043982251100071
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 201.25237131118774 seconds
 
 
@@ -7590,7 +7590,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -7989,7 +7989,7 @@ accuracies_anomaly["prior_star"][-1]= 0.48456681643884203
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 209.63629364967346 seconds
 
 
@@ -8006,7 +8006,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -9859,7 +9859,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 1294.5280466079712 seconds
 
 
@@ -9876,7 +9876,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -11245,7 +11245,7 @@ accuracies_anomaly["prior_star"][-1]= 0.5056955117954824
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 925.2677252292633 seconds
 
 
@@ -11262,7 +11262,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -13290,7 +13290,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 1436.4061496257782 seconds
 
 
@@ -13307,7 +13307,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -15335,7 +15335,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 1418.4186053276062 seconds
 
 
@@ -15352,7 +15352,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -16980,7 +16980,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 1074.533322095871 seconds
 
 
@@ -16997,7 +16997,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -18625,7 +18625,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 1044.6622273921967 seconds
 
 
@@ -18642,7 +18642,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -20270,7 +20270,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 1078.6969022750854 seconds
 
 
@@ -20287,7 +20287,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -21915,7 +21915,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 1082.4191048145294 seconds
 
 
@@ -21932,7 +21932,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -24925,7 +24925,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 1996.80948138237 seconds
 
 
@@ -24942,7 +24942,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -27935,7 +27935,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 2016.5336813926697 seconds
 
 
@@ -27952,7 +27952,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -31695,7 +31695,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 2731.228045463562 seconds
 
 
@@ -31712,7 +31712,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -33806,7 +33806,7 @@ accuracies_anomaly["prior_star"][-1]= 0.507043144730162
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 1465.8628780841827 seconds
 
 
@@ -33823,7 +33823,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -37566,7 +37566,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 2767.2148768901825 seconds
 
 
@@ -37583,7 +37583,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -41326,7 +41326,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 2744.2145829200745 seconds
 
 
@@ -41343,7 +41343,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -45086,7 +45086,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 2761.1140637397766 seconds
 
 
@@ -45103,7 +45103,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -48846,7 +48846,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 2690.371561765671 seconds
 
 
@@ -48863,7 +48863,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -49272,7 +49272,7 @@ accuracies_anomaly["prior_star"][-1]= 0.49212735595642565
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 237.9821207523346 seconds
 
 
@@ -49289,7 +49289,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -49688,7 +49688,7 @@ accuracies_anomaly["prior_star"][-1]= 0.500033036427675
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam ACM 
+train_model_on_params on pieclam ACM 
 took 221.55015397071838 seconds
 
 
@@ -49705,7 +49705,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on ACM on device cuda
+ starting optimization of pieclam on ACM on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  

@@ -77,7 +77,7 @@ def main():
         ['feat_opt', 'lr', args.lr],
         ]
 
-    slim_reddit_iegam_losses, slim_reddit_iegam_anomaly_auc, slim_reddit_iegam_link_auc = ad.classify_anomaly_link_earlystop(
+    slim_reddit_ieclam_losses, slim_reddit_ieclam_anomaly_auc, slim_reddit_ieclam_link_auc = ad.classify_anomaly_link_earlystop(
         'redditGGAD', 
         args.model_name, 
         config_triplets_clam=config_triplets,
@@ -87,7 +87,7 @@ def main():
         verbose=False
         )
 
-    fat_reddit_iegam_losses, fat_reddit_iegam_anomaly_auc, fat_reddit_iegam_link_auc = ad.classify_anomaly_link_earlystop(
+    fat_reddit_ieclam_losses, fat_reddit_ieclam_anomaly_auc, fat_reddit_ieclam_link_auc = ad.classify_anomaly_link_earlystop(
         'redditGGAD', 
         args.model_name, 
         config_triplets_clam=config_triplets,
@@ -98,7 +98,7 @@ def main():
         )
 
     #? PHOTO
-    slim_photo_iegam_losses, slim_photo_iegam_anomaly_auc, slim_photo_iegam_link_auc = ad.classify_anomaly_link_earlystop(
+    slim_photo_ieclam_losses, slim_photo_ieclam_anomaly_auc, slim_photo_ieclam_link_auc = ad.classify_anomaly_link_earlystop(
         'photoGGAD', 
         args.model_name, 
         config_triplets_clam=config_triplets,
@@ -108,7 +108,7 @@ def main():
         verbose=False
         )
 
-    fat_photo_iegam_losses, fat_photo_iegam_anomaly_auc, fat_photo_iegam_link_auc = ad.classify_anomaly_link_earlystop(
+    fat_photo_ieclam_losses, fat_photo_ieclam_anomaly_auc, fat_photo_ieclam_link_auc = ad.classify_anomaly_link_earlystop(
         'photoGGAD', 
         args.model_name, 
         config_triplets_clam=config_triplets,
@@ -119,7 +119,7 @@ def main():
         )
 
     #? ELLIPTIC
-    slim_elliptic_iegam_losses, slim_elliptic_iegam_anomaly_auc, slim_elliptic_iegam_link_auc = ad.classify_anomaly_link_earlystop(
+    slim_elliptic_ieclam_losses, slim_elliptic_ieclam_anomaly_auc, slim_elliptic_ieclam_link_auc = ad.classify_anomaly_link_earlystop(
         'ellipticGGAD', 
         args.model_name, 
         config_triplets_clam=config_triplets,
@@ -129,7 +129,7 @@ def main():
         verbose=False
         )
 
-    fat_elliptic_losses, fat_elliptic_iegam_anomaly_auc, fat_elliptic_iegam_link_auc = ad.classify_anomaly_link_earlystop(
+    fat_elliptic_losses, fat_elliptic_ieclam_anomaly_auc, fat_elliptic_ieclam_link_auc = ad.classify_anomaly_link_earlystop(
         'ellipticGGAD', 
         args.model_name, 
         config_triplets_clam=config_triplets,
@@ -140,7 +140,7 @@ def main():
         )
 
     #? BlogCatalog
-    slim_blog_iegam_losses, slim_blog_iegam_anomaly_auc, slim_blog_iegam_link_auc = ad.classify_anomaly_link_earlystop(
+    slim_blog_ieclam_losses, slim_blog_ieclam_anomaly_auc, slim_blog_ieclam_link_auc = ad.classify_anomaly_link_earlystop(
         'BlogCatalog', 
         args.model_name, 
         config_triplets_clam=config_triplets,
@@ -150,7 +150,7 @@ def main():
         verbose=False
         )
 
-    fat_blog_iegam_losses, fat_blog_iegam_anomaly_auc, fat_blog_iegam_link_auc = ad.classify_anomaly_link_earlystop(
+    fat_blog_ieclam_losses, fat_blog_ieclam_anomaly_auc, fat_blog_ieclam_link_auc = ad.classify_anomaly_link_earlystop(
         'BlogCatalog', 
         args.model_name, 
         config_triplets_clam=config_triplets,
@@ -160,7 +160,7 @@ def main():
         verbose=False
         )
     #? Flickr
-    slim_flickr_iegam_losses, slim_flickr_iegam_anomaly_auc, slim_flickr_iegam_link_auc = ad.classify_anomaly_link_earlystop(
+    slim_flickr_ieclam_losses, slim_flickr_ieclam_anomaly_auc, slim_flickr_ieclam_link_auc = ad.classify_anomaly_link_earlystop(
         'Flickr', 
         args.model_name, 
         config_triplets_clam=config_triplets,
@@ -170,7 +170,7 @@ def main():
         verbose=False
         )
 
-    fat_flickr_iegam_losses, fat_flickr_iegam_anomaly_auc, fat_flickr_iegam_link_auc = ad.classify_anomaly_link_earlystop(
+    fat_flickr_ieclam_losses, fat_flickr_ieclam_anomaly_auc, fat_flickr_ieclam_link_auc = ad.classify_anomaly_link_earlystop(
         'Flickr', 
         args.model_name, 
         config_triplets_clam=config_triplets,
@@ -181,7 +181,7 @@ def main():
         )
 
     #? ACM
-    slim_acm_iegam_losses, slim_acm_iegam_anomaly_auc, slim_acm_iegam_link_auc = ad.classify_anomaly_link_earlystop(
+    slim_acm_ieclam_losses, slim_acm_ieclam_anomaly_auc, slim_acm_ieclam_link_auc = ad.classify_anomaly_link_earlystop(
         'ACM', 
         args.model_name, 
         config_triplets_clam=config_triplets,
@@ -191,7 +191,7 @@ def main():
         verbose=False
         )
 
-    fat_acm_iegam_losses, fat_acm_iegam_anomaly_auc, fat_acm_iegam_link_auc = ad.classify_anomaly_link_earlystop(
+    fat_acm_ieclam_losses, fat_acm_ieclam_anomaly_auc, fat_acm_ieclam_link_auc = ad.classify_anomaly_link_earlystop(
         'ACM', 
         args.model_name, 
         config_triplets_clam=config_triplets,
@@ -201,50 +201,50 @@ def main():
         verbose=False
         )
 
-    np.save(np.array(slim_reddit_iegam_losses), os.path.join(model_folder, 'slim_reddit_iegam_losses.npy'))
-    np.save(np.array(slim_reddit_iegam_anomaly_auc), os.path.join(model_folder, 'slim_reddit_iegam_anomaly_auc.npy'))
-    np.save(np.array(slim_reddit_iegam_link_auc), os.path.join(model_folder, 'slim_reddit_iegam_link_auc.npy'))
+    np.save(np.array(slim_reddit_ieclam_losses), os.path.join(model_folder, 'slim_reddit_ieclam_losses.npy'))
+    np.save(np.array(slim_reddit_ieclam_anomaly_auc), os.path.join(model_folder, 'slim_reddit_ieclam_anomaly_auc.npy'))
+    np.save(np.array(slim_reddit_ieclam_link_auc), os.path.join(model_folder, 'slim_reddit_ieclam_link_auc.npy'))
 
-    np.save(np.array(fat_reddit_iegam_losses), os.path.join(model_folder, 'fat_reddit_iegam_losses.npy'))
-    np.save(np.array(fat_reddit_iegam_anomaly_auc), os.path.join(model_folder, 'fat_reddit_iegam_anomaly_auc.npy'))
-    np.save(np.array(fat_reddit_iegam_link_auc), os.path.join(model_folder, 'fat_reddit_iegam_link_auc.npy'))
+    np.save(np.array(fat_reddit_ieclam_losses), os.path.join(model_folder, 'fat_reddit_ieclam_losses.npy'))
+    np.save(np.array(fat_reddit_ieclam_anomaly_auc), os.path.join(model_folder, 'fat_reddit_ieclam_anomaly_auc.npy'))
+    np.save(np.array(fat_reddit_ieclam_link_auc), os.path.join(model_folder, 'fat_reddit_ieclam_link_auc.npy'))
     
-    np.save(np.array(slim_photo_iegam_losses), os.path.join(model_folder, 'slim_photo_iegam_losses.npy'))
-    np.save(np.array(slim_photo_iegam_anomaly_auc), os.path.join(model_folder, 'slim_photo_iegam_anomaly_auc.npy'))
-    np.save(np.array(slim_photo_iegam_link_auc), os.path.join(model_folder, 'slim_photo_iegam_link_auc.npy'))
-    np.save(np.array(fat_photo_iegam_losses), os.path.join(model_folder, 'fat_photo_iegam_losses.npy'))
-    np.save(np.array(fat_photo_iegam_anomaly_auc), os.path.join(model_folder, 'fat_photo_iegam_anomaly_auc.npy'))
-    np.save(np.array(fat_photo_iegam_link_auc), os.path.join(model_folder, 'fat_photo_iegam_link_auc.npy'))
+    np.save(np.array(slim_photo_ieclam_losses), os.path.join(model_folder, 'slim_photo_ieclam_losses.npy'))
+    np.save(np.array(slim_photo_ieclam_anomaly_auc), os.path.join(model_folder, 'slim_photo_ieclam_anomaly_auc.npy'))
+    np.save(np.array(slim_photo_ieclam_link_auc), os.path.join(model_folder, 'slim_photo_ieclam_link_auc.npy'))
+    np.save(np.array(fat_photo_ieclam_losses), os.path.join(model_folder, 'fat_photo_ieclam_losses.npy'))
+    np.save(np.array(fat_photo_ieclam_anomaly_auc), os.path.join(model_folder, 'fat_photo_ieclam_anomaly_auc.npy'))
+    np.save(np.array(fat_photo_ieclam_link_auc), os.path.join(model_folder, 'fat_photo_ieclam_link_auc.npy'))
 
     
-    np.save(np.array(slim_elliptic_iegam_losses), os.path.join(model_folder, 'slim_elliptic_iegam_losses.npy'))
-    np.save(np.array(slim_elliptic_iegam_anomaly_auc), os.path.join(model_folder, 'slim_elliptic_iegam_anomaly_auc.npy'))
-    np.save(np.array(slim_elliptic_iegam_link_auc), os.path.join(model_folder, 'slim_elliptic_iegam_link_auc.npy'))
+    np.save(np.array(slim_elliptic_ieclam_losses), os.path.join(model_folder, 'slim_elliptic_ieclam_losses.npy'))
+    np.save(np.array(slim_elliptic_ieclam_anomaly_auc), os.path.join(model_folder, 'slim_elliptic_ieclam_anomaly_auc.npy'))
+    np.save(np.array(slim_elliptic_ieclam_link_auc), os.path.join(model_folder, 'slim_elliptic_ieclam_link_auc.npy'))
     np.save(np.array(fat_elliptic_losses), os.path.join(model_folder, 'fat_elliptic_losses.npy'))
-    np.save(np.array(fat_elliptic_iegam_anomaly_auc), os.path.join(model_folder, 'fat_elliptic_iegam_anomaly_auc.npy'))
-    np.save(np.array(fat_elliptic_iegam_link_auc), os.path.join(model_folder, 'fat_elliptic_iegam_link_auc.npy'))
+    np.save(np.array(fat_elliptic_ieclam_anomaly_auc), os.path.join(model_folder, 'fat_elliptic_ieclam_anomaly_auc.npy'))
+    np.save(np.array(fat_elliptic_ieclam_link_auc), os.path.join(model_folder, 'fat_elliptic_ieclam_link_auc.npy'))
     
-    np.save(np.array(slim_blog_iegam_losses), os.path.join(model_folder, 'slim_blog_iegam_losses.npy'))
-    np.save(np.array(slim_blog_iegam_anomaly_auc), os.path.join(model_folder, 'slim_blog_iegam_anomaly_auc.npy'))
-    np.save(np.array(slim_blog_iegam_link_auc), os.path.join(model_folder, 'slim_blog_iegam_link_auc.npy'))
-    np.save(np.array(fat_blog_iegam_losses), os.path.join(model_folder, 'fat_blog_iegam_losses.npy'))
-    np.save(np.array(fat_blog_iegam_anomaly_auc), os.path.join(model_folder, 'fat_blog_iegam_anomaly_auc.npy'))
-    np.save(np.array(fat_blog_iegam_link_auc), os.path.join(model_folder, 'fat_blog_iegam_link_auc.npy'))
+    np.save(np.array(slim_blog_ieclam_losses), os.path.join(model_folder, 'slim_blog_ieclam_losses.npy'))
+    np.save(np.array(slim_blog_ieclam_anomaly_auc), os.path.join(model_folder, 'slim_blog_ieclam_anomaly_auc.npy'))
+    np.save(np.array(slim_blog_ieclam_link_auc), os.path.join(model_folder, 'slim_blog_ieclam_link_auc.npy'))
+    np.save(np.array(fat_blog_ieclam_losses), os.path.join(model_folder, 'fat_blog_ieclam_losses.npy'))
+    np.save(np.array(fat_blog_ieclam_anomaly_auc), os.path.join(model_folder, 'fat_blog_ieclam_anomaly_auc.npy'))
+    np.save(np.array(fat_blog_ieclam_link_auc), os.path.join(model_folder, 'fat_blog_ieclam_link_auc.npy'))
     
-    np.save(np.array(slim_flickr_iegam_losses), os.path.join(model_folder, 'slim_flickr_iegam_losses.npy'))
-    np.save(np.array(slim_flickr_iegam_anomaly_auc), os.path.join(model_folder, 'slim_flickr_iegam_anomaly_auc.npy'))
-    np.save(np.array(slim_flickr_iegam_link_auc), os.path.join(model_folder, 'slim_flickr_iegam_link_auc.npy'))
-    np.save(np.array(fat_flickr_iegam_losses), os.path.join(model_folder, 'fat_flickr_iegam_losses.npy'))
-    np.save(np.array(fat_flickr_iegam_anomaly_auc), os.path.join(model_folder, 'fat_flickr_iegam_anomaly_auc.npy'))
-    np.save(np.array(fat_flickr_iegam_link_auc), os.path.join(model_folder, 'fat_flickr_iegam_link_auc.npy'))
+    np.save(np.array(slim_flickr_ieclam_losses), os.path.join(model_folder, 'slim_flickr_ieclam_losses.npy'))
+    np.save(np.array(slim_flickr_ieclam_anomaly_auc), os.path.join(model_folder, 'slim_flickr_ieclam_anomaly_auc.npy'))
+    np.save(np.array(slim_flickr_ieclam_link_auc), os.path.join(model_folder, 'slim_flickr_ieclam_link_auc.npy'))
+    np.save(np.array(fat_flickr_ieclam_losses), os.path.join(model_folder, 'fat_flickr_ieclam_losses.npy'))
+    np.save(np.array(fat_flickr_ieclam_anomaly_auc), os.path.join(model_folder, 'fat_flickr_ieclam_anomaly_auc.npy'))
+    np.save(np.array(fat_flickr_ieclam_link_auc), os.path.join(model_folder, 'fat_flickr_ieclam_link_auc.npy'))
     
     
-    np.save(np.array(slim_acm_iegam_losses), os.path.join(model_folder, 'slim_acm_iegam_losses.npy'))
-    np.save(np.array(slim_acm_iegam_anomaly_auc), os.path.join(model_folder, 'slim_acm_iegam_anomaly_auc.npy'))
-    np.save(np.array(slim_acm_iegam_link_auc), os.path.join(model_folder, 'slim_acm_iegam_link_auc.npy'))
-    np.save(np.array(fat_acm_iegam_losses), os.path.join(model_folder, 'fat_acm_iegam_losses.npy'))
-    np.save(np.array(fat_acm_iegam_anomaly_auc), os.path.join(model_folder, 'fat_acm_iegam_anomaly_auc.npy'))
-    np.save(np.array(fat_acm_iegam_link_auc), os.path.join(model_folder, 'fat_acm_iegam_link_auc.npy'))
+    np.save(np.array(slim_acm_ieclam_losses), os.path.join(model_folder, 'slim_acm_ieclam_losses.npy'))
+    np.save(np.array(slim_acm_ieclam_anomaly_auc), os.path.join(model_folder, 'slim_acm_ieclam_anomaly_auc.npy'))
+    np.save(np.array(slim_acm_ieclam_link_auc), os.path.join(model_folder, 'slim_acm_ieclam_link_auc.npy'))
+    np.save(np.array(fat_acm_ieclam_losses), os.path.join(model_folder, 'fat_acm_ieclam_losses.npy'))
+    np.save(np.array(fat_acm_ieclam_anomaly_auc), os.path.join(model_folder, 'fat_acm_ieclam_anomaly_auc.npy'))
+    np.save(np.array(fat_acm_ieclam_link_auc), os.path.join(model_folder, 'fat_acm_ieclam_link_auc.npy'))
 
     #todo: make the percentage of edges to omit a function of the average DEGREE or something. not the number of edges because a graph can have many nodes and many edges and little nodes and many edges...
 

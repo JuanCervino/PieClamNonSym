@@ -1,7 +1,7 @@
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on BlogCatalog on device cuda
+ starting optimization of pieclam on BlogCatalog on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -1629,7 +1629,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam BlogCatalog 
+train_model_on_params on pieclam BlogCatalog 
 took 1050.3351900577545 seconds
 
 
@@ -1646,7 +1646,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on BlogCatalog on device cuda
+ starting optimization of pieclam on BlogCatalog on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -3274,7 +3274,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam BlogCatalog 
+train_model_on_params on pieclam BlogCatalog 
 took 1057.8648920059204 seconds
 
 
@@ -3291,7 +3291,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on BlogCatalog on device cuda
+ starting optimization of pieclam on BlogCatalog on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -4919,7 +4919,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam BlogCatalog 
+train_model_on_params on pieclam BlogCatalog 
 took 1050.3821430206299 seconds
 
 
@@ -4936,7 +4936,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on BlogCatalog on device cuda
+ starting optimization of pieclam on BlogCatalog on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -6564,7 +6564,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam BlogCatalog 
+train_model_on_params on pieclam BlogCatalog 
 took 1046.035850763321 seconds
 
 
@@ -6581,7 +6581,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on BlogCatalog on device cuda
+ starting optimization of pieclam on BlogCatalog on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -8209,7 +8209,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam BlogCatalog 
+train_model_on_params on pieclam BlogCatalog 
 took 1055.9104998111725 seconds
 
 
@@ -8226,7 +8226,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on BlogCatalog on device cuda
+ starting optimization of pieclam on BlogCatalog on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -9854,7 +9854,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam BlogCatalog 
+train_model_on_params on pieclam BlogCatalog 
 took 1058.9749329090118 seconds
 
 
@@ -9871,7 +9871,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on BlogCatalog on device cuda
+ starting optimization of pieclam on BlogCatalog on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -11899,7 +11899,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam BlogCatalog 
+train_model_on_params on pieclam BlogCatalog 
 took 1428.6605944633484 seconds
 
 
@@ -11916,7 +11916,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on BlogCatalog on device cuda
+ starting optimization of pieclam on BlogCatalog on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -13944,7 +13944,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam BlogCatalog 
+train_model_on_params on pieclam BlogCatalog 
 took 1424.8242897987366 seconds
 
 
@@ -13961,7 +13961,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on BlogCatalog on device cuda
+ starting optimization of pieclam on BlogCatalog on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -15989,7 +15989,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam BlogCatalog 
+train_model_on_params on pieclam BlogCatalog 
 took 1419.960925102234 seconds
 
 
@@ -16006,7 +16006,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on BlogCatalog on device cuda
+ starting optimization of pieclam on BlogCatalog on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -18034,7 +18034,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam BlogCatalog 
+train_model_on_params on pieclam BlogCatalog 
 took 1425.4016697406769 seconds
 
 
@@ -18051,7 +18051,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on BlogCatalog on device cuda
+ starting optimization of pieclam on BlogCatalog on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -20079,7 +20079,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam BlogCatalog 
+train_model_on_params on pieclam BlogCatalog 
 took 1437.947990179062 seconds
 
 
@@ -20096,7 +20096,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on BlogCatalog on device cuda
+ starting optimization of pieclam on BlogCatalog on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -22124,7 +22124,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam BlogCatalog 
+train_model_on_params on pieclam BlogCatalog 
 took 1420.9376158714294 seconds
 
 
@@ -22141,7 +22141,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on BlogCatalog on device cuda
+ starting optimization of pieclam on BlogCatalog on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -25134,7 +25134,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam BlogCatalog 
+train_model_on_params on pieclam BlogCatalog 
 took 1971.5807156562805 seconds
 
 
@@ -25151,7 +25151,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on BlogCatalog on device cuda
+ starting optimization of pieclam on BlogCatalog on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -28144,7 +28144,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam BlogCatalog 
+train_model_on_params on pieclam BlogCatalog 
 took 1961.6473035812378 seconds
 
 
@@ -28161,7 +28161,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on BlogCatalog on device cuda
+ starting optimization of pieclam on BlogCatalog on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -31154,7 +31154,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam BlogCatalog 
+train_model_on_params on pieclam BlogCatalog 
 took 1958.4966716766357 seconds
 
 
@@ -31171,7 +31171,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on BlogCatalog on device cuda
+ starting optimization of pieclam on BlogCatalog on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -34164,7 +34164,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam BlogCatalog 
+train_model_on_params on pieclam BlogCatalog 
 took 2018.921157836914 seconds
 
 
@@ -34181,7 +34181,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on BlogCatalog on device cuda
+ starting optimization of pieclam on BlogCatalog on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -37174,7 +37174,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam BlogCatalog 
+train_model_on_params on pieclam BlogCatalog 
 took 1974.2628700733185 seconds
 
 
@@ -37191,7 +37191,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on BlogCatalog on device cuda
+ starting optimization of pieclam on BlogCatalog on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -40184,7 +40184,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam BlogCatalog 
+train_model_on_params on pieclam BlogCatalog 
 took 1962.6438031196594 seconds
 
 
@@ -40201,7 +40201,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on BlogCatalog on device cuda
+ starting optimization of pieclam on BlogCatalog on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -43944,7 +43944,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam BlogCatalog 
+train_model_on_params on pieclam BlogCatalog 
 took 2677.6608633995056 seconds
 
 
@@ -43961,7 +43961,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on BlogCatalog on device cuda
+ starting optimization of pieclam on BlogCatalog on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  
@@ -47704,7 +47704,7 @@ fit end, no early stopping
 
 
 /home/daniel.z/pieclam/trainer.py:477:::  
-train_model_on_params on piegam BlogCatalog 
+train_model_on_params on pieclam BlogCatalog 
 took 2691.9816620349884 seconds
 
 
@@ -47721,7 +47721,7 @@ FINISHED train model on params
 
 
 /home/daniel.z/pieclam/trainer.py:379:::  
- starting optimization of piegam on BlogCatalog on device cuda
+ starting optimization of pieclam on BlogCatalog on device cuda
 
 
 /home/daniel.z/pieclam/trainer.py:380:::  

@@ -122,13 +122,13 @@ class Trainer():
         self.scheduler = scheduler
         
 
-        if model_name == 'iegam':
+        if model_name == 'ieclam':
             self.vanilla = True
             self.lorenz = True
         elif model_name == 'bigclam':
             self.vanilla = True
             self.lorenz = False
-        elif model_name == 'piegam':
+        elif model_name == 'pieclam':
             self.vanilla = False
             self.lorenz = True
         elif model_name == 'pclam':
@@ -300,7 +300,7 @@ class Trainer():
         accuracies_val = None
 
         if plot_every == 1:
-            if self.model_name == 'bigclam' or self.model_name == 'iegam':
+            if self.model_name == 'bigclam' or self.model_name == 'ieclam':
                 raise ValueError('plot_every=1 is not supported for non prior models.')
 
         if not verbose:
@@ -476,12 +476,12 @@ class Trainer():
         #todo: test that this works and move trainer and clamiter file to lab
         # CHANGE NAME AND VANILLA
         self.vanilla = False
-        if self.model_name == 'pclam' or self.model_name == 'piegam':
+        if self.model_name == 'pclam' or self.model_name == 'pieclam':
             printd(f'\n model {self.modes_name} already has a prior')
         elif self.model_name == 'bigclam':
             self.model_name = 'pclam'
-        elif self.model_name == 'iegam':
-            self.model_name = 'piegam'
+        elif self.model_name == 'ieclam':
+            self.model_name = 'pieclam'
         # ===========================================
         # LOAD CONFIGS FROM TOP AND SET PRIOR DIMENSIONS IN CLAMITER.
         self.params_name = self.dataset_name + '_' + self.model_name

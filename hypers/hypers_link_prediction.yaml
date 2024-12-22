@@ -16,7 +16,7 @@ photo_bigclam:
         n_iter: 7000
         
 
-photo_iegam:
+photo_ieclam:
     clamiter_init:
         dim_feat: 56
         dim_attr: 500
@@ -53,7 +53,7 @@ photo_pclam:
         first_func_in_fit: 'fit_feats'
         
 
-photo_piegam:
+photo_pieclam:
     clamiter_init:
        dim_feat : 56
        s_reg : 0.0
@@ -89,7 +89,7 @@ cora_bigclam:
         n_iter: 10000
         
 
-cora_iegam:
+cora_ieclam:
     clamiter_init:
         dim_feat: 56
         dim_attr: 500
@@ -126,7 +126,7 @@ cora_pclam:
         first_func_in_fit: 'fit_feats'
         
 
-cora_piegam:
+cora_pieclam:
     clamiter_init:
        dim_feat : 56
        s_reg : 0.0
@@ -150,7 +150,7 @@ cora_piegam:
                                      
                                      
      
-texas_iegam:
+texas_ieclam:
     clamiter_init:
         dim_feat: 24
         s_reg: 0.0
@@ -169,7 +169,7 @@ texas_bigclam:
         lr: 0.000003
         n_iter: 13000
                          
-texas_piegam:
+texas_pieclam:
     clamiter_init:
         dim_feat: 22
         s_reg: 0.0
@@ -206,7 +206,7 @@ texas_pclam:
 #  YboodP 88ood8  YbodP  88oodP dP""""Yb 88ood8 
 
 
-MightyConfigs_iegam:
+MightyConfigs_ieclam:
     clamiter_init: 
         dim_feat: 56
         s_reg: 0.0
@@ -221,7 +221,7 @@ MightyConfigs_iegam:
         early_stop: 0
     
 
-MightyConfigs_piegam:
+MightyConfigs_pieclam:
     clamiter_init: 
         dim_feat: 56
         dim_attr: 100

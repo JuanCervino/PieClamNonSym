@@ -56,7 +56,7 @@ def main():
     #           ARGS
     #=================================
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model_name', type=str, default='iegam', help='name of the model')
+    parser.add_argument('--model_name', type=str, default='ieclam', help='name of the model')
     parser.add_argument('--ds_name', type=str, default='squirrel', help='name of the dataset')
 
     parser.add_argument('--dim_feats', nargs='+', type=int, default=[36, 40, 46, 50, 56], help='community dimension')
@@ -97,7 +97,7 @@ def main():
         ['feat_opt','lr', args.lr_feats],
     ]
 
-    if args.model_name in ['pclam', 'piegam']:
+    if args.model_name in ['pclam', 'pieclam']:
         range_triplets += [
             # ['clamiter_init','dim_attr', args.dim_attr],
             ['back_forth', 'first_func_in_fit', args.first_funcs_in_fit],

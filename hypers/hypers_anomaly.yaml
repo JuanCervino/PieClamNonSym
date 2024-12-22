@@ -15,7 +15,7 @@ reddit_bigclam:
         lr: 0.000001
         n_iter: 1700
 
-reddit_iegam:
+reddit_ieclam:
     clamiter_init:
         dim_feat: 24
         dim_attr: 40
@@ -49,7 +49,7 @@ reddit_pclam:
         scheduler_gamma: 0.5
         first_func_in_fit: 'fit_prior'
 
-# reddit_piegam:
+# reddit_pieclam:
 #     clamiter_init:
 #         dim_feat: 24
 #         dim_attr: 64
@@ -91,7 +91,7 @@ elliptic_bigclam:
         n_iter: 20000
         
 
-elliptic_iegam:
+elliptic_ieclam:
     clamiter_init:
         dim_feat: 24
         dim_attr: 32
@@ -130,7 +130,7 @@ elliptic_pclam:
         first_func_in_fit: 'fit_prior'
        
 
-elliptic_piegam:
+elliptic_pieclam:
 # the configuration is the same as the global
 
 
@@ -151,7 +151,7 @@ photo_bigclam:
         n_iter: 20000
         
 
-photo_iegam:
+photo_ieclam:
     clamiter_init:
         dim_feat: 30
         dim_attr: 500
@@ -190,7 +190,7 @@ photo_pclam:
         first_func_in_fit: 'fit_prior'
         
 
-# photo_piegam:
+# photo_pieclam:
 #     clamiter_init:
 #        s_reg : 0.0
 #     feat_opt:
@@ -221,7 +221,7 @@ photo_pclam:
 #  YboodP 88ood8  YbodP  88oodP dP""""Yb 88ood8 
 
 
-MightyConfigs_iegam:
+MightyConfigs_ieclam:
     clamiter_init: 
         dim_feat: 30
         dim_attr: 64
@@ -237,7 +237,7 @@ MightyConfigs_iegam:
         early_stop: 0
     
 
-MightyConfigs_piegam:
+MightyConfigs_pieclam:
     clamiter_init: 
         dim_feat: 30
         dim_attr: 100

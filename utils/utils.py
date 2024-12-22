@@ -29,14 +29,14 @@ import matplotlib.pyplot as plt
 def vanilla_model(model_name):
     if model_name == 'bigclam' or model_name == 'pclam':
         return 'bigclam'
-    elif model_name == 'iegam' or model_name == 'piegam':
-        return 'iegam'
+    elif model_name == 'ieclam' or model_name == 'pieclam':
+        return 'ieclam'
 
 def prior_model(model_name):
     if model_name == 'bigclam' or model_name == 'pclam':
         return 'pclam'
-    elif model_name == 'iegam' or model_name == 'piegam':
-        return 'piegam'
+    elif model_name == 'ieclam' or model_name == 'pieclam':
+        return 'pieclam'
 
 def get_edge_probs_from_edges_coords(edges_coords_0, edges_coords_1, lorenz, prior=None, use_prior=False):
     '''given two lists of edges in coordinate shape, get a list of edge probabilities'''

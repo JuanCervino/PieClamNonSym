@@ -244,7 +244,7 @@ def cross_val_link(
                 config_triplets = [
                     [outers[i], inners[i], values[i]] for i in range(len(range_triplets))
                             ]
-                # if model_name in {'iegam', 'piegam'}:
+                # if model_name in {'ieclam', 'pieclam'}:
                 #     if 's_reg' in inners:
                 #         ind_s = inners.index('s_reg')
                 #         config_triplets.append([outers[ind_s], inners[ind_s], values[ind_s]])
@@ -272,7 +272,7 @@ def cross_val_link(
                             verbose_in_funcs=False
                         )
                 #todo: i need a way to print nothing. verbose should be a number between 0 and 2. verbose 2 is the verbose we have now. verbose 1 is the not verbose we have now. verbose 0 is print nothing nothing.
-                #todo: change iegam to ieclam everywhere.
+                #todo: change ieclam to ieclam everywhere.
                 
                 if acc_test['auc']:
                     last_acc_test = acc_test['auc'][-1]

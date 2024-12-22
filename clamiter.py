@@ -77,11 +77,11 @@ class PCLAMIter(MessagePassing):
         if self.vanilla and not self.lorenz:
             self.model_name = 'bigclam'
         elif self.vanilla and self.lorenz:
-            self.model_name = 'iegam'
+            self.model_name = 'ieclam'
         elif not self.vanilla and not self.lorenz:
             self.model_name = 'pclam'
         elif not self.vanilla and self.lorenz:
-            self.model_name = 'piegam'
+            self.model_name = 'pieclam'
 
         if attr_opt:
             self.in_out_dim = dim_feat + dim_attr
@@ -90,7 +90,7 @@ class PCLAMIter(MessagePassing):
 
         if self.lorenz:
             if not dim_feat//2 == dim_feat/2:
-               raise ValueError('dim_feat should be even for p/iegam')
+               raise ValueError('dim_feat should be even for p/ieclam')
             self.B = 1/self.T*(torch.concatenate([torch.ones(dim_feat//2), -torch.ones(dim_feat//2)])).to(device) # GPU 50 mib
             self.dim_feat = dim_feat
             
@@ -130,8 +130,8 @@ class PCLAMIter(MessagePassing):
 
         if self.model_name == 'bigclam':
             self.model_name = 'pclam'  
-        elif self.model_name == 'iegam':
-            self.model_name = 'piegam'
+        elif self.model_name == 'ieclam':
+            self.model_name = 'pieclam'
 
     def forward(self, graph, node_mask):
         '''first called, starts mpnn process by preprocessing then calling propagate'''
@@ -1401,10 +1401,10 @@ def load_model(path_in_checkpoints, device=torch.device('cpu') ,verbose=False):
     elif model_name == 'pclam':
         lorenz = False
         vanilla = False
-    elif model_name == 'iegam':
+    elif model_name == 'ieclam':
         lorenz = True
         vanilla = True
-    elif model_name == 'piegam':
+    elif model_name == 'pieclam':
         lorenz = True
         vanilla = False
     else:
