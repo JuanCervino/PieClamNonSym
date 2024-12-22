@@ -1,0 +1,63 @@
+{
+    "date_time": "2024-12-22 20:58:13",
+    "config_ranges": [
+        [
+            "clamiter_init",
+            "dim_feat",
+            [
+                22,
+                20,
+                24
+            ]
+        ],
+        [
+            "clamiter_init",
+            "s_reg",
+            [
+                [
+                    0.0
+                ],
+                0.01
+            ]
+        ],
+        [
+            "clamiter_init",
+            "l1_reg",
+            [
+                1,
+                0.9,
+                1.1
+            ]
+        ],
+        [
+            "feat_opt",
+            "n_iter",
+            [
+                2000
+            ]
+        ],
+        [
+            "feat_opt",
+            "lr",
+            [
+                4e-06
+            ]
+        ]
+    ],
+    "base_config": {
+        "clamiter_init": {
+            "dim_feat": 56,
+            "s_reg": 0.0,
+            "l1_reg": 1,
+            "T": 1,
+            "hidden_dim": 64,
+            "num_coupling_blocks": 32,
+            "num_layers_mlp": 2
+        },
+        "feat_opt": {
+            "lr": 1e-06,
+            "n_iter": 7000,
+            "early_stop": 0
+        }
+    }
+}

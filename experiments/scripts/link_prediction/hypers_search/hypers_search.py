@@ -46,7 +46,7 @@ import anomaly_detection as ad
 from trainer import Trainer
 from scripting_utils import print_prior_training_stats
 from datasets.import_dataset import import_dataset
-import link_prediction as lp
+import utils.link_prediction as lp
 
 
 def main():    

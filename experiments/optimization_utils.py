@@ -17,7 +17,7 @@ if os.path.join(current_dir, '..') not in sys.path:
 from utils.printing_utils import printd
 from utils import utils_pyg as up
 from datasets.import_dataset import import_dataset
-import link_prediction as lp
+import utils.link_prediction as lp
 from trainer import Trainer
 from datetime import datetime
 

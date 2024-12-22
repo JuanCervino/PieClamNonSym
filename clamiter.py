@@ -23,7 +23,7 @@ from utils.plotting import *
 from utils import utils
 from utils import utils_pyg as up
 from utils.utils import get_prob_graph, edges_by_coords, k_minimal_neighborhoods
-import link_prediction as lp
+import utils.link_prediction as lp
 from utils.printing_utils import printd, print_dolphin, print_escher, print_end_fit
 from datasets.import_dataset import import_dataset
 # from tests import tests
@@ -856,7 +856,6 @@ class StarProb(MessagePassing):
 
         with torch.no_grad():
             tbr = self.propagate(edge_index=graph.edge_index, x=graph.x, global_features=())
-            # tbr = self.propagate(edge_index=graph.edge_index_original, x=graph.x, global_features=())
             
             if self.prior is not None:
                 self.prior.eval()
