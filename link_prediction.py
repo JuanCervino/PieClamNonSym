@@ -10,36 +10,6 @@ from utils import utils
 from utils import utils_pyg as up
 
 
-# def get_dyads_to_omit_old(edge_index, p_sample_edge, p_sample_non_edge=None):
-    
-#     if p_sample_edge == 0:
-#         return None
-
-#     assert p_sample_edge <= 1, 'p_sample_edge should be a probability'
-
-#     #todo: omit dyads only from the dyads that have edge attr
-#     if p_sample_non_edge is None:
-#         p_sample_non_edge = p_sample_edge
-#     num_edges = edge_index.shape[1]
-
-#     # sampled_edge_index = sample_edges(edge_index, num_samples_edge)
-#     # sampled_non_edge_index = sample_edges(non_edge_index, num_samples_non_edge)
-    
-#     edge_index_rearanged, edge_mask_retain = up.edge_mask_drop_and_rearange(edge_index, p_sample_edge)
-    
-#     sampled_edge_index = edge_index_rearanged[:, ~edge_mask_retain]
-#     sampled_non_edge_index = upg.sort_edge_index(upg.negative_sampling(
-#                             edge_index, 
-#                             num_neg_samples=math.floor(num_edges*p_sample_non_edge), 
-#                             force_undirected=True))
-
-    
-#     dyads_to_omit = (sampled_edge_index, sampled_non_edge_index, edge_index_rearanged, edge_mask_retain)
-    
-#     #? TESTED that edge_index_rearanged contains the same edges as edge_index. 
-#     #? TESTED edge_index_rearanged[: , ~edge_mask_retain] == sampled_edge_index
-#     return dyads_to_omit
-
 
 def get_dyads_to_omit(
           edge_index, 

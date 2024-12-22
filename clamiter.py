@@ -855,15 +855,16 @@ class StarProb(MessagePassing):
             self.B = (torch.ones(dim_feat)).to(self.device)
 
         with torch.no_grad():
-            tbr = self.propagate(edge_index=graph.edge_index_original, x=graph.x, global_features=())
-            #todo: make sure that the attr didn't change
+            tbr = self.propagate(edge_index=graph.edge_index, x=graph.x, global_features=())
+            # tbr = self.propagate(edge_index=graph.edge_index_original, x=graph.x, global_features=())
+            
             if self.prior is not None:
                 self.prior.eval()
                 if self.prior.attr_opt:
                     feats_for_prior = torch.cat([graph.x, graph.attr], dim=1)
                 else:
                     feats_for_prior = graph.x
-                    #todo: check here if tbr changes for star_prior
+        
                 tbr = tbr + self.prior.forward_ll(feats_for_prior, sum=False)
 
         return tbr
