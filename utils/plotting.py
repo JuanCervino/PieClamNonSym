@@ -1,4 +1,4 @@
-
+import os
 import math
 import torch
 
@@ -361,6 +361,7 @@ def plot_trans_gridlines(transformation, bounds=[-1,1], dx=0.1, bounds_y=None, d
     ax.set_xlim([bounds_fig[0], bounds_fig[1]])
     ax.set_ylim([bounds_fig_y[0], bounds_fig_y[1]])
 
+
 def plot_feature_prediction_adj(graph, lorenz, prior=None, ax=None, figsize=(3,3), x_fig_lim=[-0.1, 2], y_fig_lim=None, title=''):
     '''plot the probability graph of the graph'''
     if ax is None:
@@ -382,6 +383,7 @@ def plot_feature_prediction_adj(graph, lorenz, prior=None, ax=None, figsize=(3,3
     # ax.set_xlim(x_fig_lim[0], x_fig_lim[1])
     # ax.set_ylim(y_fig_lim[0], y_fig_lim[1])
     ax.set_aspect('equal')
+
 
 def plot_optimization_stage(
                 prior, 
@@ -833,3 +835,33 @@ def plot_edge_index_nx(edge_index, ax=None):
         _, ax = plt.subplots(figsize=(3,3))
     nx.draw(G, ax=ax)
     ax.set_aspect('equal')
+
+
+
+def plot_distance_experiment(d, experiment_name, ds_name, model_name, slice):
+        '''plot the logcut values through an optimization.
+        experiment name: the name of the conducted experiment e.g. find_d - find the best 
+        d for logcut of a dataset'''
+        if type(slice) == int:
+            slice = [slice, -1]
+        
+        base_path = f'results/distance/{experiment_name}/{ds_name}/{model_name}/d_{d}'
+        folders = [f for f in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, f))]
+        
+        plt.figure(figsize=(10, 5))
+        
+        for folder in folders:
+            load_path = os.path.join(base_path, folder)
+            logcuts_path = os.path.join(load_path, 'logcuts')
+            
+            if os.path.exists(logcuts_path):
+                logcuts = torch.load(logcuts_path)[slice[0]:slice[1]]
+                plt.plot(range(slice[0], slice[0] + len(logcuts)), logcuts, label=f'Log Cut - {folder}')
+            else:
+                print(f"Logcuts file not found in {load_path}")
+
+        plt.xlabel('Iterations')
+        plt.ylabel('Values')
+        plt.title('Log Cuts over Iterations')
+        plt.legend()
+        plt.show()

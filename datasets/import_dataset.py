@@ -48,12 +48,6 @@ def import_dataset(dataset_name, remove_data_feats=True, verbose=False):
         num_nodes = len(features_dict)
         num_features = max(max(indices) for indices in features_dict.values()) + 1  # Assuming feature indices start at 0
 
-        #! features are not necessary for link prediction
-        # raw_attr = sp.lil_matrix((num_nodes, num_features))
-
-        # for node_id, features in features_dict.items():
-        #     raw_attr[eval(node_id), :] = features
-
 
         # Create the PyTorch Geometric Data object
         edge_index = remove_self_loops(edge_index)[0]
