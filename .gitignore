@@ -5,3 +5,13 @@ tests/__pycache__/
 fckrnd.ipynb
 experiments/experiments/link_prediction.ipynb
 experiments/archive
+
+
+
+*.json
+*.pt
+*.csv
+*.txt
+*.npy
+*.mat
+*.npz
