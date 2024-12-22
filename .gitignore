@@ -15,3 +15,6 @@ experiments/archive
 *.npy
 *.mat
 *.npz
+*.out
+*.err
+*.m3
