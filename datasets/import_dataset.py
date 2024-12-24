@@ -356,17 +356,17 @@ def import_dataset(dataset_name, remove_data_feats=True, verbose=False):
         data.edge_index = to_undirected(data.edge_index)
 
     elif dataset_name == 'BlogCatalog':
-        data = load_data_matlab_format('anomaly', 'BlogCatalog')
+        data = load_data_matlab_format('anomaly_detection', 'BlogCatalog')
         data.edge_index = remove_self_loops(data.edge_index)[0]
         data.edge_index = to_undirected(data.edge_index)
     
     elif dataset_name == 'ACM':
-        data = load_data_matlab_format('anomaly', 'ACM')
+        data = load_data_matlab_format('anomaly_detection', 'ACM')
         data.edge_index = remove_self_loops(data.edge_index)[0]
         data.edge_index = to_undirected(data.edge_index)
 
     elif dataset_name == 'Flickr':
-        data = load_data_matlab_format('anomaly', 'Flickr')
+        data = load_data_matlab_format('anomaly_detection', 'Flickr')
         data.edge_index = remove_self_loops(data.edge_index)[0]
         data.edge_index = to_undirected(data.edge_index)
 

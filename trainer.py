@@ -58,7 +58,7 @@ def set_multiple_configs(configs_dict, config_triplets):
 
 
 class Trainer():
-    ''' trainer trains a model on a dataset with different parameters.'''
+    ''' trainer trains a model on a dataset with different hyper parameters.'''
     #* attribute transform and n_componens is given here.
     #*attr opt is given at init because the prior is different for the different optimizations.
     def __init__(self, 

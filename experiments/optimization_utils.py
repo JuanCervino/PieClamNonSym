@@ -157,7 +157,7 @@ class SaveRun:
         return grouped
 
    
-
+#todo: change cross val link to be cross val and have link and anomaly as options. the saving of the file should be the same, but the analysis file in the results folder should be different
 def cross_val_link(
         ds_name, 
         model_name,
