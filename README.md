@@ -2,11 +2,14 @@
 The code for the paper PieClam - Inclusive Exclusive Clustier Affiliation Model with Prior.
 To run the experiments in the paper, use the designated jupyter notebooks in the experiments folder.
 
-# data structure.
+# Data structure.
 The graphs are represented as pytorch geometric data objects with added member variables depending on the experiment conducted. In all experiments data.x represents the affiliation features learned by the algorithm.
-## Anomaly Detection:
-1. Node attributes: data contains a data.attr member that is the node data features. data.attr is used only in the anomaly detection experiment, as explained in the paper.
-2. data.gt_anomalous is a list representing the ground truth anomalies. 
+### Anomaly Detection:
+- Node attributes: data contains a data.attr member that is the node data features. data.attr is used only in the anomaly detection experiment, as explained in the paper.
+- data.gt_anomalous is a list representing the ground truth anomalies. 
+
+### Link Prediction
+- For the reparametrization algorithm the omitted non edges are inserted into the edge_index array of the data object. The omitted members of the edge_index array (edges and non-edges) are denoted using the data.edge_attr member. Omitted dyads have edge_attr == 0 and retained edges have edge_attr == 1 (retained non edges are not added to the edge_index array).
 
 # Hyper Parameter Configuration
 The hyper-parameters are organized in the \hypers folder.
