@@ -112,7 +112,7 @@ def main():
         ds_name=args.ds_name,
         model_name=args.model_name,
         range_triplets=range_triplets,
-        global_config_base=args.global_config_base,
+        use_global_config_base=args.global_config_base,
         densify=args.densify,
         attr_opt=args.attr_opt,
         test_p=args.test_p,

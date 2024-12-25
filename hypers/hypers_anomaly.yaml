@@ -221,7 +221,7 @@ photo_pclam:
 #  YboodP 88ood8  YbodP  88oodP dP""""Yb 88ood8 
 
 
-MightyConfigs_ieclam:
+GlobalConfigs_ieclam:
     clamiter_init: 
         dim_feat: 30
         dim_attr: 64
@@ -237,7 +237,7 @@ MightyConfigs_ieclam:
         early_stop: 0
     
 
-MightyConfigs_pieclam:
+GlobalConfigs_pieclam:
     clamiter_init: 
         dim_feat: 30
         dim_attr: 100
@@ -265,7 +265,7 @@ MightyConfigs_pieclam:
         first_func_in_fit: "fit_feats"
 
 
-MightyConfigs_bigclam:
+GlobalConfigs_bigclam:
     clamiter_init: 
         dim_feat: 24
         dim_attr: 100
@@ -281,7 +281,7 @@ MightyConfigs_bigclam:
         early_stop: 0
 
 
-MightyConfigs_pclam:
+GlobalConfigs_pclam:
     clamiter_init: 
         dim_feat: 30
         dim_attr: 100

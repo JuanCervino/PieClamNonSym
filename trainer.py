@@ -67,7 +67,7 @@ class Trainer():
                  task=None,
                  dataset_name=None, 
                  configs_dict=None,
-                 mighty_configs_dict=False,
+                 use_global_config_base=False,
                  config_triplets_to_change=[], 
                  dataset=None, 
                  clamiter=None, 
@@ -107,16 +107,7 @@ class Trainer():
         else:
             self.dataset_name = dataset_name #should be a string
             self.data = import_dataset(self.dataset_name)
-        self.data.communities_found = torch.tensor([]).to(self.device) # GPU 400 mib (maybe an empty tensor allocates more...)
-
-        # if not hasattr(self.data, 'edge_index_original'):
-            
-        #     self.data.edge_index_original = self.data.edge_index.clone() # still on cpu
-        #     if self.data.edge_attr is None:
-        #         self.data.edge_attr = torch.ones(self.data.edge_index.shape[1]).bool()
-
-        # =========================================================
-        
+        self.data.communities_found = torch.tensor([]).to(self.device) # GPU 400 
         # OPTIMIZER, SCHEDULER, VANILLA, LORENZ
         self.optimizer = optimizer
         self.scheduler = scheduler
@@ -151,10 +142,10 @@ class Trainer():
         self.configs_path = os.path.join(dir_path, 'hypers', 'hypers_'+ hypers_file_name + '.yaml')
 
         if configs_dict is None:
-            if mighty_configs_dict:
-                self.get_mighty_configs_dict(config_triplets=config_triplets_to_change)
+            if use_global_config_base:
+                self.get_global_configs_dict(config_triplets=config_triplets_to_change)
             else:
-                '''if not mighty config then the individual dataset configs provide config triplets'''
+                '''if not global config then the individual dataset configs provide config triplets'''
                 self.configs_dict_from_top_list(config_triplets=config_triplets_to_change)
         else:
             self.configs_dict = configs_dict
@@ -185,19 +176,30 @@ class Trainer():
         
         # ATTRIBUTES
         #* vanilla doesn't need attrs so save the attr raw to the trainer that will use them in the future
+        
         if self.attr_opt and not self.vanilla: # dim_attr is in the clamiter dict and transformation type is an input parameter 
             self.attr_transform = attr_transform
             if not hasattr(self.data, 'attr'):  
-                #todo: put transform attributes before clamiter and then add the attribute dimension
+              
                 self.data.attr = transform_attributes(self.data.raw_attr, self.attr_transform, self.configs_dict['clamiter_init']['dim_attr'])
-            #* delete raw_attr if it's not vanilla 
-            if hasattr(self.data, 'raw_attr'):
-                delattr(self.data, 'raw_attr')
-
+        #* delete raw_attr 
+        if hasattr(self.data, 'raw_attr'):
+            delattr(self.data, 'raw_attr')
+    
         # =====================================================
 
         return
     
+
+    def __del__(self):
+        '''deletes the trainer object'''
+        if hasattr(self, 'data'):
+            del self.data
+        if hasattr(self, 'clamiter'):
+            del self.clamiter
+        return
+    
+
     @classmethod
     def from_path(cls, path_in_checkpoints, device=torch.device('cpu'), verbose=False):
         ''' create trainer from saved model. load model'''
@@ -238,19 +240,19 @@ class Trainer():
                                 
 
         # config_triplets_ds = [[outer_key, inner_key, inner_value] for outer_key, outer_value in configs_ds.items() for inner_key, inner_value in outer_value.items() if outer_key is not None and inner_key is not None]
-        self.get_mighty_configs_dict(config_triplets=config_triplets_ds)
+        self.get_global_configs_dict(config_triplets=config_triplets_ds)
         
         if config_triplets:
             self.set_multiple_configs(config_triplets)
  
     
-    def get_mighty_configs_dict(self, config_triplets=None):
-        '''in hypers.yaml there are four mighty config dictionaries for each model in unsupervised learning.'''
+    def get_global_configs_dict(self, config_triplets=None):
+        '''in hypers.yaml there are four global config dictionaries for each model in unsupervised learning.'''
         
         with open(self.configs_path, 'r') as file:
             params_dict = yaml.safe_load(file)
         
-        self.configs_dict = deepcopy(params_dict['MightyConfigs'+ '_' + self.model_name])
+        self.configs_dict = deepcopy(params_dict['GlobalConfigs'+ '_' + self.model_name])
 
         if config_triplets:
             self.set_multiple_configs(config_triplets)   

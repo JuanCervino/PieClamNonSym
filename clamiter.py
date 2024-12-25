@@ -116,9 +116,13 @@ class PCLAMIter(MessagePassing):
         else: 
             self.prior = None
 
-        self.to(self.device) # GPU didn't really change, i think clamiter doesn't take much space
-                            #! if there is a prior could be loaded twice
+        self.to(self.device) 
 
+
+    def __del__(self):
+        if self.prior is not None:
+            del self.prior
+        
 
     def add_prior(self, hidden_dim=64, num_coupling_blocks=32, num_layers_mlp=2, prior=None):
         if prior is not None:
@@ -505,7 +509,7 @@ class PCLAMIter(MessagePassing):
         
 
 
-        #todo: rearange the parameters better. everything should be loaded in the mighty and the specialized hypers should not have everything in them
+        #todo: rearange the parameters better. everything should be loaded in the global and the specialized hypers should not have everything in them
         prior_params = params.get('prior_params', {})
         feat_params = params.get('feat_params', {})
         back_forth_params = params.get('back_forth_params', {})
