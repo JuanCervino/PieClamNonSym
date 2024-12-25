@@ -2,9 +2,9 @@
 The code for the paper PieClam - Inclusive Exclusive Clustier Affiliation Model with Prior.
 To run the experiments in the paper, use the designated jupyter notebooks in the experiments folder.
 
-# Data structure.
+# Data structure
 The graphs are represented as pytorch geometric data objects with added member variables depending on the experiment conducted. In all experiments data.x represents the affiliation features learned by the algorithm.
-### Anomaly Detection:
+### Anomaly Detection
 - Node attributes: data contains a data.attr member that is the node data features. data.attr is used only in the anomaly detection experiment, as explained in the paper.
 - data.gt_anomalous is a list representing the ground truth anomalies. 
 
