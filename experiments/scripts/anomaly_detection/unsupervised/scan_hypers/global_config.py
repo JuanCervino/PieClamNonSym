@@ -122,7 +122,7 @@ def main():
                                     device=device,
                                     dataset=ds_to_use.clone(),
                                     attr_opt=True,
-                                    mighty_configs_dict=True,
+                                    use_global_config_base=True,
                                     config_triplets_to_change=config_triplets
                                 )
 
