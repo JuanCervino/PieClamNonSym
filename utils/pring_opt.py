@@ -1,11 +1,11 @@
 def print_intermediate(
         accuracies_test, 
         accuracies_val=None, 
-        task='anomaly',
+        task='anomaly_unsupervised',
         task_params=None,
         ):
      
-    if task == 'anomaly':
+    if task == 'anomaly_unsupervised':
         dyads_to_omit = task_params['dyads_to_omit']
         print('Anomaly Vals')
         if dyads_to_omit is not None:

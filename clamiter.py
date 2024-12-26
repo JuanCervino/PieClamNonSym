@@ -445,7 +445,7 @@ class PCLAMIter(MessagePassing):
                   node_mask=None, 
                   acc_every=10,
                   weight_decay=None,
-                  task='anomaly', 
+                  task='anomaly_unsupervised', 
                   performance_metric=None,
                   early_stop=0,
                   noise_amp=0.01, 
@@ -492,7 +492,7 @@ class PCLAMIter(MessagePassing):
             early_stops=None,
             performance_metric=None,
             configs_dict=None,
-            task='anomaly',
+            task='anomaly_unsupervised',
             verbose_in_funcs=False,
             verbose=False,
             **params,
@@ -1022,7 +1022,7 @@ class AccTrack:
         self.losses = []
         # different conditions if its a vanilla, not vanilla, feat, prior fit even...... 
         # what is the difference between the prior and feats when collecting data? vanilla stuff shouldn't change when optimizing the prior... but we can collect them the same way why not?
-        if task == 'anomaly':
+        if task == 'anomaly_unsupervised':
             
             if self.clamiter.prior is not None:
 
@@ -1074,7 +1074,7 @@ class AccTrack:
 
         self.losses = losses
    
-        if self.task == 'anomaly':
+        if self.task == 'anomaly_unsupervised':
             if self.clamiter.prior is not None:              
                 auc_vanilla_star_anomaly, auc_prior_anomaly, auc_prior_star_anomaly = all_types_classify(
                                                         self.clamiter, 
@@ -1142,7 +1142,7 @@ class AccTrack:
     def best_features_from_val(self):
         ''' if you were keeping track of the best features, this will return them'''
         #! used only with val
-        if self.task == 'anomaly':
+        if self.task == 'anomaly_unsupervised':
             # ANOMALY DETECTION HAS NO VALIDATION SET
             if self.clamiter.prior is not None:
                pass
@@ -1332,7 +1332,7 @@ class EarlyStop:
             #     accuracies_test.append(auc_score)
             # # ===== end link collect acc =====
             
-            # elif task == 'anomaly':                
+            # elif task == 'anomaly_unsupervised':                
             #     if i%acc_every == 0:
             #         # calculate intermediate accuracies
                     

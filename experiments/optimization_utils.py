@@ -40,13 +40,21 @@ def perturb_config(task, model_name, deltas, use_global_config, ds_name=None):
     '''perturb the config with the deltas'''
     config_dict = load_hyper_config(task, model_name, use_global_config, ds_name)
     config_range = {}
-    for delta in deltas:
-        section, key, value = delta
-        config_range[section][key] = [max(config_dict[section][key] - value, 0), config_dict[section][key] + value]
-
     if model_name in ['bigclam', 'ieclam']:
-        config_range = {key: config_range[key] for key in ['clamiter_init', 'feat_opt'] if key in config_range}
-    return config_range
+        deltas = {key: deltas[key] for key in ['clamiter_init', 'feat_opt'] if key in deltas}
+    for outer_key in deltas:
+        for inner_key in deltas[outer_key]:
+            value = deltas[outer_key][inner_key]
+            if outer_key not in config_range:
+                config_range[outer_key] = {}
+            config_range[outer_key][inner_key] = [max(config_dict[outer_key][inner_key] - value, 0), config_dict[outer_key][inner_key] + value]
+
+    config_range_list = []
+    for outer_key in config_range:
+        for inner_key in config_range[outer_key]:
+            config_range_list.append([outer_key, inner_key, config_range[outer_key][inner_key]])
+    return config_range_list
+    
     
 
 class SaveRun:
@@ -336,9 +344,14 @@ def multi_ds_anomaly(
         
         curr_file_dir = os.path.dirname(os.path.abspath(__file__))
         
-        save_paths = [os.path.join(curr_file_dir, 'results', 'anomaly_detection', model_name, ds_name, 'acc_configs.json')for ds_name in ds_names]
+        save_paths = [os.path.join(curr_file_dir, 'results', 'anomaly_unsupervised', model_name, ds_name, 'acc_configs.json')for ds_name in ds_names]
         # a different run saver for every dataset
-        run_savers = [SaveRun(model_name, ds_name, use_global_config_base, save_paths[i], config_ranges=range_triplets) for i, ds_name in enumerate(ds_names)]
+        run_savers = [SaveRun(model_name, 
+                              ds_name,
+                              task='anomaly_unsupervised', 
+                              use_global_config_base=use_global_config_base, 
+                              save_path=save_paths[i], 
+                              config_ranges=range_triplets) for i, ds_name in enumerate(ds_names)]
         
         for values in itertools.product(*[triplet[2] for triplet in range_triplets]):
             '''for each configuration run all of the datasets and save the results in the corresponding folder'''
@@ -369,7 +382,7 @@ def multi_ds_anomaly(
                     trainer = Trainer(
                                 dataset=ds_to_use,
                                 model_name=model_name,
-                                task='anomaly',
+                                task='anomaly_unsupervised',
                                 config_triplets_to_change=config_triplets,
                                 use_global_config_base=use_global_config_base,
                                 attr_opt=False,
