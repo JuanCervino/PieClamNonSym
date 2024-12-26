@@ -36,14 +36,17 @@ class SaveRun:
         # make a new file
 
         
-        
+         
+        # Create the directory if it doesn't exist
+        os.makedirs(os.path.dirname(self.save_path), exist_ok=True)
+
         if os.path.exists(self.save_path):
             # Find the next available file name
             i = 0
             while os.path.exists(f"{self.save_path[:-5]}_{i}.json"):
                 i += 1
             self.save_path = f"{self.save_path[:-5]}_{i}.json"
-
+    
 
 
         first_entry = {'date_time': datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
@@ -281,140 +284,6 @@ def cross_val_link(
         printd('\n\nFinished CrossVal!\n\n')    
 
 
-class SaveRunAnomaly:
-
-    '''for anomaly detection each config will have a file with results from all kinds of datasets. the results are still divided by folders.'''
-    #todo: put the configs at the top of the files and the result for each dataset.
-    # it just saves a run with hypers on a dataset.
-    # i want it to open a file in each model/dataset
-    # the original save run has one file with every result from every experiment. should i have a file for each dataset or a file for each configuration? i need to cross reference the different folders
-    def __init__(self, model_name, ds_names, global_config_base, save_path, config):
-        
-        self.model_name = model_name
-        self.global_config_base = global_config_base
-        self.save_path = save_path
-        # make a new file
-        
-        if os.path.exists(self.save_path):
-            # Find the next available file name
-            i = 0
-            while os.path.exists(f"{self.save_path[:-5]}_{i}.json"):
-                i += 1
-            self.save_path = f"{self.save_path[:-5]}_{i}.json"
-
-
-
-        first_entry = {'date_time': datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
-        if config_ranges is not None:
-            first_entry['config_ranges'] = config_ranges
-
-        # Load your configuration
-        curr_file_dir = os.path.dirname(os.path.abspath(__file__))
-        hypers_path = os.path.join(curr_file_dir, '..', 'hypers', 'hypers_link_prediction' + '.yaml')
-        with open(hypers_path, 'r') as hypers_file:
-            params_dict = yaml.safe_load(hypers_file)
-        if self.global_config_base:
-            configs_dict = deepcopy(params_dict['GlobalConfigs' + '_' + model_name])
-        else:
-            configs_dict = deepcopy(params_dict[ds_name + '_' + model_name])
-
-        # Add the base config to the dictionary
-        first_entry['base_config'] = configs_dict
-
-        # Write everything to the file at once
-        with open(self.save_path, 'w') as file:
-            json.dump(first_entry, file, indent=4)
-
-
-
-    
-    def update_file(self, acc, config_triplets):
-        with open(self.save_path, 'r') as file:
-            loaded_acc_configs = json.load(file)
-
-        loaded_acc_configs.update({str(acc): config_triplets})
-
-        with open(self.save_path, 'w') as file:
-            json.dump(loaded_acc_configs, file, indent=4)
-
-
-    @staticmethod
-    def load_saved(file_path, export_path=None, print_base=False, print_config_ranges=False, print_date_time=False, sort_by='val_acc'):
-        # Load JSON data
-        with open(file_path) as f:
-            data = json.load(f)
-
-        # Separate base config and runs
-        if "date_time" in data.keys():
-            date_time = data.pop("date_time")
-        if "config_ranges" in data.keys():
-            config_ranges = data.pop("config_ranges")
-        base_config = data.pop("base_config")
-        if print_base:
-            print(base_config)
-        if print_config_ranges:
-            print(config_ranges)
-        if print_date_time:
-            print(date_time)
-
-        # List to hold processed data for DataFrame
-        processed_data = []
-
-        # Iterate through each run acc
-        for acc_str, changes in data.items():
-            acc = eval(acc_str)
-            row = {}
-            if type(acc) == float:
-                row['acc'] = acc  # Convert acc key to a float
-            elif type(acc) == tuple:
-                row['test_acc'] = acc[0]
-                row['val_acc'] = acc[1]
-
-            for change in changes:
-                section, key, value = change
-                row[f"{section}_{key}"] = value
-            processed_data.append(row)
-        
-        # Convert to DataFrame
-        df = pd.DataFrame(processed_data)
-        df.reset_index(drop=True, inplace=True)
-
-        # Group by unique parameter configurations and calculate mean, std, and count
-        if 'acc' in df.columns:
-            grouped = df.groupby([col for col in df.columns if col != 'acc']).agg(
-                avg_acc=('acc', 'mean'),
-                std_acc=('acc', 'std'),
-                count=('acc', 'size')  # Add count of occurrences
-            ).reset_index()
-            
-            # Rearrange columns so mean, std, and count are first
-            cols = ['avg_acc', 'std_acc', 'count'] + [col for col in grouped.columns if col not in ['avg_acc', 'std_acc', 'count']]
-            grouped = grouped[cols]
-
-            # Sort by avg_acc
-            grouped = grouped.sort_values(by='avg_acc', ascending=False).reset_index(drop=True)
-
-        elif 'val_acc' in df.columns:
-            grouped = df.groupby([col for col in df.columns if col not in ['test_acc', 'val_acc']]).agg(
-                avg_test_acc=('test_acc', 'mean'),
-                std_test_acc=('test_acc', 'std'),
-                avg_val_acc=('val_acc', 'mean'),
-                std_val_acc=('val_acc', 'std'),
-                count=('val_acc', 'size')  # Add count of occurrences
-            ).reset_index()
-
-            # Rearrange columns so mean, std, and count are first
-            cols = ['avg_test_acc', 'std_test_acc', 'avg_val_acc', 'std_val_acc', 'count'] + [col for col in grouped.columns if col not in ['avg_test_acc', 'std_test_acc', 'avg_val_acc', 'std_val_acc', 'count']]
-            grouped = grouped[cols]
-
-            # Sort by specified column
-            if sort_by == 'val_acc':
-                grouped = grouped.sort_values(by='avg_val_acc', ascending=False).reset_index(drop=True)
-            elif sort_by == 'test_acc':
-                grouped = grouped.sort_values(by='avg_test_acc', ascending=False).reset_index(drop=True)
-
-        return grouped
-
 
 def multi_ds_anomaly(
         model_name,
@@ -434,7 +303,6 @@ def multi_ds_anomaly(
     trainer_anomaly = None
 
     assert model_name in ['ieclam', 'bigclam', 'pieclam', 'pclam']
-    # ============ OMIT TEST =============
 
     try:
         
@@ -489,16 +357,14 @@ def multi_ds_anomaly(
                                 verbose_in_funcs=False
                             )
                     
-                    if acc_test['auc']:
-                        last_acc_test = acc_test['auc'][-1]
-                    else:
-                        last_acc_test = None
-                    
-                    if acc_val['auc']:
-                        last_acc_val = acc_val['auc'][-1]                    
-                    else:
-                        last_acc_val = None
-                    run_savers[i].update_file((last_acc_test, last_acc_val), config_triplets)
+                    last_vanilla_star = acc_test['vanilla_star'][-1]
+                    last_prior = None
+                    last_prior_star = None
+                    if model_name in {'pieclam', 'pclam'}:
+                        last_prior = acc_test['prior'][-1]
+                        last_prior_star = acc_test['prior_star'][-1]
+
+                    run_savers[i].update_file((last_vanilla_star, last_prior, last_prior_star), config_triplets)
                     
 
     except Exception as e:
