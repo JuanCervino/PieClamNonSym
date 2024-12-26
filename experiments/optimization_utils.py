@@ -284,8 +284,9 @@ def cross_val_link(
 class SaveRunAnomaly:
 
     '''for anomaly detection each config will have a file with results from all kinds of datasets. the results are still divided by folders.'''
-    
-    def __init__(self, model_name, global_config_base, save_path, config_ranges=None):
+    #todo: put the configs at the top of the files and the result for each dataset.
+    # it just saves a run with hypers on a dataset.
+    def __init__(self, model_name, global_config_base, save_path, config):
         self.model_name = model_name
         self.global_config_base = global_config_base
         self.save_path = save_path

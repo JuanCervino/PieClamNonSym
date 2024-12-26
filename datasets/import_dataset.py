@@ -227,6 +227,7 @@ def import_dataset(dataset_name, remove_data_feats=True, verbose=False):
         data.edge_index = to_undirected(data.edge_index)
    
     elif dataset_name == 'JohnsHopkins55':
+        '''for .mat files'''
         current_dir = os.path.dirname(os.path.abspath(__file__))
         data_dict = sio.loadmat(os.path.join(current_dir, f"{'facebook100'}/{dataset_name}.mat"))
         adj = sp.coo_matrix(data_dict['A'])

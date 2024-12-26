@@ -22,10 +22,12 @@ Synthetic datasets are simulated in the simulations.py file. The real world data
 - Texas is part of the WebKB dataset that is available in pytorch geometric and is downloaded automatically with the import_dataset function.
 - JH55 (John's Hopkins 55) is part of the facebook 100 dataset, and should be in .mat format.
 - Squirrel is part of the wikipedia dataset and is available at snap https://snap.stanford.edu/data/wikipedia-article-networks.html.
-- Reddit, Elliptic and Photo are available from the GGAD project that can be found here: https://github.com/mala-lab/GGAD/tree/main
-
-
-
-
-
+- Reddit, Elliptic, and Photo: These datasets are from the GGAD project. Please refer to the GGAD repository for access: https://github.com/mala-lab/GGAD/tree/main.
+If you use these datasets or the GGAD project in your work, please cite the following paper:
+@article{qiao2024generative,
+ title={Generative Semi-supervised Graph Anomaly Detection},
+ author={Qiao, Hezhe and Wen, Qingsong and Li, Xiaoli and Lim, Ee-Peng and Pang, Guansong},
+ journal={arXiv preprint arXiv:2402.11887},
+ year={2024}
+}
 
