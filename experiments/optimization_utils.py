@@ -22,7 +22,7 @@ import utils.link_prediction as lp
 from trainer import Trainer
 from datetime import datetime
 
-class SaveRunLink:
+class SaveRun:
 
     '''we save the a base config (either model specific or global) and change it with deltas. each experiment result is the config delta and the result of the experiment in a json file. to gather all of the results together there is an analysis.py in every results folder.'''
     #todo: modify to fit the anomaly setting. 
@@ -184,7 +184,7 @@ def cross_val_link(
         curr_file_dir = os.path.dirname(os.path.abspath(__file__))
         
         save_path = os.path.join(curr_file_dir, 'results', 'link_prediction', ds_name, model_name, 'acc_configs.json')
-        run_saver = SaveRunLink(model_name, ds_name, use_global_config_base, save_path, config_ranges=range_triplets)
+        run_saver = SaveRun(model_name, ds_name, use_global_config_base, save_path, config_ranges=range_triplets)
         
         ds = import_dataset(ds_name)
         # OMIT TEST
@@ -286,7 +286,10 @@ class SaveRunAnomaly:
     '''for anomaly detection each config will have a file with results from all kinds of datasets. the results are still divided by folders.'''
     #todo: put the configs at the top of the files and the result for each dataset.
     # it just saves a run with hypers on a dataset.
-    def __init__(self, model_name, global_config_base, save_path, config):
+    # i want it to open a file in each model/dataset
+    # the original save run has one file with every result from every experiment. should i have a file for each dataset or a file for each configuration? i need to cross reference the different folders
+    def __init__(self, model_name, ds_names, global_config_base, save_path, config):
+        
         self.model_name = model_name
         self.global_config_base = global_config_base
         self.save_path = save_path
@@ -424,7 +427,7 @@ def multi_ds_anomaly(
         attr_opt=False,
         plot_every=10000):
     
-    '''here we test a single configuration for a list of datasets. the inconvenience is mainly because of the way we run the the datasets - all of them for a single config. we should have the save run method do this: take a list of datasets and create a folder for each. then save the results in the folder depending on the dataset.'''
+    '''here we test a single configuration for a list of datasets since the setting is unsupervised. '''
     
     ds = None
     ds_for_optimization = None
@@ -437,12 +440,9 @@ def multi_ds_anomaly(
         
         curr_file_dir = os.path.dirname(os.path.abspath(__file__))
         
-        save_path = os.path.join(curr_file_dir, 'results', 'anomaly_detection', model_name, 'acc_configs.json')
-        run_saver = SaveRunAnomaly(
-            model_name, 
-            use_global_config_base, 
-            save_path, 
-            config_ranges=range_triplets)
+        save_paths = [os.path.join(curr_file_dir, 'results', 'anomaly_detection', model_name, ds_name, 'acc_configs.json')for ds_name in ds_names]
+        # a different run saver for every dataset
+        run_savers = [SaveRun(model_name, ds_name, use_global_config_base, save_paths[i], config_ranges=range_triplets) for i, ds_name in enumerate(ds_names)]
         
         for values in itertools.product(*[triplet[2] for triplet in range_triplets]):
             '''for each configuration run all of the datasets and save the results in the corresponding folder'''
@@ -455,7 +455,7 @@ def multi_ds_anomaly(
             config_triplets = [
                 [outers[i], inners[i], values[i]] for i in range(len(range_triplets))]
             for _ in range(n_reps): 
-                for ds_name in ds_names:
+                for i, ds_name in enumerate(ds_names):
                     ds = import_dataset(ds_name)
                     ds_to_use = ds
                     
@@ -498,7 +498,7 @@ def multi_ds_anomaly(
                         last_acc_val = acc_val['auc'][-1]                    
                     else:
                         last_acc_val = None
-                    run_saver.update_file((last_acc_test, last_acc_val), config_triplets)
+                    run_savers[i].update_file((last_acc_test, last_acc_val), config_triplets)
                     
 
     except Exception as e:
