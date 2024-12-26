@@ -22,16 +22,44 @@ import utils.link_prediction as lp
 from trainer import Trainer
 from datetime import datetime
 
+def load_hyper_config(task, model_name, use_global_config_base=True, ds_name=None):
+    '''load the hyperparameters for the model and the dataset'''
+    curr_file_dir = os.path.dirname(os.path.abspath(__file__))
+    hypers_path = os.path.join(curr_file_dir, '..', 'hypers', 'hypers_'+ task + '.yaml')
+    with open(hypers_path, 'r') as hypers_file:
+        params_dict = yaml.safe_load(hypers_file)
+    if use_global_config_base:
+        configs_dict = deepcopy(params_dict['GlobalConfigs' + '_' + model_name])
+    else:
+        assert ds_name is not None
+        configs_dict = deepcopy(params_dict[ds_name + '_' + model_name])
+    return configs_dict
+
+
+def perturb_config(task, model_name, deltas, use_global_config, ds_name=None):
+    '''perturb the config with the deltas'''
+    config_dict = load_hyper_config(task, model_name, use_global_config, ds_name)
+    config_range = {}
+    for delta in deltas:
+        section, key, value = delta
+        config_range[section][key] = [max(config_dict[section][key] - value, 0), config_dict[section][key] + value]
+
+    if model_name in ['bigclam', 'ieclam']:
+        config_range = {key: config_range[key] for key in ['clamiter_init', 'feat_opt'] if key in config_range}
+    return config_range
+    
+
 class SaveRun:
 
     '''we save the a base config (either model specific or global) and change it with deltas. each experiment result is the config delta and the result of the experiment in a json file. to gather all of the results together there is an analysis.py in every results folder.'''
     #todo: modify to fit the anomaly setting. 
     #todo: several ds and have them as part of the table
     #todo: for link prediction i want to know many results for each dataset. for anomaly detection i want to know many results for one configuration
-    def __init__(self, model_name, ds_name, global_config_base, save_path, config_ranges=None):
+    def __init__(self, model_name, ds_name, task, use_global_config_base, save_path, config_ranges=None):
         self.model_name = model_name
+        self.task = task
         self.ds_name = ds_name
-        self.global_config_base = global_config_base
+        self.use_global_config_base = use_global_config_base
         self.save_path = save_path
         # make a new file
 
@@ -55,10 +83,10 @@ class SaveRun:
 
         # Load your configuration
         curr_file_dir = os.path.dirname(os.path.abspath(__file__))
-        hypers_path = os.path.join(curr_file_dir, '..', 'hypers', 'hypers_link_prediction' + '.yaml')
+        hypers_path = os.path.join(curr_file_dir, '..', 'hypers', 'hypers_'+ task + '.yaml')
         with open(hypers_path, 'r') as hypers_file:
             params_dict = yaml.safe_load(hypers_file)
-        if self.global_config_base:
+        if self.use_global_config_base:
             configs_dict = deepcopy(params_dict['GlobalConfigs' + '_' + model_name])
         else:
             configs_dict = deepcopy(params_dict[ds_name + '_' + model_name])
@@ -187,7 +215,7 @@ def cross_val_link(
         curr_file_dir = os.path.dirname(os.path.abspath(__file__))
         
         save_path = os.path.join(curr_file_dir, 'results', 'link_prediction', ds_name, model_name, 'acc_configs.json')
-        run_saver = SaveRun(model_name, ds_name, use_global_config_base, save_path, config_ranges=range_triplets)
+        run_saver = SaveRun(model_name, ds_name, 'link_prediction', use_global_config_base, save_path, config_ranges=range_triplets)
         
         ds = import_dataset(ds_name)
         # OMIT TEST
