@@ -120,7 +120,11 @@ class SaveRun:
 
 
     @staticmethod
-    def load_saved(file_path, export_path=None, print_base=False, print_config_ranges=False, print_date_time=False, sort_by='val_acc'):
+    def load_saved_old(task, file_path, print_base=False, print_config_ranges=False, print_date_time=False, sort_by='val_acc'):
+
+        '''results are saved as config - acc. the function loads the results as a pandas dataframe.
+        '''
+
         # Load JSON data
         with open(file_path) as f:
             data = json.load(f)
@@ -146,10 +150,18 @@ class SaveRun:
             acc = eval(acc_str)
             row = {}
             if type(acc) == float:
-                row['acc'] = acc  # Convert acc key to a float
+                    row['acc'] = acc
+                
             elif type(acc) == tuple:
-                row['test_acc'] = acc[0]
-                row['val_acc'] = acc[1]
+                if task == 'link_prediction':
+                    row['test_acc'] = acc[0]
+                    row['val_acc'] = acc[1]
+                
+                elif task == 'anomaly_unsupervised':
+                    row['vanilla_star'] = acc[0]
+                    if len(acc) > 1:
+                        row['prior'] = acc[1]
+                        row['prior_star'] = acc[2]
 
             for change in changes:
                 section, key, value = change
@@ -193,6 +205,120 @@ class SaveRun:
                 grouped = grouped.sort_values(by='avg_val_acc', ascending=False).reset_index(drop=True)
             elif sort_by == 'test_acc':
                 grouped = grouped.sort_values(by='avg_test_acc', ascending=False).reset_index(drop=True)
+
+        return grouped
+
+
+    @staticmethod
+    def load_saved(task, file_path, sort_by, print_base=False, print_config_ranges=False, print_date_time=False):
+
+        '''results are saved as config - acc. the function loads the results as a pandas dataframe.
+        '''
+        
+        # Load JSON data
+        with open(file_path) as f:
+            data = json.load(f)
+
+        # Separate base config and runs
+        if "date_time" in data.keys():
+            date_time = data.pop("date_time")
+        if "config_ranges" in data.keys():
+            config_ranges = data.pop("config_ranges")
+        base_config = data.pop("base_config")
+        if print_base:
+            print(base_config)
+        if print_config_ranges:
+            print(config_ranges)
+        if print_date_time:
+            print(date_time)
+
+        # List to hold processed data for DataFrame
+        processed_data = []
+
+        # Iterate through each run acc
+        for acc_str, changes in data.items():
+            acc = eval(acc_str)
+            row = {}
+            if type(acc) == float:
+                    row['acc'] = acc
+                
+            elif type(acc) == tuple:
+                if task == 'link_prediction':
+                    row['test_acc'] = acc[0]
+                    row['val_acc'] = acc[1]
+                
+                elif task == 'anomaly_unsupervised':
+                    row['vanilla_star'] = acc[0]
+                    if len(acc) > 1:
+                        row['prior'] = acc[1]
+                        row['prior_star'] = acc[2]
+
+            for change in changes:
+                section, key, value = change
+                row[f"{section}_{key}"] = value
+            processed_data.append(row)
+        
+        # Convert to DataFrame
+        df = pd.DataFrame(processed_data)
+        df.reset_index(drop=True, inplace=True)
+
+        # Group by unique parameter configurations and calculate mean, std, and count
+        if 'acc' in df.columns:
+            grouped = df.groupby([col for col in df.columns if col != 'acc']).agg(
+                avg_acc=('acc', 'mean'),
+                std_acc=('acc', 'std'),
+                count=('acc', 'size')  # Add count of occurrences
+            ).reset_index()
+            
+            # Rearrange columns so mean, std, and count are first
+            cols = ['avg_acc', 'std_acc', 'count'] + [col for col in grouped.columns if col not in ['avg_acc', 'std_acc', 'count']]
+            grouped = grouped[cols]
+
+            # Sort by avg_acc
+            grouped = grouped.sort_values(by='avg_acc', ascending=False).reset_index(drop=True)
+
+        elif 'val_acc' in df.columns or 'vanilla_star' in df.columns:
+            if task == 'link_prediction':
+                grouped = df.groupby([col for col in df.columns if col not in ['test_acc', 'val_acc']]).agg(
+                    avg_test_acc=('test_acc', 'mean'),
+                    std_test_acc=('test_acc', 'std'),
+                    avg_val_acc=('val_acc', 'mean'),
+                    std_val_acc=('val_acc', 'std'),
+                    count=('val_acc', 'size')  # Add count of occurrences
+                ).reset_index()
+
+                # Rearrange columns so mean, std, and count are first
+                cols = ['avg_test_acc', 'std_test_acc', 'avg_val_acc', 'std_val_acc', 'count'] + [col for col in grouped.columns if col not in ['avg_test_acc', 'std_test_acc', 'avg_val_acc', 'std_val_acc', 'count']]
+                grouped = grouped[cols]
+
+                # Sort by specified column
+                if sort_by == 'val_acc':
+                    grouped = grouped.sort_values(by='avg_val_acc', ascending=False).reset_index(drop=True)
+                elif sort_by == 'test_acc':
+                    grouped = grouped.sort_values(by='avg_test_acc', ascending=False).reset_index(drop=True)
+
+            elif task == 'anomaly_unsupervised':
+                grouped = df.groupby([col for col in df.columns if col not in ['vanilla_star', 'prior', 'prior_star']]).agg(
+                    avg_vanilla_star=('vanilla_star', 'mean'),
+                    std_vanilla_star=('vanilla_star', 'std'),
+                    avg_prior=('prior', 'mean'),
+                    std_prior=('prior', 'std'),
+                    avg_prior_star=('prior_star', 'mean'),
+                    std_prior_star=('prior_star', 'std'),
+                    count=('vanilla_star', 'size')  # Add count of occurrences
+                ).reset_index()
+
+                # Rearrange columns so mean, std, and count are first
+                cols = ['avg_vanilla_star', 'std_vanilla_star', 'avg_prior', 'std_prior', 'avg_prior_star', 'std_prior_star', 'count'] + [col for col in grouped.columns if col not in ['avg_vanilla_star', 'std_vanilla_star', 'avg_prior', 'std_prior', 'avg_prior_star', 'std_prior_star', 'count']]
+                grouped = grouped[cols]
+
+                # Sort by specified column
+                if sort_by == 'vanilla_star':
+                    grouped = grouped.sort_values(by='avg_vanilla_star', ascending=False).reset_index(drop=True)
+                elif sort_by == 'prior':
+                    grouped = grouped.sort_values(by='avg_prior', ascending=False).reset_index(drop=True)
+                elif sort_by == 'prior_star':
+                    grouped = grouped.sort_values(by='avg_prior_star', ascending=False).reset_index(drop=True)
 
         return grouped
 
