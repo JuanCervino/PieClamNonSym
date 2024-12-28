@@ -172,10 +172,12 @@ texas_bigclam:
 texas_pieclam:
     clamiter_init:
         dim_feat: 22
-        s_reg: 0.0
         l1_reg: 1
     feat_opt:
         lr: 0.000004
+        n_iter: 2000
+    prior_opt:
+        lr: 0.000005
         n_iter: 2000
     back_forth:
         first_func_in_fit: 'fit_prior'
@@ -184,7 +186,6 @@ texas_pieclam:
 texas_pclam:
     clamiter_init:
         dim_feat: 24
-        s_reg: 0.0
         l1_reg: 1
     feat_opt:
         lr: 0.000003
@@ -242,7 +243,7 @@ GlobalConfigs_pieclam:
         weight_decay: 0.1
         early_stop: 0
     back_forth:
-        n_back_forth: 6
+        n_back_forth: 7
         scheduler_step_size: 3
         scheduler_gamma: 0.5
         early_stop_fit: 0

@@ -212,7 +212,7 @@ class SaveRun:
     @staticmethod
     def load_saved(task, file_path, sort_by, print_base=False, print_config_ranges=False, print_date_time=False):
 
-        '''results are saved as config - acc. the function loads the results as a pandas dataframe.
+        '''results are saved as config - acc. the function loads the results of a single file as a pandas dataframe. to load all files of a directory, a "print_folder" function is defined in the analysis.py file of every task.
         '''
         
         # Load JSON data
