@@ -409,7 +409,10 @@ def cut_log_data(data, lorenz, d=0.2, approx_method='sdp', return_d=False, verbo
     else:
         q = (to_dense_adj(data.edge_index)[0]*(1 - d)).cpu().numpy()
 
-    inverted_p = np.log(1 - p)
+    try:
+        inverted_p = np.log(1 - p)
+    except RuntimeError as e:
+        raise
     inverted_q = np.log(1 - q)
     # i want to see what the probabilities of bigclam by playing with d see that 
     cutn_round, cutn_sdp, info = compute_cutnorm(inverted_p, inverted_q)
