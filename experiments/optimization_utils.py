@@ -354,6 +354,11 @@ def cross_val_link(
         run_saver = SaveRun(model_name, ds_name, 'link_prediction', use_global_config_base, save_path, config_ranges=range_triplets)
         
         ds = import_dataset(ds_name)
+        
+        if hasattr(ds, 'val_dyads_to_omit'):
+            val_dyads_to_omit = ds.val_dyads_to_omit
+        if hasattr(ds, 'test_dyads_to_omit'):
+            test_dyads_to_omit = ds.test_dyads_to_omit
 
         # OMIT TEST
         ds_test_omitted = ds.clone()
@@ -366,17 +371,21 @@ def cross_val_link(
         else:
             assert type(test_dyads_to_omit) == torch.tensor
             assert test_dyads_to_omit.shape[0] == 2
-            ds_test_omitted.omitted_dyads_test = test_dyads_to_omit
-            ds_test_omitted.omitted_dyads_test, ds_test_omitted.edge_index, ds_test_omitted.edge_attr = lp.omit_dyads
-            #todo: need to find where 
+
+            ds_test_omitted.omitted_dyads_test, ds_test_omitted.edge_index, ds_test_omitted.edge_attr = lp.omit_dyads(ds_test_omitted.edge_index,
+                                      ds_test_omitted.edge_attr,
+                                      test_dyads_to_omit)
+            
         
         if val_dyads_to_omit is not None:
             #todo: if this condition holds also dont do the sampling at every iteration
             assert type(val_dyads_to_omit) == torch.tensor
             assert val_dyads_to_omit.shape[0] == 2
-            #! shouldn't i also change the ds_test_omitted edge_attr and edge index?
             ds_test_omitted.omitted_dyads_val = val_dyads_to_omit
-          
+            ds_test_omitted.omitted_dyads_val, ds_test_omitted.edge_index, ds_test_omitted.edge_attr = lp.omit_dyads(
+                            ds_test_omitted.edge_index, 
+                            ds_test_omitted.edge_attr,
+                            val_dyads_to_omit)
 
         for values in itertools.product(*[triplet[2] for triplet in range_triplets]):
             for _ in range(n_reps): 

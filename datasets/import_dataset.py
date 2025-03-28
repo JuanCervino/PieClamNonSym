@@ -33,85 +33,23 @@ def import_dataset(dataset_name, remove_data_feats=True, verbose=False):
     current_dir = os.path.dirname(os.path.abspath(__file__))
     
     if dataset_name == 'ogbl-ddi':
-        dataset = PygLinkPropPredDataset(name = dataset_name, root = current_dir + '\OGB') 
+            '''this dataaset is only for link prediction.
+            the dataset comes with an edge index and a split with a train edge index set that is the directed version of the edge index.'''
 
-        split_edge = dataset.get_edge_split()
-        train_edge, valid_edge, test_edge = split_edge["train"], split_edge["valid"], split_edge["test"]
-        data = dataset[0] # pyg graph object containing only training edges'
-
-    if dataset_name == 'facebook348':
-        ''' in the facebook ego networks, the last node is the ego node.
-        (circles, circle_batch) are (node,community) pairs correspondantly.
-        We remone the ego node, nodes that don't have communities and isolated nodes.
-        algo:
-        1. find comunityless nodes
-        2. find ego node
-        3. union of the 2 and use pyg.subgraph
-        4. remove isolated nodes'''
-        #* density: 0.045
-        ego_facebook_ds = SNAPDataset(root=os.path.join(current_dir,'FacebookEgo'), name='ego-facebook')
-        data = ego_facebook_ds[2]
-        
-        num_nodes_tot = data.edge_index.max().item() + 1
+            dataset = PygLinkPropPredDataset(name=dataset_name, root='datasets/OGB') 
+            split_edge = dataset.get_edge_split()
+            valid_edge, test_edge = split_edge["valid"], split_edge["test"]
+            
+            data = dataset[0]
+            data.test_dyads_to_omit = [utils.to_undirected(test_edge['edge'].t()), 
+                                utils.to_undirected(test_edge['edge_neg'].t())]
+            data.val_dyads_to_omit = [utils.to_undirected(valid_edge['edge'].t()), 
+                                utils.to_undirected(valid_edge['edge_neg'].t())]
+            
+            data.edge_attr = torch.ones(data.edge_index.shape[1], dtype=torch.bool)                           
 
 
-            #*  v   FIND COMMUNITYLESS NODES  v        
-        
-        affiliation_pairs = torch.cat([data.circle.unsqueeze(1), data.circle_batch.unsqueeze(1)], dim=1)
-        _, sorted_indices = torch.sort(affiliation_pairs[:,0])
-        sorted_affiliation_pairs = affiliation_pairs[sorted_indices]
-
-        num_circles = data.circle_batch.max().item() + 1
-        
-        # make inclusive y matrix
-        node_circle_matrix = torch.zeros((num_nodes_tot, num_circles), dtype=torch.int32)
-
-        # Make (circle, batch) into binary matrix 
-        node_circle_matrix[data.circle, data.circle_batch] = 1
-        not_communityless_nodes_mask = node_circle_matrix.sum(dim=1) != 0
-        not_communityless_nodes_indices = torch.where(not_communityless_nodes_mask)[0]
-
-                #*  v   FIND EGO  v
-        # ego node is the largest node index
-        ego_node_index = num_nodes_tot - 1
-                
-                #* v REMOVE COMMUNITYLESS AND EGO
-        nodes_to_keep_indices = list(set(not_communityless_nodes_indices.tolist()) - {ego_node_index})
-        nodes_to_keep_mask = torch.zeros(num_nodes_tot, dtype=torch.bool)
-        nodes_to_keep_mask[list(nodes_to_keep_indices)] = True
-        data.edge_index, _ = subgraph(nodes_to_keep_indices, data.edge_index, relabel_nodes=True)
-        data.y = node_circle_matrix[nodes_to_keep_mask]
-        if data.x is not None:
-            data.x = data.x[nodes_to_keep_mask]
-
-                #* v REMOVE ISOLATED v
-        data.edge_index, _, not_isolated_nodes_mask = remove_isolated_nodes(data.edge_index)
-        data.y = data.y[not_isolated_nodes_mask]
-        if data.x is not None:
-            data.x = data.x[not_isolated_nodes_mask]
-
-        if remove_data_feats:
-            data.x = None
-        else: 
-            data.feats_data = data.x
-            data.x = None
-       
-                #*  ^   MAKE data.y WITH CIRCLE  ^        
-
-        if verbose:
-            G = to_networkx(data, to_undirected=True)
-
-            # Compute the spring layout
-            pos = nx.spring_layout(G)
-
-            # Plot the graph
-            plt.figure(figsize=(8, 8))
-            nx.draw(G, pos, with_labels=True, node_color='skyblue', edge_color='gray', node_size=500, font_size=10)
-            plt.title('Graph Visualization with Spring Layout')
-            plt.show()
-
-
-    if dataset_name == 'squirrel':
+    elif dataset_name == 'squirrel':
         edges_df = pd.read_csv('../datasets/wikipedia/squirrel/musae_squirrel_edges.csv')
         edges = edges_df.values.T  # Transpose to shape [2, num_edges]
         edge_index = torch.tensor(edges, dtype=torch.long)
