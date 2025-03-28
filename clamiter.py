@@ -269,7 +269,8 @@ class PCLAMIter(MessagePassing):
                     early_stop=0,
                     cutoff=0.0, 
                     verbose=False,
-                    acc_every=10, 
+                    acc_every=10,
+                    print_every=100000, 
                     plot_every=100000,
                     **kwargs
                     ):
@@ -308,6 +309,8 @@ class PCLAMIter(MessagePassing):
             
             if plot_every == -1:
                 plot_every = n_iter
+            if print_every < n_iter//100:
+                ValueError('print_every should be at least n_iter//100')
 
             if verbose:
                 printd(f'\n in {which_fit}, using device {self.device}')
@@ -355,6 +358,8 @@ class PCLAMIter(MessagePassing):
             # OPTIMIZATION LOOPS
             # for i in tqdm(range(n_iter), desc="feat opt"):
             for i in range(n_iter):
+                if i % print_every == 0:
+                    print(f"Iteration {i} out of {n_iter}")
                 try:
                     loss = iter_step()
                     losses.append(loss.item())

@@ -335,6 +335,7 @@ def cross_val_link(
         val_p,
         device,
         test_dyads_to_omit=None,
+        val_dyads_to_omit=None,
         attr_opt=False,
         plot_every=10000):
     
@@ -343,18 +344,20 @@ def cross_val_link(
     ds_test_val_omitted = None
     
     # ============ OMIT TEST =============
+    '''The dyad omitting process for the algorithm is described in the paper. if a test set is provided it's used and if not the test set is taken randomly with the percentage given and 5X the number of negative samples. The same goes to the val set: if it is not given it is sampled from the dyad set for every parameter configuration.'''
 
     try:
         
-        curr_file_dir = os.path.dirname(os.path.abspath(__file__))
+        curr_file_dir = os.path.dirname(os.path.abspath(__file__)) 
         
         save_path = os.path.join(curr_file_dir, 'results', 'link_prediction', ds_name, model_name, 'acc_configs.json')
         run_saver = SaveRun(model_name, ds_name, 'link_prediction', use_global_config_base, save_path, config_ranges=range_triplets)
         
         ds = import_dataset(ds_name)
+
         # OMIT TEST
         ds_test_omitted = ds.clone()
-        if test_dyads_to_omit is None:
+        if test_dyads_to_omit is None: 
             ds_test_omitted.omitted_dyads_test, ds_test_omitted.edge_index, ds_test_omitted.edge_attr = lp.get_dyads_to_omit(
                                                 ds.edge_index, 
                                                 ds.edge_attr, 
@@ -364,17 +367,30 @@ def cross_val_link(
             assert type(test_dyads_to_omit) == torch.tensor
             assert test_dyads_to_omit.shape[0] == 2
             ds_test_omitted.omitted_dyads_test = test_dyads_to_omit
-            
+            ds_test_omitted.omitted_dyads_test, ds_test_omitted.edge_index, ds_test_omitted.edge_attr = lp.omit_dyads
+            #todo: need to find where 
+        
+        if val_dyads_to_omit is not None:
+            #todo: if this condition holds also dont do the sampling at every iteration
+            assert type(val_dyads_to_omit) == torch.tensor
+            assert val_dyads_to_omit.shape[0] == 2
+            #! shouldn't i also change the ds_test_omitted edge_attr and edge index?
+            ds_test_omitted.omitted_dyads_val = val_dyads_to_omit
+          
+
         for values in itertools.product(*[triplet[2] for triplet in range_triplets]):
             for _ in range(n_reps): 
         
                 ds_test_val_omitted = ds_test_omitted.clone()
                 
                 # OMIT VALIDATION DYADS
-                ds_test_val_omitted.omitted_dyads_val, ds_test_val_omitted.edge_index, ds_test_val_omitted.edge_attr = lp.get_dyads_to_omit(
+                '''edge attr signifies if the edge is omitted or not. if the edge_attr is 0 then the edge is an omitted dyad.'''
+
+                if val_dyads_to_omit is None:
+                    ds_test_val_omitted.omitted_dyads_val, ds_test_val_omitted.edge_index, ds_test_val_omitted.edge_attr = lp.get_dyads_to_omit(
                                             ds_test_omitted.edge_index, 
                                             ds_test_omitted.edge_attr, 
-                                            ((val_p)/(1-test_p)))
+                                            ((val_p)/(1-test_p)))# the amount to extract from the remaining edges to get the initial extraction we wanted for val (size changes after removal).
 
                 # ============ OMIT VALIDATION =============
 

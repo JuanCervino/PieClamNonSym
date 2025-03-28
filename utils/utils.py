@@ -140,40 +140,40 @@ def unshuffle_node_feats(node_feats, perm):
 
 
 #! not in use
-def omit_dyads(data, dyads_to_omit):
+# def omit_dyads(data, dyads_to_omit):
         
-        ''' this function prepares the data for node ommition. it adds the non edges to omit to the edges array and creates a boolean mask for the edges to omit.
-        dyads_to_omit: (edges_to_omit, non_edges_to_omit)'''
+#         ''' this function prepares the data for node ommition. it adds the non edges to omit to the edges array and creates a boolean mask for the edges to omit.
+#         dyads_to_omit: (edges_to_omit, non_edges_to_omit)'''
 
-        assert len(dyads_to_omit) == 2, 'dyads_to_omit should be a tuple (edges_to_omit, non_edges_to_omit)'
+#         assert len(dyads_to_omit) == 2, 'dyads_to_omit should be a tuple (edges_to_omit, non_edges_to_omit)'
 
-        omitted_dyads_tot = torch.cat([dyads_to_omit[0], dyads_to_omit[1]], dim=1)
-        assert is_undirected(omitted_dyads_tot), 'edges in dyads_to_omit should be undirected'
+#         omitted_dyads_tot = torch.cat([dyads_to_omit[0], dyads_to_omit[1]], dim=1)
+#         assert is_undirected(omitted_dyads_tot), 'edges in dyads_to_omit should be undirected'
         
-        # Check that omitted nodes are unique
-        transform = RemoveDuplicatedEdges()
-        removed_duplicat = transform(data)
-        assert removed_duplicat.edge_index.shape[1] == data.edge_index.shape[1], 'edges in dyads_to_omit should be unique'
+#         # Check that omitted nodes are unique
+#         transform = RemoveDuplicatedEdges()
+#         removed_duplicat = transform(data)
+#         assert removed_duplicat.edge_index.shape[1] == data.edge_index.shape[1], 'edges in dyads_to_omit should be unique'
 
-        # add the non_edges_to_omit to the edge array
-        retained_edges = data.edge_index.clone()
+#         # add the non_edges_to_omit to the edge array
+#         retained_edges = data.edge_index.clone()
         
-        # Add the non edge dyads to the retained edges array
-        retained_with_omitted_non_edges = sort_edge_index(torch.cat([retained_edges, dyads_to_omit[1]], dim=1))
+#         # Add the non edge dyads to the retained edges array
+#         retained_with_omitted_non_edges = sort_edge_index(torch.cat([retained_edges, dyads_to_omit[1]], dim=1))
         
-        # merge the omitted edges to get the total vector of ommitted dyads
+#         # merge the omitted edges to get the total vector of ommitted dyads
 
-        # compare the two edge sets using broadcasting to find the mask.
-        retained_with_omitted_non_edges_chub = retained_with_omitted_non_edges.unsqueeze(-1)
-        omitted_edges_tot_chub = omitted_dyads_tot.unsqueeze(-1).transpose(1,2)
-        eq_tens = (retained_with_omitted_non_edges_chub == omitted_edges_tot_chub).prod(dim=0)
-        edge_mask = eq_tens.sum(dim=1)
-        #? TESTED that the edge mask has as many elements as in the omitted tensor (8 in the test case)
-        #? TESTED that every omitted node appears once
-        #? TESTED that retained_with_omitted_non_edges[:,edge_mask.bool()] == omitted_dyads_tot
+#         # compare the two edge sets using broadcasting to find the mask.
+#         retained_with_omitted_non_edges_chub = retained_with_omitted_non_edges.unsqueeze(-1)
+#         omitted_edges_tot_chub = omitted_dyads_tot.unsqueeze(-1).transpose(1,2)
+#         eq_tens = (retained_with_omitted_non_edges_chub == omitted_edges_tot_chub).prod(dim=0)
+#         edge_mask = eq_tens.sum(dim=1)
+#         #? TESTED that the edge mask has as many elements as in the omitted tensor (8 in the test case)
+#         #? TESTED that every omitted node appears once
+#         #? TESTED that retained_with_omitted_non_edges[:,edge_mask.bool()] == omitted_dyads_tot
         
-        data.edge_index = retained_with_omitted_non_edges
-        data.edge_attr = edge_mask
+#         data.edge_index = retained_with_omitted_non_edges
+#         data.edge_attr = edge_mask
     
 #! not in use
 def several_omits(data, num_sets, percentage_edges, percentage_non_edges=None, same_number=True):

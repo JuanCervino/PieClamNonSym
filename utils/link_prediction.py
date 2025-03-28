@@ -1,5 +1,5 @@
 import torch
-from torch_geometric import utils as upg
+from torch_geometric import utils
 from torch_geometric.data import Data
 import numpy as np
 from sklearn.metrics import roc_curve, roc_auc_score
@@ -10,7 +10,6 @@ from utils import utils
 from utils import utils_pyg as up
 
 
-
 def get_dyads_to_omit(
           edge_index, 
           edge_attr, 
@@ -19,7 +18,7 @@ def get_dyads_to_omit(
         #   omitted_previously=(torch.empty(2, 0), torch.empty(2, 0))
           ):
     '''
-    the edges that have attr 0 are omitted. the non edges that are omitted are inserted into the edge index.
+    the edges that have attr 0 are omitted (edges and non edges). the non edges that are omitted are inserted into the edge index and also given attr 0.
     algo: 
     general idea: create 4 sets: A(pre-omitted dyads) = {were 0 in the beginning}, B(retained edges) = {were 1 in the beginning and are still 1}, C(newly omitted_edges) = {were 1 in the beginning and are now 0}, D(newly omitted non edges) = {sampled non edges that have attr are 0}
 
@@ -47,13 +46,14 @@ def get_dyads_to_omit(
     assert utils.is_undirected(A), 'A should be undirected'
     
     # 2. sample edges from (B or C) (this also rearanges them) - creating B and C.
+    #todo: where can i replace the sampling with existing dyads to omit
     B_or_C_rearanged, edge_mask_retain = up.edge_mask_drop_and_rearange(B_or_C, p_sample_edge)
     B = B_or_C_rearanged[:, edge_mask_retain]
     C = B_or_C_rearanged[:, ~edge_mask_retain]
 
     # 3. sample D from the non edges using negative sampling.
     num_edges = edge_index.shape[1]
-    D = upg.sort_edge_index(upg.negative_sampling(
+    D = utils.sort_edge_index(utils.negative_sampling(
                             edge_index, 
                             num_neg_samples=math.floor(num_edges*p_sample_non_edge), 
                             force_undirected=True))
@@ -86,9 +86,18 @@ def omit_dyads(
     C - edges to omit
     D - non edges to omit
     '''
-
+    #todo: need to assert that dyads_to_omit[0] is in edge_index and that dyads_to_omit[1] is not at all in edge_index
+    # Assert that dyads_to_omit[0] (C) is in edge_index
     C = dyads_to_omit[0]
     D = dyads_to_omit[1]
+    
+    C_set = set(map(tuple, C.t().tolist()))
+    D_set = set(map(tuple, D.t().tolist()))
+    edge_index_set = set(map(tuple, edge_index.t().tolist()))
+    assert C_set.issubset(edge_index_set), "dyads_to_omit[0] must be a subset of edge_index"
+    assert D_set.isdisjoint(edge_index_set), "dyads_to_omit[1] must not overlap with edge_index"
+
+    
     A = edge_index[:, ~edge_attr]
     
     # B is the retaied edges so i need to get the set of 
@@ -97,7 +106,6 @@ def omit_dyads(
     assert utils.is_undirected(A), 'A should be undirected'
     
 
-    C_set = set(map(tuple, C.t().tolist()))
     B_or_C_set = set(map(tuple, B_or_C.t().tolist()))
     B_set = B_or_C_set - C_set
     B = torch.tensor(list(B_set), dtype=torch.long).t()
@@ -110,62 +118,6 @@ def omit_dyads(
     dyads_to_omit = ((C, D), edge_index_rearanged, edge_attr_rearanged)
     
     return dyads_to_omit
-
-
-# def omit_dyads(data, dyads_to_omit):
-        
-#         ''' this function prepares the data for dyad ommition. it adds the non edges to omit to the edges array and creates a boolean mask for the edges to omit.
-#         dyads_to_omit: (edges_to_omit, non_edges_to_omit). dropped dyads get the edge attr 0 and the retained edges get the edge attr 1.
-#         PARAM: dyads_to_omit: tuple 4 elements:'''
-            
-        
-        
-#         assert len(dyads_to_omit) == 4, 'dyads_to_omit should be a tuple (edges_to_omit, non_edges_to_omit, edge_index_rearanged, edge_mask_rearanged)'
-#         assert dyads_to_omit[2].shape[1] == data.edge_index.shape[1], 'dyads_to_omit[2] should be the same as self.data.edge_index but rearanged'
-#         assert utils.coalesce(dyads_to_omit[2]).shape[1] == data.edge_index.shape[1], 'dyads_to_omit[2] should be the same as self.data.edge_index but rearanged'
-
-
-
-#         omitted_dyads_tot = torch.cat([dyads_to_omit[0], dyads_to_omit[1]], dim=1)
-        
-#         rearanged_edge_index = dyads_to_omit[2]
-#         rearanged_edge_index_with_omitted_non_edges = torch.cat([rearanged_edge_index, dyads_to_omit[1]], dim=1)
-#         edge_attr = torch.cat([dyads_to_omit[3], torch.zeros(dyads_to_omit[1].shape[1]).bool()])
-#         assert upg.is_undirected(rearanged_edge_index_with_omitted_non_edges), 'edges in dyads_to_omit should be undirected'
-#         assert (rearanged_edge_index_with_omitted_non_edges[:, ~edge_attr] == omitted_dyads_tot ).all(), 'edge_attr should be 0 for omitted dyads'
-#         assert rearanged_edge_index_with_omitted_non_edges.shape[1] == data.edge_index.shape[1] + dyads_to_omit[1].shape[1], 'rearanged_edge_index_with_omitted_non_edges should have the same number of edges as the original edge_index + the non edges to omit'
-#         # so edge_attr == 0 for omitted edges and ==1 for non omitted
-
-#         return rearanged_edge_index_with_omitted_non_edges, edge_attr
-
-
-
-# def omit_densify_split(
-#           data, 
-#           dyads_to_omit, 
-#           val_rel_size=0.0, 
-#           densify=False,
-#           clone=True):
-#         '''this function omits dyads from the data and densifies it. it also splits the omitted dyads into validation and test sets. the validation split is not used as the test set is split separately.
-#         '''
-#         if clone:
-#             data_clone = data.clone()
-#         else:
-#             data_clone = data
-#         #todo: make omit dyads handle a dataset that's already been omitted.
-#         data_clone.edge_index, data_clone.edge_attr = omit_dyads(data_clone, dyads_to_omit)
-#         #todo: densify: just do two hop densification and the attr for a densified node should be 1
-
-#         if densify:
-#             data_clone.edge_index, data_clone.edge_attr = up.my_two_hop(data_clone)
-
-#         omitted_val = ([dyads_to_omit[0][:, :round(dyads_to_omit[0].shape[1]*val_rel_size)], dyads_to_omit[1][:, :round(dyads_to_omit[1].shape[1]*val_rel_size)]])
-
-#         omitted_test = ([dyads_to_omit[0][:, round(dyads_to_omit[0].shape[1]*val_rel_size):], dyads_to_omit[1][:, round(dyads_to_omit[1].shape[1]*val_rel_size):]])
-
-#         data_clone.omitted_dyads = (omitted_test, omitted_val)
-#         return data_clone
-    
 
 
 

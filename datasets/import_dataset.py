@@ -19,6 +19,8 @@ import pandas as pd
 import random
 from collections import Counter
 
+from ogb.linkproppred import PygLinkPropPredDataset
+
 from datasets.simulations import simulate_dataset
 from datasets.data_utils import intersecting_tensor_from_non_intersecting_vec
 from utils.printing_utils import printd
@@ -29,6 +31,13 @@ from utils import utils
 def import_dataset(dataset_name, remove_data_feats=True, verbose=False):
     '''will import a dataset with the same name as the dataset_name parameter'''
     current_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    if dataset_name == 'ogbl-ddi':
+        dataset = PygLinkPropPredDataset(name = dataset_name, root = current_dir + '\OGB') 
+
+        split_edge = dataset.get_edge_split()
+        train_edge, valid_edge, test_edge = split_edge["train"], split_edge["valid"], split_edge["test"]
+        data = dataset[0] # pyg graph object containing only training edges'
 
     if dataset_name == 'facebook348':
         ''' in the facebook ego networks, the last node is the ego node.

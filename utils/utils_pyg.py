@@ -272,8 +272,10 @@ def edge_mask_drop_and_rearange(edge_index, p):
     drops edges with probability p.
     returns the edge index rearaged and the mask for the dropped edges
     it's important to get the rearanged edge_index to get the correct mask because it's hard to get it for undirected'''
+    
+    assert utils.is_undirected(edge_index), 'edge_index is directed'
     row, col = edge_index
-    edge_index_directed = edge_index[:, row < col]
+    edge_index_directed = edge_index[:, row < col] # the edge_index is assumed to be directed
 
     row_directed, col_directed = edge_index_directed
     
@@ -281,7 +283,7 @@ def edge_mask_drop_and_rearange(edge_index, p):
     
     edge_mask_retain = torch.cat([edge_mask_directed_retain, edge_mask_directed_retain])
     edge_index_orig_rearange = torch.cat([edge_index_directed, edge_index_directed.flip(0)], dim=1)
-    #! very important to use the new edge index otherwise the positions of the dropped edges is not correct!
+    # very important to use the new edge index otherwise the positions of the dropped edges is not correct!
     return edge_index_orig_rearange, edge_mask_retain
 
 
