@@ -8,6 +8,7 @@ import math
 
 from utils import utils
 from utils import utils_pyg as up
+from ogb.linkproppred import Evaluator
 
 
 def get_dyads_to_omit(
@@ -120,12 +121,29 @@ def omit_dyads(
     return dyads_to_omit
 
 
+#todo: here add another function for when we need to use the ogb evaluator. 
+#todo: the ogb eveluator takes a list of positive predictions and negative predictions. they should be the 
+
+def hAk_omitted_dyads(x, lorenz, dyads_to_omit=None, prior=None, use_prior=False):
+    
+    evaluator = Evaluator(name='ogbl-ddi')
+    
+    edges_coords_0, edges_coords_1 = utils.edges_by_coords(Data(x=x, edge_index=dyads_to_omit[0]))
+
+    non_edges_coords_0, non_edges_coords_1 = utils.edges_by_coords(Data(x=x, edge_index=dyads_to_omit[1]))
+
+    edge_probs = utils.get_edge_probs_from_edges_coords(edges_coords_0, edges_coords_1, lorenz, prior, use_prior)
+    non_edge_probs = utils.get_edge_probs_from_edges_coords(non_edges_coords_0, non_edges_coords_1, lorenz, prior, use_prior)
+    # when an edge_index gets undirected, the first half is the same as the previous
+    #! careful! must not have duplicate edges!
+    # directed_dyads_for_test = (dyad_set) 
 
 
 def roc_of_omitted_dyads(x, lorenz, dyads_to_omit=None, prior=None, use_prior=False, verbose=False):
     '''calculates the minimun distance from 0,1 in the roc curve and the auc. mathematically there is no sense in using the prior'''
     if dyads_to_omit is None:
         return {'auc': 0.0}
+    #todo: make sure that this function does what it's supposed to
     edges_coords_0, edges_coords_1 = utils.edges_by_coords(Data(x=x, edge_index=dyads_to_omit[0]))
 
     non_edges_coords_0, non_edges_coords_1 = utils.edges_by_coords(Data(x=x, edge_index=dyads_to_omit[1]))

@@ -7,6 +7,7 @@ import os
 from copy import deepcopy
 import itertools
 from torch_geometric.transforms import TwoHop
+from torch_geometric import utils
 
 import sys
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -368,10 +369,11 @@ def cross_val_link(
                                                 ds.edge_attr, 
                                                 test_p)
             
+            
         else:
-            assert type(test_dyads_to_omit) == torch.tensor
-            assert test_dyads_to_omit.shape[0] == 2
-
+            assert type(test_dyads_to_omit) == tuple
+            assert utils.is_undirected(test_dyads_to_omit[0]) and utils.is_undirected(test_dyads_to_omit[1])
+            
             ds_test_omitted.omitted_dyads_test, ds_test_omitted.edge_index, ds_test_omitted.edge_attr = lp.omit_dyads(ds_test_omitted.edge_index,
                                       ds_test_omitted.edge_attr,
                                       test_dyads_to_omit)
@@ -379,8 +381,9 @@ def cross_val_link(
         
         if val_dyads_to_omit is not None:
             #todo: if this condition holds also dont do the sampling at every iteration
-            assert type(val_dyads_to_omit) == torch.tensor
-            assert val_dyads_to_omit.shape[0] == 2
+            assert type(val_dyads_to_omit) == tuple
+            assert utils.is_undirected(val_dyads_to_omit[0]) and utils.is_undirected(val_dyads_to_omit[1])
+
             ds_test_omitted.omitted_dyads_val = val_dyads_to_omit
             ds_test_omitted.omitted_dyads_val, ds_test_omitted.edge_index, ds_test_omitted.edge_attr = lp.omit_dyads(
                             ds_test_omitted.edge_index, 
@@ -454,7 +457,7 @@ def cross_val_link(
                 else:
                     last_acc_val = None
                 run_saver.update_file((last_acc_test, last_acc_val), config_triplets)
-                
+            
                 del ds_test_val_omitted
                 ds_test_val_omitted = None
                 torch.cuda.empty_cache()

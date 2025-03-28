@@ -1040,7 +1040,7 @@ class AccTrack:
                 self.accuracies_test = {'vanilla_star': []}
                 
     
-    
+    #todo: question: does the fact that i'm doing this on double the edges (meaning the same edge) matter?
         elif task == 'link_prediction':
             self.lorenz = kwargs.get('lorenz', None)
             if self.graph.omitted_dyads_test is None or self.lorenz is None:
@@ -1072,7 +1072,8 @@ class AccTrack:
             
             
     def get_intermediate_accuracies(self, losses, measurement_interval=None):
-        ''' get the accuracies after a certain number of iterations'''
+        ''' get the accuracies after a certain number of iterationsץ
+        measurement_interval: for filling the losses of one function when the other is training'''
         
         if measurement_interval is None:
             measurement_interval = self.acc_every
@@ -1099,8 +1100,9 @@ class AccTrack:
   
         elif self.task == 'link_prediction':
             # the test and val set are independent of each other as the test set is "given" and the validation is chosen 
-            # todo: add another method for when there is a prior in which you multiply with the prior probability
+            # todo: i wonder whether to make a different dictionary label. do i just add a parameter for the optimization? i think i should, to cross val or something.
             def calc_auc_and_append(self, test_or_val):
+                '''commands that are in use many times'''
                 omitted_tup = self.graph.omitted_dyads_test if test_or_val == 'test' else self.graph.omitted_dyads_val
                 auc_score = lp.roc_of_omitted_dyads(
                         self.graph.x, 
@@ -1117,7 +1119,7 @@ class AccTrack:
                 for keys in self.accuracies_test.keys():
                     self.accuracies_test[keys] += [locals()[f'{keys}_test']]*measurement_interval
                     self.accuracies_test[keys][-1] += eps
-
+            
             if hasattr(self.graph, 'omitted_dyads_val'): 
                 if self.graph.omitted_dyads_val[0].numel() > 0:
                     auc_val = calc_auc_and_append(self, 'val')

@@ -24,7 +24,7 @@ from ogb.linkproppred import PygLinkPropPredDataset
 from datasets.simulations import simulate_dataset
 from datasets.data_utils import intersecting_tensor_from_non_intersecting_vec
 from utils.printing_utils import printd
-from utils import utils
+from utils import utils as utils
 
 
 
@@ -33,21 +33,32 @@ def import_dataset(dataset_name, remove_data_feats=True, verbose=False):
     current_dir = os.path.dirname(os.path.abspath(__file__))
     
     if dataset_name == 'ogbl-ddi':
-            '''this dataaset is only for link prediction.
-            the dataset comes with an edge index and a split with a train edge index set that is the directed version of the edge index.'''
+        '''this dataaset is only for link prediction.
+        the dataset comes with an edge index and a split with a train edge index set that is the directed version of the edge index.
+        the dataset doesn't contain isolated nodes or any duplicate edges.'''
 
-            dataset = PygLinkPropPredDataset(name=dataset_name, root='datasets/OGB') 
-            split_edge = dataset.get_edge_split()
-            valid_edge, test_edge = split_edge["valid"], split_edge["test"]
-            
-            data = dataset[0]
-            data.test_dyads_to_omit = [utils.to_undirected(test_edge['edge'].t()), 
-                                utils.to_undirected(test_edge['edge_neg'].t())]
-            data.val_dyads_to_omit = [utils.to_undirected(valid_edge['edge'].t()), 
-                                utils.to_undirected(valid_edge['edge_neg'].t())]
-            
-            data.edge_attr = torch.ones(data.edge_index.shape[1], dtype=torch.bool)                           
+        dataset = PygLinkPropPredDataset(name = dataset_name, root = 'datasets/OGB') 
+        split_edge = dataset.get_edge_split()
+        valid_edge, test_edge = split_edge["valid"], split_edge["test"]
+        
+        data = dataset[0]
+        
+        data.val_dyads_to_omit = (to_undirected(valid_edge['edge'].t()), 
+                             to_undirected(valid_edge['edge_neg'].t()))
+        data.test_dyads_to_omit = (to_undirected(test_edge['edge'].t()), 
+                              to_undirected(test_edge['edge_neg'].t()))
+        
+        new_edge_index = torch.cat([data.edge_index, 
+                                    data.val_dyads_to_omit[0], 
+                                    data.test_dyads_to_omit[0]], 
+                                   dim=1)
+        
+        # data.edge_attr = torch.cat([torch.ones(data.edge_index.shape[1]), 
+        #                             torch.zeros(data.val_dyads_to_omit[0].shape[1]),
+        #                             torch.zeros(data.test_dyads_to_omit[0].shape[1])])
+        data.edge_attr = torch.ones(new_edge_index.shape[1])
 
+        data.edge_index = new_edge_index
 
     elif dataset_name == 'squirrel':
         edges_df = pd.read_csv('../datasets/wikipedia/squirrel/musae_squirrel_edges.csv')

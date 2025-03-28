@@ -282,7 +282,7 @@ class Trainer():
             verbose_in_funcs=False,
             node_feats_for_init=None,
             **kwargs):
-        
+        #todo: making things verbose
         '''train one of the 4 models (bool vanilla, bool lorenz) on the given parameters. 
         You can chose to omit dyads from the calculation, dyads are a tuple (edges_to_omit, non_edges_to_omit).
         If only params_name is given, train on the optimal parameters as saved.
