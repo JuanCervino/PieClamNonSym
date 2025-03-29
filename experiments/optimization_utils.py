@@ -350,6 +350,7 @@ def cross_val_link(
         val_p=0.0,
         test_dyads_to_omit=None,
         val_dyads_to_omit=None,
+        # test_only=False
         metric='auc',
         attr_opt=False,
         acc_every=20,
@@ -396,20 +397,6 @@ def cross_val_link(
                                                 ds.edge_attr, 
                                                 test_p)
              
-        # if test_dyads_to_omit is None: 
-        #     ds_test_omitted.omitted_dyads_test, ds_test_omitted.edge_index, ds_test_omitted.edge_attr = lp.get_dyads_to_omit(
-        #                                         ds.edge_index, 
-        #                                         ds.edge_attr, 
-        #                                         test_p)
-            
-            
-        # else:
-        #     assert type(test_dyads_to_omit) == tuple
-        #     assert utils.is_undirected(test_dyads_to_omit[0]) and utils.is_undirected(test_dyads_to_omit[1])
-            
-        #     ds_test_omitted.omitted_dyads_test, ds_test_omitted.edge_index, ds_test_omitted.edge_attr = lp.omit_dyads(ds_test_omitted.edge_index,
-        #                               ds_test_omitted.edge_attr,
-        #                               test_dyads_to_omit)
             
         
         if val_dyads_to_omit is not None:
