@@ -8,7 +8,6 @@ import math
 
 from utils import utils
 from utils import utils_pyg as up
-from ogb.linkproppred import Evaluator
 
 
 def get_dyads_to_omit(
@@ -124,26 +123,35 @@ def omit_dyads(
 #todo: here add another function for when we need to use the ogb evaluator. 
 #todo: the ogb eveluator takes a list of positive predictions and negative predictions. they should be the 
 
-def hAk_omitted_dyads(x, lorenz, dyads_to_omit=None, prior=None, use_prior=False):
+def ogb_hAk_omitted_dyads(x, lorenz, dyads_to_omit=None, prior=None, use_prior=False):
+    '''returns the arrays of probabilities for both edges and non edges from the omit set'''
+    #! dyads to omit need to be both for test and for val
+    # evaluator = Evaluator(name='ogbl-ddi')
     
-    evaluator = Evaluator(name='ogbl-ddi')
+    if dyads_to_omit is None:
+        return {'ogb_hAk': 0.0}
     
+    #todo: i want to give it half of the  
+
     edges_coords_0, edges_coords_1 = utils.edges_by_coords(Data(x=x, edge_index=dyads_to_omit[0]))
 
     non_edges_coords_0, non_edges_coords_1 = utils.edges_by_coords(Data(x=x, edge_index=dyads_to_omit[1]))
 
     edge_probs = utils.get_edge_probs_from_edges_coords(edges_coords_0, edges_coords_1, lorenz, prior, use_prior)
     non_edge_probs = utils.get_edge_probs_from_edges_coords(non_edges_coords_0, non_edges_coords_1, lorenz, prior, use_prior)
-    # when an edge_index gets undirected, the first half is the same as the previous
-    #! careful! must not have duplicate edges!
-    # directed_dyads_for_test = (dyad_set) 
 
+    # the following arrays are identical to the valid/test splits
+    edge_probs_ogb = edge_probs[:, :edge_probs.shape[1]//2]
+    non_edge_probs_ogb = non_edge_probs[:, :non_edge_probs.shape[1]//2]
+    return edge_probs_ogb, non_edge_probs_ogb 
+    
 
+#todo: can i still do it if i change the edge_attr when loading the dataset?
 def roc_of_omitted_dyads(x, lorenz, dyads_to_omit=None, prior=None, use_prior=False, verbose=False):
     '''calculates the minimun distance from 0,1 in the roc curve and the auc. mathematically there is no sense in using the prior'''
     if dyads_to_omit is None:
         return {'auc': 0.0}
-    #todo: make sure that this function does what it's supposed to
+    
     edges_coords_0, edges_coords_1 = utils.edges_by_coords(Data(x=x, edge_index=dyads_to_omit[0]))
 
     non_edges_coords_0, non_edges_coords_1 = utils.edges_by_coords(Data(x=x, edge_index=dyads_to_omit[1]))

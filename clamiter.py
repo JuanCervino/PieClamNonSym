@@ -17,6 +17,8 @@ from sklearn.cluster import KMeans
 import time
 import os
 import json
+from ogb.linkproppred import Evaluator
+
 
 from transformation import  RealNVP, relu_lightcone, relu_transform, uv_from_xt
 from utils.plotting import *
@@ -1100,7 +1102,25 @@ class AccTrack:
   
         elif self.task == 'link_prediction':
             # the test and val set are independent of each other as the test set is "given" and the validation is chosen 
-            # todo: i wonder whether to make a different dictionary label. do i just add a parameter for the optimization? i think i should, to cross val or something.
+            # todo: add calculation mode for calc ogb hak
+            def calc_ogb_hAk(self):
+                evaluator = Evaluator(name=self.graph.name)
+                
+                edge_probs_val, non_edge_probs_val = lp.ogb_hAk_omitted_dyads(
+                    self.graph.x,
+                    self.lorenz,
+                    self.graph.omitted_dyads_val
+                )
+                edge_probs_test, non_edge_probs_test = lp.ogb_hAk_omitted_dyads(
+                    self.graph.x.
+                    self.lorenz,
+                    self.graph.omitted_dyads_test
+                )
+                val_score = evaluator(edge_probs_val, non_edge_probs_val)
+                test_score = evaluator(edge_probs_test, non_edge_probs_test)
+
+                #todo: need to insert these into the acc dictionary. also, there will be a need to do this without omitting val
+                #! continue from here
             def calc_auc_and_append(self, test_or_val):
                 '''commands that are in use many times'''
                 omitted_tup = self.graph.omitted_dyads_test if test_or_val == 'test' else self.graph.omitted_dyads_val
@@ -1114,6 +1134,7 @@ class AccTrack:
                 return auc_score
 
             if self.graph.omitted_dyads_test[0].numel() > 0:
+                # note: the variable is grayed out but it's actually in use in the "locals" function below
                 auc_test = calc_auc_and_append(self, 'test')
 
                 for keys in self.accuracies_test.keys():
@@ -1122,7 +1143,8 @@ class AccTrack:
             
             if hasattr(self.graph, 'omitted_dyads_val'): 
                 if self.graph.omitted_dyads_val[0].numel() > 0:
-                    auc_val = calc_auc_and_append(self, 'val')
+                    # note: the variable is grayed out but it's actually in use in the "locals" function below
+                    auc_val = calc_auc_and_append(self, 'val') 
                     for keys in self.accuracies_val.keys(): 
                         self.accuracies_val[keys] += [locals()[f'{keys}_val']]*measurement_interval
                         self.accuracies_val[keys][-1] += eps    

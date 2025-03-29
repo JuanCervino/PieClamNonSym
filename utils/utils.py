@@ -18,6 +18,7 @@ from utils import utils_pyg as up
 from utils.printing_utils import printd
 
 
+
 import os
 from math import floor
 import json
@@ -25,6 +26,14 @@ import os
 import shutil
 import matplotlib.pyplot as plt
 
+
+def has_duplicates(edge_index):
+    edge_list = edge_index.t().tolist()
+    return len(edge_list) != len(set(map(tuple, edge_list)))
+
+def undirect_unsorted(edge_index):
+    assert not has_duplicates(edge_index), 'the edge index contains duplicate edges'
+    return torch.cat([edge_index, edge_index[[1,0]]], dim=1)
 
 def vanilla_model(model_name):
     if model_name == 'bigclam' or model_name == 'pclam':

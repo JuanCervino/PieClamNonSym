@@ -226,6 +226,9 @@ class SaveRun:
         if "config_ranges" in data.keys():
             config_ranges = data.pop("config_ranges")
         base_config = data.pop("base_config")
+        #todo: if nothing is popped then dont print anything
+        if data == {}:
+            grouped = pd.DataFrame()
         if print_base:
             print(base_config)
         if print_config_ranges:
@@ -363,20 +366,34 @@ def cross_val_link(
 
         # OMIT TEST
         ds_test_omitted = ds.clone()
-        if test_dyads_to_omit is None: 
-            ds_test_omitted.omitted_dyads_test, ds_test_omitted.edge_index, ds_test_omitted.edge_attr = lp.get_dyads_to_omit(
-                                                ds.edge_index, 
-                                                ds.edge_attr, 
-                                                test_p)
-            
-            
-        else:
+        if test_dyads_to_omit is not None:
             assert type(test_dyads_to_omit) == tuple
             assert utils.is_undirected(test_dyads_to_omit[0]) and utils.is_undirected(test_dyads_to_omit[1])
             
             ds_test_omitted.omitted_dyads_test, ds_test_omitted.edge_index, ds_test_omitted.edge_attr = lp.omit_dyads(ds_test_omitted.edge_index,
                                       ds_test_omitted.edge_attr,
                                       test_dyads_to_omit)
+        else:
+
+           ds_test_omitted.omitted_dyads_test, ds_test_omitted.edge_index, ds_test_omitted.edge_attr = lp.get_dyads_to_omit(
+                                                ds.edge_index, 
+                                                ds.edge_attr, 
+                                                test_p)
+             
+        # if test_dyads_to_omit is None: 
+        #     ds_test_omitted.omitted_dyads_test, ds_test_omitted.edge_index, ds_test_omitted.edge_attr = lp.get_dyads_to_omit(
+        #                                         ds.edge_index, 
+        #                                         ds.edge_attr, 
+        #                                         test_p)
+            
+            
+        # else:
+        #     assert type(test_dyads_to_omit) == tuple
+        #     assert utils.is_undirected(test_dyads_to_omit[0]) and utils.is_undirected(test_dyads_to_omit[1])
+            
+        #     ds_test_omitted.omitted_dyads_test, ds_test_omitted.edge_index, ds_test_omitted.edge_attr = lp.omit_dyads(ds_test_omitted.edge_index,
+        #                               ds_test_omitted.edge_attr,
+        #                               test_dyads_to_omit)
             
         
         if val_dyads_to_omit is not None:

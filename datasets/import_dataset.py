@@ -24,7 +24,7 @@ from ogb.linkproppred import PygLinkPropPredDataset
 from datasets.simulations import simulate_dataset
 from datasets.data_utils import intersecting_tensor_from_non_intersecting_vec
 from utils.printing_utils import printd
-from utils import utils as utils
+from utils import utils as my_utils
 
 
 
@@ -42,22 +42,23 @@ def import_dataset(dataset_name, remove_data_feats=True, verbose=False):
         valid_edge, test_edge = split_edge["valid"], split_edge["test"]
         
         data = dataset[0]
-        
-        data.val_dyads_to_omit = (to_undirected(valid_edge['edge'].t()), 
-                             to_undirected(valid_edge['edge_neg'].t()))
-        data.test_dyads_to_omit = (to_undirected(test_edge['edge'].t()), 
-                              to_undirected(test_edge['edge_neg'].t()))
+        #! problem: to_undirected changes the order of the edge_index so it's not easy to decide what to do with a given val and test set. maybe keep the initial list and pass that to the detector?
+
+        # data.val_edge_gt = valid_edge debug
+        # data.test_edge_gt = test_edge debug
+
+        # this method of to_undirected doesn't rearange the edge index
+        data.val_dyads_to_omit = (my_utils.undirect_unsorted(valid_edge['edge'].t()), 
+                             my_utils.undirect_unsorted(valid_edge['edge_neg'].t()))
+        data.test_dyads_to_omit = (my_utils.undirect_unsorted(test_edge['edge'].t()), 
+                              my_utils.undirect_unsorted(test_edge['edge_neg'].t()))
         
         new_edge_index = torch.cat([data.edge_index, 
                                     data.val_dyads_to_omit[0], 
                                     data.test_dyads_to_omit[0]], 
                                    dim=1)
         
-        # data.edge_attr = torch.cat([torch.ones(data.edge_index.shape[1]), 
-        #                             torch.zeros(data.val_dyads_to_omit[0].shape[1]),
-        #                             torch.zeros(data.test_dyads_to_omit[0].shape[1])])
         data.edge_attr = torch.ones(new_edge_index.shape[1])
-
         data.edge_index = new_edge_index
 
     elif dataset_name == 'squirrel':
