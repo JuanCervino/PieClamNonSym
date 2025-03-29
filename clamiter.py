@@ -361,9 +361,10 @@ class PCLAMIter(MessagePassing):
 
             # OPTIMIZATION LOOPS
             # for i in tqdm(range(n_iter), desc="feat opt"):
+            printd(f'staring {which_fit} for {n_iter} iterations')
             for i in range(n_iter):
-                if i % print_every == 0:
-                    print(f"Iteration {i} out of {n_iter}")
+                if i % print_every == 0 and verbose:
+                    printd(f"Iteration {i} out of {n_iter}")
                 try:
                     loss = iter_step()
                     losses.append(loss.item())
@@ -383,7 +384,19 @@ class PCLAMIter(MessagePassing):
                 
                 if (i+1)%plot_every == 0:
                     printd(f'\nfit wrapper {which_fit}, plotting state at iter {i}')
-                    acc_tracker.plot_intermediate(**kwargs)    
+                    acc_tracker.plot_intermediate(**kwargs)
+                    # Plot the last and best validation and test scores from acc_tracker
+                    if acc_tracker.accuracies_val is not None:
+                        last_val_scores = acc_tracker.get_latest_val_acc()
+                        best_val_scores, best_val_iters = acc_tracker.get_best_val_acc()
+                        print(f"Last Validation Scores: {last_val_scores}")
+                        print(f"Best Validation Scores: {best_val_scores} at iterations {best_val_iters}")
+
+                    last_test_scores = acc_tracker.get_latest_test_acc()
+                    best_test_scores, best_test_iters = acc_tracker.get_best_test_acc()
+                    print(f"Last Test Scores: {last_test_scores}")
+                    print(f"Best Test Scores: {best_test_scores} at iterations {best_test_iters}")
+                    #todo: print the last and best acc values    
             # ========================================== end for loop
            
             # LAST CALC ACCS            
@@ -1119,6 +1132,7 @@ class AccTrack:
         elif self.task == 'link_prediction':
             # the test and val set are independent of each other as the test set is "given" and the validation is chosen 
             def calc_ogb_hAk(test_or_val):
+                #todo: rename to hits20
                 omitted_tup = self.graph.omitted_dyads_test if test_or_val == 'test' else self.graph.omitted_dyads_val
                 evaluator = Evaluator(name=self.graph.name)
                 edge_probs, non_edge_probs = lp.ogb_hAk_omitted_dyads(
@@ -1127,8 +1141,11 @@ class AccTrack:
                     omitted_tup
                 )
               
-                hAk_score = evaluator(edge_probs, non_edge_probs)
-                return hAk_score
+                hAk_score = evaluator.eval({
+                    'y_pred_pos': edge_probs, 
+                    'y_pred_neg': non_edge_probs
+                    })
+                return hAk_score['hits@20']
 
 
             def calc_auc_and_append(test_or_val):

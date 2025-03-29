@@ -131,8 +131,7 @@ def ogb_hAk_omitted_dyads(x, lorenz, dyads_to_omit=None, prior=None, use_prior=F
     if dyads_to_omit is None:
         return {'ogb_hAk': 0.0}
     
-    #todo: i want to give it half of the  
-
+    # get the edges by coords of the dyads to omit right now i just get the dyads to omit
     edges_coords_0, edges_coords_1 = utils.edges_by_coords(Data(x=x, edge_index=dyads_to_omit[0]))
 
     non_edges_coords_0, non_edges_coords_1 = utils.edges_by_coords(Data(x=x, edge_index=dyads_to_omit[1]))
@@ -141,8 +140,8 @@ def ogb_hAk_omitted_dyads(x, lorenz, dyads_to_omit=None, prior=None, use_prior=F
     non_edge_probs = utils.get_edge_probs_from_edges_coords(non_edges_coords_0, non_edges_coords_1, lorenz, prior, use_prior)
 
     # the following arrays are identical to the valid/test splits
-    edge_probs_ogb = edge_probs[:, :edge_probs.shape[1]//2]
-    non_edge_probs_ogb = non_edge_probs[:, :non_edge_probs.shape[1]//2]
+    edge_probs_ogb = edge_probs[:edge_probs.shape[0]//2]
+    non_edge_probs_ogb = non_edge_probs[:non_edge_probs.shape[0]//2]
     return edge_probs_ogb, non_edge_probs_ogb 
     
 

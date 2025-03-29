@@ -74,9 +74,9 @@ class Trainer():
                  prior=None,
                  attr_opt=False, # move to clamiter init configs
                  attr_transform='auto',
-                 inflation_flow_name=None,
+                 inflation_flow_name=None, #for the normalizing flows
                  optimizer=None, 
-                 metric = 'auc',
+                 metric = None,
                  scheduler=None):
         
         self.metric = metric
@@ -272,12 +272,17 @@ class Trainer():
         self.configs_dict = set_multiple_configs(self.configs_dict, config_triplets)
         return
 
+# 888888 88""Yb    db    88 88b 88 
+#   88   88__dP   dPYb   88 88Yb88 
+#   88   88"Yb   dP__Yb  88 88 Y88 
+#   88   88  Yb dP""""Yb 88 88  Y8 
+    #todo: make a train more function!
     def train(self,
             init_type='small_gaus', 
             val_rel_size=0.3,
             init_feats=False, 
             acc_every=200, 
-            performance_metric=None,
+            metric=None,
             prior_fit_mask=None, 
             plot_every=-1, 
             verbose=False, 
@@ -305,7 +310,7 @@ class Trainer():
 
         if plot_every == 1:
             if self.model_name == 'bigclam' or self.model_name == 'ieclam':
-                raise ValueError('plot_every=1 is not supported for non prior models.')
+                raise ValueError('plot_every=1 is not supported for non prior models, it should plot at alternations')
 
         if not verbose:
             verbose_in_funcs = False
