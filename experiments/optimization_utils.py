@@ -341,7 +341,9 @@ def cross_val_link(
         test_dyads_to_omit=None,
         val_dyads_to_omit=None,
         attr_opt=False,
-        plot_every=10000):
+        plot_every=10000,
+        verbose=False,
+        verbose_in_funcs=False):
     
     ds = None
     ds_test_omitted = None
@@ -397,7 +399,6 @@ def cross_val_link(
             
         
         if val_dyads_to_omit is not None:
-            #todo: if this condition holds also dont do the sampling at every iteration
             assert type(val_dyads_to_omit) == tuple
             assert utils.is_undirected(val_dyads_to_omit[0]) and utils.is_undirected(val_dyads_to_omit[1])
 
@@ -459,11 +460,11 @@ def cross_val_link(
                             init_feats=True,
                             acc_every=20,
                             plot_every=plot_every,
-                            verbose=False,
-                            verbose_in_funcs=False
+                            verbose=verbose,
+                            verbose_in_funcs=verbose_in_funcs
                         )
                 
-                
+                # train returns acc test and acc val lists.
                 if acc_test['auc']:
                     last_acc_test = acc_test['auc'][-1]
                 else:
