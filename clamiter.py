@@ -272,6 +272,7 @@ class PCLAMIter(MessagePassing):
                     cutoff=0.0, 
                     verbose=False,
                     acc_every=10,
+                    metric='auc',
                     print_every=100000, 
                     plot_every=100000,
                     **kwargs
@@ -299,7 +300,7 @@ class PCLAMIter(MessagePassing):
             param: node_mask: a mask for the nodes to optimize, the rest should stay unchanged'''
             # kwargs are: 
             #       node_mask=None, 
-            #       performance_metric=None,
+            #       metric=None,
             
             
 
@@ -321,7 +322,8 @@ class PCLAMIter(MessagePassing):
 
             acc_tracker = AccTrack(clamiter=self, 
                                 graph=graph, 
-                                task=task, 
+                                task=task,
+                                metric=metric, 
                                 acc_every=acc_every,
                                 calling_function_name=which_fit,
                                 lorenz=self.lorenz,
@@ -414,7 +416,7 @@ class PCLAMIter(MessagePassing):
                   lr, 
                   task,
                   node_mask=None, 
-                  performance_metric=None,
+                  metric=None,
                   early_stop=0,
                   cutoff=0.0, 
                   verbose=False,
@@ -431,7 +433,7 @@ class PCLAMIter(MessagePassing):
                                 task=task,
                                 which_fit='fit_feats',
                                 node_mask=node_mask,
-                                performance_metric=performance_metric,
+                                metric=metric,
                                 early_stop=early_stop,
                                 cutoff=cutoff, 
                                 verbose=verbose,
@@ -453,7 +455,7 @@ class PCLAMIter(MessagePassing):
                   acc_every=10,
                   weight_decay=None,
                   task='anomaly_unsupervised', 
-                  performance_metric=None,
+                  metric=None,
                   early_stop=0,
                   noise_amp=0.01, 
                   verbose=False,
@@ -473,7 +475,7 @@ class PCLAMIter(MessagePassing):
                                 noise_amp=noise_amp,
                                 optimizer=optimizer,
                                 node_mask=node_mask,
-                                performance_metric=performance_metric,
+                                metric=metric,
                                 early_stop=early_stop,
                                 cutoff=0.0, 
                                 verbose=verbose,
@@ -497,7 +499,7 @@ class PCLAMIter(MessagePassing):
             acc_every=20,
             early_stop_fit=0,
             early_stops=None,
-            performance_metric=None,
+            metric=None,
             configs_dict=None,
             task='anomaly_unsupervised',
             verbose_in_funcs=False,
@@ -534,7 +536,7 @@ class PCLAMIter(MessagePassing):
                             verbose=verbose_in_funcs,
                             task=task,
                             acc_every=acc_every,
-                            performance_metric=performance_metric,
+                            metric=metric,
                             **feat_params,
                             **params)
         
@@ -544,7 +546,7 @@ class PCLAMIter(MessagePassing):
                             optimizer=optimizer,
                             task=task,
                             acc_every=acc_every,
-                            performance_metric=performance_metric,
+                            metric=metric,
                             verbose=verbose_in_funcs, 
                             **prior_params,
                             **params)
@@ -575,7 +577,8 @@ class PCLAMIter(MessagePassing):
         # acc_tracker updates the accuracies after every round
         acc_tracker = AccTrack(clamiter=self, 
                                 graph=graph, 
-                                task=task, 
+                                task=task,
+                                metric=metric, 
                                 acc_every=acc_every,
                                 calling_function_name='fit',
                                 lorenz=self.lorenz,
@@ -1008,7 +1011,7 @@ class AccTrack:
     def __init__(self, 
                  clamiter, 
                  graph, 
-                 task, 
+                 task,
                  calling_function_name, 
                  acc_every,
                  **kwargs 
@@ -1018,7 +1021,11 @@ class AccTrack:
         # trainer should be an option as well
         self.task = task # trainer knows the model and dataset. does it matter? i think not.  
         self.acc_every = acc_every
-        
+        self.metric = kwargs.get('metric', None)
+        self.lorenz = kwargs.get('lorenz', None)
+
+
+
         self.clamiter = clamiter
         self.graph = graph
         self.calling_function_name = calling_function_name
@@ -1030,31 +1037,39 @@ class AccTrack:
         # different conditions if its a vanilla, not vanilla, feat, prior fit even...... 
         # what is the difference between the prior and feats when collecting data? vanilla stuff shouldn't change when optimizing the prior... but we can collect them the same way why not?
         if task == 'anomaly_unsupervised':
+            # for anomaly, metric can only be auc
+            #! why is there no reference to lorenz here?
+            if self.metric is None:
+                raise ValueError('metric needs to be given to AccTrack class if the task is anomaly detection')
             
-            if self.clamiter.prior is not None:
-
-                # ANOMALY acc test init
-                self.accuracies_test = {'vanilla_star': [], 'prior': [], 'prior_star': []}
-                
-                # LINK earlystop
-                
-            else: # VANILLA init auc early stop 
-                self.accuracies_test = {'vanilla_star': []}
-                
+            if self.metric=='auc':
+                if self.clamiter.prior is not None:
+                    
+                    # ANOMALY acc test init
+                    self.accuracies_test = {'vanilla_star': [], 'prior': [], 'prior_star': []}
+                    
+                    # LINK earlystop
+                    
+                else: # VANILLA init auc early stop 
+                    self.accuracies_test = {'vanilla_star': []}
+                    
     
     #todo: question: does the fact that i'm doing this on double the edges (meaning the same edge) matter?
         elif task == 'link_prediction':
-            self.lorenz = kwargs.get('lorenz', None)
+            
             if self.graph.omitted_dyads_test is None or self.lorenz is None:
                 raise ValueError('in AccTrack, omitted_dyads_test and lorenz should be given')
-            
-            self.accuracies_test = {'auc': []}    
+            if self.metric is None:
+                raise ValueError('metric needs to be given to AccTrack class if the task is link prediction')
+            self.accuracies_test = {self.metric: []}    
 
             # self.accuracies_val = []
-            self.accuracies_val = {'auc': []}
+            self.accuracies_val = {self.metric: []}
 
 
         elif task == 'distance':
+            #todo: in here change to depend on metric variable
+            #todo: maybe metrics should be a list of metrics to take
             self.d = kwargs.get('d', None)
             self.calculate_cut = kwargs.get('calculate_cut', False)
             self.metric_log_cut = lambda data : utils.cut_log_data(data, self.clamiter.lorenz, d=self.d, return_d=True)
@@ -1083,45 +1098,40 @@ class AccTrack:
         self.losses = losses
    
         if self.task == 'anomaly_unsupervised':
-            if self.clamiter.prior is not None:              
-                auc_vanilla_star_anomaly, auc_prior_anomaly, auc_prior_star_anomaly = all_types_classify(
-                                                        self.clamiter, 
-                                                        self.graph, 
-                                                        ll_types=['vanilla_star', 'prior', 'prior_star'])
-                                                    
-            else: # VANILLA
-                auc_vanilla_star_anomaly = all_types_classify(self.clamiter, self.graph, ll_types=['vanilla_star'])[0]
-                    
-            for key in self.accuracies_test.keys():
-                self.accuracies_test[key] += [locals()[f'auc_{key}_anomaly']]*measurement_interval
-                self.accuracies_test[key][-1] += eps
-            
+            if self.metric == 'auc':
+                if self.clamiter.prior is not None:              
+                    auc_vanilla_star_anomaly, auc_prior_anomaly, auc_prior_star_anomaly = all_types_classify(
+                                                            self.clamiter, 
+                                                            self.graph, 
+                                                            ll_types=['vanilla_star', 'prior', 'prior_star'])
+                                                        
+                else: # VANILLA
+                    auc_vanilla_star_anomaly = all_types_classify(self.clamiter, self.graph, ll_types=['vanilla_star'])[0]
+                        
+                for key in self.accuracies_test.keys():
+                    self.accuracies_test[key] += [locals()[f'auc_{key}_anomaly']]*measurement_interval
+                    self.accuracies_test[key][-1] += eps
                 
+                    
         
                     
   
         elif self.task == 'link_prediction':
             # the test and val set are independent of each other as the test set is "given" and the validation is chosen 
-            # todo: add calculation mode for calc ogb hak
-            def calc_ogb_hAk(self):
+            def calc_ogb_hAk(test_or_val):
+                omitted_tup = self.graph.omitted_dyads_test if test_or_val == 'test' else self.graph.omitted_dyads_val
                 evaluator = Evaluator(name=self.graph.name)
-                
-                edge_probs_val, non_edge_probs_val = lp.ogb_hAk_omitted_dyads(
+                edge_probs, non_edge_probs = lp.ogb_hAk_omitted_dyads(
                     self.graph.x,
                     self.lorenz,
-                    self.graph.omitted_dyads_val
+                    omitted_tup
                 )
-                edge_probs_test, non_edge_probs_test = lp.ogb_hAk_omitted_dyads(
-                    self.graph.x.
-                    self.lorenz,
-                    self.graph.omitted_dyads_test
-                )
-                val_score = evaluator(edge_probs_val, non_edge_probs_val)
-                test_score = evaluator(edge_probs_test, non_edge_probs_test)
+              
+                hAk_score = evaluator(edge_probs, non_edge_probs)
+                return hAk_score
 
-                #todo: need to insert these into the acc dictionary. also, there will be a need to do this without omitting val
-                #! continue from here
-            def calc_auc_and_append(self, test_or_val):
+
+            def calc_auc_and_append(test_or_val):
                 '''commands that are in use many times'''
                 omitted_tup = self.graph.omitted_dyads_test if test_or_val == 'test' else self.graph.omitted_dyads_val
                 auc_score = lp.roc_of_omitted_dyads(
@@ -1135,19 +1145,33 @@ class AccTrack:
 
             if self.graph.omitted_dyads_test[0].numel() > 0:
                 # note: the variable is grayed out but it's actually in use in the "locals" function below
-                auc_test = calc_auc_and_append(self, 'test')
-
-                for keys in self.accuracies_test.keys():
-                    self.accuracies_test[keys] += [locals()[f'{keys}_test']]*measurement_interval
-                    self.accuracies_test[keys][-1] += eps
+                #todo: change this to use the metric
+                if self.metric == 'auc':
+                    score = calc_auc_and_append('test')
+                if self.metric == 'ogb_hAk':
+                    score = calc_ogb_hAk('test')
+                
+                self.accuracies_test[self.metric] += [score] *measurement_interval
+                # auc_test = calc_auc_and_append(self, 'test')
+                # for keys in self.accuracies_test.keys():
+                #     self.accuracies_test[keys] += [locals()[f'{keys}_test']]*measurement_interval
+                #     self.accuracies_test[keys][-1] += eps
             
             if hasattr(self.graph, 'omitted_dyads_val'): 
                 if self.graph.omitted_dyads_val[0].numel() > 0:
                     # note: the variable is grayed out but it's actually in use in the "locals" function below
-                    auc_val = calc_auc_and_append(self, 'val') 
-                    for keys in self.accuracies_val.keys(): 
-                        self.accuracies_val[keys] += [locals()[f'{keys}_val']]*measurement_interval
-                        self.accuracies_val[keys][-1] += eps    
+                    if self.metric == 'auc':
+                        score = calc_auc_and_append('val')
+                    if self.metric == 'ogb_hAk':
+                        score = calc_ogb_hAk('val')
+
+                    self.accuracies_val[self.metric] += [score]*measurement_interval
+                    
+                    
+                    # auc_val = calc_auc_and_append(self, 'val') 
+                    # for keys in self.accuracies_val.keys(): 
+                    #     self.accuracies_val[keys] += [locals()[f'{keys}_val']]*measurement_interval
+                    #     self.accuracies_val[keys][-1] += eps    
 
 
 
@@ -1216,9 +1240,9 @@ class AccTrack:
         if self.accuracies_val is not None:    
             print(f'VAL:')
             print('latest:')
-            print(self.get_latest_val_acc())
+            print(f'value: {self.get_latest_val_acc()}')
             print('best:')
-            print(self.get_best_val_acc())
+            print(f'value, iteration: {self.get_best_val_acc()}')
 
             
         print(f'TEST accuracy.')
@@ -1263,7 +1287,7 @@ class AccTrack:
         for key, list in self.accuracies_val.items():
             try:
                 latest_acc[key] = list[-1]
-            except ValueError:
+            except IndexError:
                 latest_acc[key] = None
             return latest_acc
         
@@ -1273,7 +1297,7 @@ class AccTrack:
         for key, list in self.accuracies_test.items():
             try:
                 latest_acc[key] = list[-1]
-            except ValueError:
+            except IndexError:
                 latest_acc[key] = None
         
         return latest_acc

@@ -57,6 +57,10 @@ def perturb_config(task, model_name, deltas, use_global_config, ds_name=None):
     return config_range_list
     
     
+# .dP"Y8    db    Yb    dP 888888 88""Yb 88   88 88b 88 
+# `Ybo."   dPYb    Yb  dP  88__   88__dP 88   88 88Yb88 
+# o.`Y8b  dP__Yb    YbdP   88""   88"Yb  Y8   8P 88 Y88 
+# 8bodP' dP""""Yb    YP    888888 88  Yb `YbodP' 88  Y8 
 
 class SaveRun:
 
@@ -75,16 +79,17 @@ class SaveRun:
         
          
         # Create the directory if it doesn't exist
+        self.save_path = save_path + "_" + datetime.now().strftime('%H-%M_%d-%m') + '.json' 
         os.makedirs(os.path.dirname(self.save_path), exist_ok=True)
 
-        if os.path.exists(self.save_path):
-            # Find the next available file name
-            i = 0
-            while os.path.exists(f"{self.save_path[:-5]}_{i}.json"):
-                i += 1
-            self.save_path = f"{self.save_path[:-5]}_{i}.json"
+        # if os.path.exists(self.save_path):
+        #     # Find the next available file name
+        #     i = 0
+        #     while os.path.exists(f"{self.save_path[:-5]}_{i}.json"):
+        #         i += 1
+        #     self.save_path = f"{self.save_path[:-5]}_{i}.json"
     
-
+        
 
         first_entry = {'date_time': datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
         if config_ranges is not None:
@@ -327,6 +332,11 @@ class SaveRun:
         return grouped
 
    
+#  dP""b8 88""Yb  dP"Yb  .dP"Y8 .dP"Y8 88     88 88b 88 88  dP 
+# dP   `" 88__dP dP   Yb `Ybo." `Ybo." 88     88 88Yb88 88odP  
+# Yb      88"Yb  Yb   dP o.`Y8b o.`Y8b 88  .o 88 88 Y88 88"Yb  
+#  YboodP 88  Yb  YbodP  8bodP' 8bodP' 88ood8 88 88  Y8 88  Yb 
+
 #todo: change cross val link to be cross val and have link and anomaly as options. the saving of the file should be the same, but the analysis file in the results folder
 def cross_val_link(
         ds_name, 
@@ -340,6 +350,7 @@ def cross_val_link(
         device,
         test_dyads_to_omit=None,
         val_dyads_to_omit=None,
+        metric='auc',
         attr_opt=False,
         plot_every=10000,
         verbose=False,
@@ -356,11 +367,13 @@ def cross_val_link(
         
         curr_file_dir = os.path.dirname(os.path.abspath(__file__)) 
         
-        save_path = os.path.join(curr_file_dir, 'results', 'link_prediction', ds_name, model_name, 'acc_configs.json')
+        save_path = os.path.join(curr_file_dir, 'results', 'link_prediction', ds_name, model_name, 'acc_configs')
         run_saver = SaveRun(model_name, ds_name, 'link_prediction', use_global_config_base, save_path, config_ranges=range_triplets)
         
         ds = import_dataset(ds_name)
         
+        # if it has attr dont sample the omitted sets
+        #todo: make a test and val set for all of the datasets. not when sampled, when saved
         if hasattr(ds, 'val_dyads_to_omit'):
             val_dyads_to_omit = ds.val_dyads_to_omit
         if hasattr(ds, 'test_dyads_to_omit'):
@@ -444,7 +457,7 @@ def cross_val_link(
 
 
 
-
+                #todo: add "metric" parameter that doesn't change anomaly
                 trainer = Trainer(
                             dataset=ds_test_val_omitted,
                             model_name=model_name,
@@ -452,6 +465,7 @@ def cross_val_link(
                             config_triplets_to_change=config_triplets,
                             use_global_config_base=use_global_config_base,
                             attr_opt=False,
+                            metric=metric,
                             device=device,
                 )
 
@@ -465,13 +479,13 @@ def cross_val_link(
                         )
                 
                 # train returns acc test and acc val lists.
-                if acc_test['auc']:
-                    last_acc_test = acc_test['auc'][-1]
+                if acc_test[metric]:
+                    last_acc_test = acc_test[metric][-1]
                 else:
                     last_acc_test = None
                 
-                if acc_val['auc']:
-                    last_acc_val = acc_val['auc'][-1]                    
+                if acc_val[metric]: # if val is not requested return an empty list
+                    last_acc_val = acc_val[metric][-1]                    
                 else:
                     last_acc_val = None
                 run_saver.update_file((last_acc_test, last_acc_val), config_triplets)

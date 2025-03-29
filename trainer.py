@@ -76,8 +76,10 @@ class Trainer():
                  attr_transform='auto',
                  inflation_flow_name=None,
                  optimizer=None, 
+                 metric = 'auc',
                  scheduler=None):
         
+        self.metric = metric
         self.device = device
         self.task = task
         #! should i make "task" a member of clamiter?
@@ -344,7 +346,7 @@ class Trainer():
                         graph=self.data,
                         acc_every=acc_every,
                         task=self.task,
-                        performance_metric=performance_metric,
+                        metric=self.metric,
                         plot_every=plot_every,
                         **self.configs_dict['feat_opt'], 
                         verbose=verbose_in_funcs or verbose,
@@ -385,8 +387,8 @@ class Trainer():
                                         prior_fit_mask=prior_fit_mask,
 
                                         task=self.task, 
+                                        metric=self.metric,
                                         acc_every=acc_every, 
-                                        performance_metric=performance_metric,
                                         configs_dict=self.configs_dict,
 
                                         plot_final_res=False,
