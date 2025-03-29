@@ -352,6 +352,7 @@ def cross_val_link(
         val_dyads_to_omit=None,
         metric='auc',
         attr_opt=False,
+        acc_every=20,
         plot_every=10000,
         verbose=False,
         verbose_in_funcs=False):
@@ -472,7 +473,7 @@ def cross_val_link(
                 losses, acc_test, acc_val = trainer.train(
                             init_type='small_gaus',
                             init_feats=True,
-                            acc_every=20,
+                            acc_every=acc_every,
                             plot_every=plot_every,
                             verbose=verbose,
                             verbose_in_funcs=verbose_in_funcs
