@@ -721,14 +721,14 @@ def scheduler_step(scheduler, optimizer, feat_params, prior_params, verbose=Fals
     new_optimizer_lr = optimizer.param_groups[0]['lr'] #! debug
     scheduler_updated = False
     if scheduler.last_epoch%scheduler.step_size == 0:
-        scheduler_updated = True
         assert(old_optimizer_lr != new_optimizer_lr), f'optimizeer condition not met' #! debug for a while
+        scheduler_updated = True
         old_feats_lr = feat_params['lr'] 
         old_feats_n_iter = feat_params['n_iter']
-        feat_params['lr'] = max(feat_params['lr']/2, 0.00000001)
+        feat_params['lr'] = max(feat_params['lr']*scheduler.gamma, 0.00000001)
         old_noise_amp = prior_params['noise_amp'] 
         prior_params['lr'] = new_optimizer_lr
-        prior_params['noise_amp'] = max(prior_params['noise_amp']/2, 0.0001)
+        prior_params['noise_amp'] = max(prior_params['noise_amp']*scheduler.gamma, 0.0001)
         if verbose:
             printd(f'\nscheduler made step. changes:') 
             print(f'feats lr: {old_feats_lr} to {feat_params["lr"]}')  

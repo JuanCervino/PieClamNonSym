@@ -142,7 +142,16 @@ class Trainer():
         else:
             hypers_file_name = self.task
         self.configs_path = os.path.join(dir_path, 'hypers', 'hypers_'+ hypers_file_name + '.yaml')
+        #todo: first get_global_configs, then 
+        # if configs_dict is None:
+        #     if use_global_config_base:
+        #         self.get_global_configs_dict(config_triplets=config_triplets_to_change)
+        #     else:
+        #         self.get_global_configs_dict()
+        #         self.configs_dict_from_top_list(config_triplets=config_triplets_to_change)
+        #         #todo: make config list from the hypers
 
+        
         if configs_dict is None:
             if use_global_config_base:
                 self.get_global_configs_dict(config_triplets=config_triplets_to_change)
@@ -220,6 +229,7 @@ class Trainer():
         self.add_prior(prior) 
         return self
 
+    
 
     def configs_dict_from_top_list(self, config_triplets=None):
         

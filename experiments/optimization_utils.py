@@ -104,7 +104,7 @@ class SaveRun:
             configs_dict = deepcopy(params_dict['GlobalConfigs' + '_' + model_name])
         else:
             configs_dict = deepcopy(params_dict[ds_name + '_' + model_name])
-
+        self.configs_dict = configs_dict
         # Add the base config to the dictionary
         first_entry['base_config'] = configs_dict
 
@@ -216,7 +216,7 @@ class SaveRun:
 
 
     @staticmethod
-    def load_saved(task, file_path, sort_by, print_base=False, print_config_ranges=False, print_date_time=False):
+    def load_saved(task, file_path, sort_by, metric='auc', print_base=False, print_config_ranges=False, print_date_time=False):
 
         '''results are saved as config - acc. the function loads the results of a single file as a pandas dataframe. to load all files of a directory, a "print_folder" function is defined in the analysis.py file of every task.
         '''
@@ -272,21 +272,8 @@ class SaveRun:
         df.reset_index(drop=True, inplace=True)
 
         # Group by unique parameter configurations and calculate mean, std, and count
-        if 'acc' in df.columns:
-            grouped = df.groupby([col for col in df.columns if col != 'acc']).agg(
-                avg_acc=('acc', 'mean'),
-                std_acc=('acc', 'std'),
-                count=('acc', 'size')  # Add count of occurrences
-            ).reset_index()
-            
-            # Rearrange columns so mean, std, and count are first
-            cols = ['avg_acc', 'std_acc', 'count'] + [col for col in grouped.columns if col not in ['avg_acc', 'std_acc', 'count']]
-            grouped = grouped[cols]
-
-            # Sort by avg_acc
-            grouped = grouped.sort_values(by='avg_acc', ascending=False).reset_index(drop=True)
-
-        elif 'val_acc' in df.columns or 'vanilla_star' in df.columns:
+        
+        if ('val_acc' in df.columns and df['val_acc'].notna().any()) or 'vanilla_star' in df.columns:
             if task == 'link_prediction':
                 grouped = df.groupby([col for col in df.columns if col not in ['test_acc', 'val_acc']]).agg(
                     avg_test_acc=('test_acc', 'mean'),
@@ -328,9 +315,27 @@ class SaveRun:
                     grouped = grouped.sort_values(by='avg_prior', ascending=False).reset_index(drop=True)
                 elif sort_by == 'prior_star':
                     grouped = grouped.sort_values(by='avg_prior_star', ascending=False).reset_index(drop=True)
+        
+        elif 'test_acc' in df.columns:
+            if (df.columns == ['test_acc', 'val_acc']).all():
+                grouped = pd.DataFrame({'mean': df['test_acc'].mean(), 'std': df['test_acc'].std(), 'count':len(df['test_acc'])}, index=[0]) 
+            else:
+                grouped = df.groupby([col for col in df.columns if col != 'test_acc']).agg(
+                    avg_acc=('test_acc', 'mean'),
+                    std_acc=('test_acc', 'std'),
+                    count=('test_acc', 'size')  # Add count of occurrences
+                ).reset_index()
+                
+                # Rearrange columns so mean, std, and count are first
+                cols = ['avg_acc', 'std_acc', 'count'] + [col for col in grouped.columns if col not in ['avg_acc', 'std_acc', 'count']]
+                grouped = grouped[cols]
+
+                # Sort by avg_acc
+                grouped = grouped.sort_values(by='avg_acc', ascending=False).reset_index(drop=True)
+
 
         return grouped
-
+       
    
 #  dP""b8 88""Yb  dP"Yb  .dP"Y8 .dP"Y8 88     88 88b 88 88  dP 
 # dP   `" 88__dP dP   Yb `Ybo." `Ybo." 88     88 88Yb88 88odP  
@@ -350,7 +355,7 @@ def cross_val_link(
         val_p=0.0,
         test_dyads_to_omit=None,
         val_dyads_to_omit=None,
-        # test_only=False
+        test_only=False,
         metric='auc',
         attr_opt=False,
         acc_every=20,
@@ -368,8 +373,9 @@ def cross_val_link(
     try:
         
         curr_file_dir = os.path.dirname(os.path.abspath(__file__)) 
-        
-        save_path = os.path.join(curr_file_dir, 'results', 'link_prediction', ds_name, model_name, 'acc_configs')
+        test_or_val = 'test' if test_only else 'valid'
+        save_path = os.path.join(curr_file_dir, 'results', 'link_prediction', ds_name, model_name, metric, test_or_val, 'acc_configs')
+
         run_saver = SaveRun(model_name, ds_name, 'link_prediction', use_global_config_base, save_path, config_ranges=range_triplets)
         
         ds = import_dataset(ds_name)
@@ -399,7 +405,7 @@ def cross_val_link(
              
             
         
-        if val_dyads_to_omit is not None:
+        if val_dyads_to_omit is not None and not test_only:
             assert type(val_dyads_to_omit) == tuple
             assert utils.is_undirected(val_dyads_to_omit[0]) and utils.is_undirected(val_dyads_to_omit[1])
 
@@ -417,7 +423,7 @@ def cross_val_link(
                 # OMIT VALIDATION DYADS
                 '''edge attr signifies if the edge is omitted or not. if the edge_attr is 0 then the edge is an omitted dyad.'''
 
-                if val_dyads_to_omit is None:
+                if val_dyads_to_omit is None and not test_only:
                     ds_test_val_omitted.omitted_dyads_val, ds_test_val_omitted.edge_index, ds_test_val_omitted.edge_attr = lp.get_dyads_to_omit(
                                             ds_test_omitted.edge_index, 
                                             ds_test_omitted.edge_attr, 

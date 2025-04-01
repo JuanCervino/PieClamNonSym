@@ -378,6 +378,12 @@ class PCLAMIter(MessagePassing):
                     # measurement_interval = 1 if i == 0 else acc_every
                     measurement_interval = acc_every
                     acc_tracker.get_intermediate_accuracies(losses=losses, measurement_interval=measurement_interval)
+                    
+
+                    #! debug
+                    if acc_tracker.accuracies_test[metric][-1] <0.05:
+                        a=0
+
                     if verbose:
                         printd(f'\n fit wrapper {which_fit}, intermediate values iter {i}')
                         acc_tracker.print_accuracies()
@@ -385,17 +391,18 @@ class PCLAMIter(MessagePassing):
                 if (i+1)%plot_every == 0:
                     printd(f'\nfit wrapper {which_fit}, plotting state at iter {i}')
                     acc_tracker.plot_intermediate(**kwargs)
+                    acc_tracker.print_accuracies()
                     # Plot the last and best validation and test scores from acc_tracker
-                    if acc_tracker.accuracies_val is not None:
-                        last_val_scores = acc_tracker.get_latest_val_acc()
-                        best_val_scores, best_val_iters = acc_tracker.get_best_val_acc()
-                        print(f"Last Validation Scores: {last_val_scores}")
-                        print(f"Best Validation Scores: {best_val_scores} at iterations {best_val_iters}")
+                    # if acc_tracker.accuracies_val is not None:
+                    #     last_val_scores = acc_tracker.get_latest_val_acc()
+                    #     best_val_scores, best_val_iters = acc_tracker.get_best_val_acc()
+                    #     print(f"Last Validation Scores: {last_val_scores}")
+                    #     print(f"Best Validation Scores: {best_val_scores} at iterations {best_val_iters}")
 
-                    last_test_scores = acc_tracker.get_latest_test_acc()
-                    best_test_scores, best_test_iters = acc_tracker.get_best_test_acc()
-                    print(f"Last Test Scores: {last_test_scores}")
-                    print(f"Best Test Scores: {best_test_scores} at iterations {best_test_iters}")
+                    # last_test_scores = acc_tracker.get_latest_test_acc()
+                    # best_test_scores, best_test_iters = acc_tracker.get_best_test_acc()
+                    # print(f"Last Test Scores: {last_test_scores}")
+                    # print(f"Best Test Scores: {best_test_scores} at iterations {best_test_iters}")
                     #todo: print the last and best acc values    
             # ========================================== end for loop
            
@@ -655,8 +662,11 @@ class PCLAMIter(MessagePassing):
             # ==== end second function =======================
             
             # COLLECT RESULTS
-            
-            losses_first += losses_epoch_1st + [losses_epoch_1st[-1]]*num_blanks_first
+            try:
+                losses_first += losses_epoch_1st + [losses_epoch_1st[-1]]*num_blanks_first
+            except IndexError:
+                a=0
+
             losses_second += num_blanks_second*[losses_epoch_2nd[0]] + losses_epoch_2nd
             
 
