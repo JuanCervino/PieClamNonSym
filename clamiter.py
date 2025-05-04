@@ -381,8 +381,8 @@ class PCLAMIter(MessagePassing):
                     
 
                     #! debug
-                    if acc_tracker.accuracies_test[metric][-1] <0.05:
-                        a=0
+                    # if acc_tracker.accuracies_test[metric][-1] <0.05:
+                    #     a=0
 
                     if verbose:
                         printd(f'\n fit wrapper {which_fit}, intermediate values iter {i}')

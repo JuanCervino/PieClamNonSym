@@ -10,6 +10,7 @@ from torch_geometric.transforms import TwoHop
 from torch_geometric import utils
 
 import sys
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 if os.path.join(current_dir, '..') not in sys.path:
     sys.path.insert(0, os.path.join(current_dir, '..'))
@@ -18,6 +19,9 @@ if os.path.join(current_dir, '..') not in sys.path:
 
 from utils.printing_utils import printd
 from utils import utils_pyg as up
+from utils import utils as my_utils
+from utils.path_utils import get_project_root
+
 from datasets.import_dataset import import_dataset
 import utils.link_prediction as lp
 from trainer import Trainer
@@ -62,40 +66,74 @@ def perturb_config(task, model_name, deltas, use_global_config, ds_name=None):
 # o.`Y8b  dP__Yb    YbdP   88""   88"Yb  Y8   8P 88 Y88 
 # 8bodP' dP""""Yb    YP    888888 88  Yb `YbodP' 88  Y8 
 
+
 class SaveRun:
 
     '''we save the a base config (either model specific or global) and change it with deltas. each experiment result is the config delta and the result of the experiment in a json file. to gather all of the results together there is an analysis.py in every results folder.'''
-    #todo: modify to fit the anomaly setting. 
-    #todo: several ds and have them as part of the table
-    #todo: for link prediction i want to know many results for each dataset. for anomaly detection i want to know many results for one configuration
-    def __init__(self, model_name, ds_name, task, use_global_config_base, save_path, config_ranges=None):
+    # saverun manages different configurations and results. save run should work with the same or different validation sets? each acc_configs file should be for a single validation set that's for sure. but in a single cross val experiment i want to maybe use different test sets, different val sets... maybe every time a val set is drawen the saverun should make a folder for it. the folder structure should be test_123445/-test_mask.pt, val_12345, val_122343, etc.
+    #todo: we must for link prediction both save the test set and the validation set
+    def __init__(self, model_name, ds_name, task, metric=None, omitted_test_dyads=None, test_or_val=None, use_global_config_base=True, config_ranges=None):
         self.model_name = model_name
         self.task = task
         self.ds_name = ds_name
         self.use_global_config_base = use_global_config_base
-        self.save_path = save_path
+        '''test as number is the binary edge_attr as a decimal number, which defines the test set so many experiments with the same test set can be saved in the same folder. edge attr is the omitted test/test and val mask'''
         # make a new file
-
+        #todo: the save run is created inside the folder
         
-         
-        # Create the directory if it doesn't exist
-        self.save_path = save_path + "_" + datetime.now().strftime('%H-%M_%d-%m') + '.json' 
-        os.makedirs(os.path.dirname(self.save_path), exist_ok=True)
+        # Create the split directory
+        #todo: the path is relative to the folder we are in in slurm. i want to give it absolute path
+        timestamp = datetime.now().strftime('%H-%M_%d-%m-%y')
+        # Find the directory where THIS python file (optimization_utils.py) is
 
-        # if os.path.exists(self.save_path):
-        #     # Find the next available file name
-        #     i = 0
-        #     while os.path.exists(f"{self.save_path[:-5]}_{i}.json"):
-        #         i += 1
-        #     self.save_path = f"{self.save_path[:-5]}_{i}.json"
+        current_file_dir = os.path.dirname(os.path.realpath(__file__))
+
+        # Now go to the results folder inside it
+        base_results_dir = os.path.join(current_file_dir, 'results')
+
+        # Build your final model path
+        self.model_path = os.path.join(base_results_dir, task, metric, ds_name, model_name)
+        os.makedirs(self.model_path, exist_ok=True)
+        
+        split_exists = False
+        for split_name in os.listdir(self.model_path):
+            if split_name.startswith('split'):
+                split_omitted_test_dyads = torch.load(os.path.join(self.model_path, split_name, 'omitted_test_dyads.pt'))
+                if omitted_test_dyads[0].shape == split_omitted_test_dyads[0].shape and omitted_test_dyads[1].shape == split_omitted_test_dyads[1].shape:     
+                    if (omitted_test_dyads[0] == split_omitted_test_dyads[0]).all() and (omitted_test_dyads[1] == split_omitted_test_dyads[1]).all():
+                        split_exists = True                    
+                        break
+        if not split_exists:
+            split_name = f'split_{timestamp}'
+
+
+        self.split_save_path = os.path.join(self.model_path, split_name)
+        
+        os.makedirs(self.split_save_path, exist_ok=True)
+        
+        omitted_test_dyads_path = os.path.join(self.split_save_path, 'omitted_test_dyads.pt')
+        if not os.path.exists(omitted_test_dyads_path):
+            torch.save(omitted_test_dyads, omitted_test_dyads_path)
+
+        # self.experiment_folder = os.path.join(self.split_save_path, 
+        #                                       test_or_val,
+        #                                       datetime.now().strftime('%H-%M_%d-%m-%y'))
+        #todo: every time a val set is sampled you create an experiment folder
+        #todo: valid sets will have both the test and
+        # in the split save the experiment in test or val
+        self.test_or_val_path = os.path.join(self.split_save_path, test_or_val)
+        os.makedirs(self.test_or_val_path, exist_ok=True) 
+
+        self.acc_configs_path = os.path.join(self.test_or_val_path, f"acc_configs{timestamp}.json")
+        
+        os.makedirs(os.path.dirname(self.acc_configs_path), exist_ok=True)
     
-        
 
-        first_entry = {'date_time': datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+        first_entry = {'date_time': datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 'ds_name': ds_name, 'model_name': model_name, 'task': task, 'metric':metric }
         if config_ranges is not None:
             first_entry['config_ranges'] = config_ranges
 
-        # Load your configuration
+        # Load your configuration. Either use global config for all datasets or use a dataset specific configuration
         curr_file_dir = os.path.dirname(os.path.abspath(__file__))
         hypers_path = os.path.join(curr_file_dir, '..', 'hypers', 'hypers_'+ task + '.yaml')
         with open(hypers_path, 'r') as hypers_file:
@@ -109,114 +147,25 @@ class SaveRun:
         first_entry['base_config'] = configs_dict
 
         # Write everything to the file at once
-        with open(self.save_path, 'w') as file:
+        with open(self.acc_configs_path, 'w') as file:
             json.dump(first_entry, file, indent=4)
 
 
-
+#todo: instead of updating file i now need to update a file only if it has the same validation set!! do i really want to do this? or val sets aren't important enough to save... i think the latter so valid folder should be full of acc configs with the date? forget the folder? i think lets forget the folder
     
     def update_file(self, acc, config_triplets):
-        with open(self.save_path, 'r') as file:
+        with open(self.acc_configs_path, 'r') as file:
             loaded_acc_configs = json.load(file)
 
         loaded_acc_configs.update({str(acc): config_triplets})
 
-        with open(self.save_path, 'w') as file:
+        with open(self.acc_configs_path, 'w') as file:
             json.dump(loaded_acc_configs, file, indent=4)
 
-
+    
+    
     @staticmethod
-    def load_saved_old(task, file_path, print_base=False, print_config_ranges=False, print_date_time=False, sort_by='val_acc'):
-
-        '''results are saved as config - acc. the function loads the results as a pandas dataframe.
-        '''
-
-        # Load JSON data
-        with open(file_path) as f:
-            data = json.load(f)
-
-        # Separate base config and runs
-        if "date_time" in data.keys():
-            date_time = data.pop("date_time")
-        if "config_ranges" in data.keys():
-            config_ranges = data.pop("config_ranges")
-        base_config = data.pop("base_config")
-        if print_base:
-            print(base_config)
-        if print_config_ranges:
-            print(config_ranges)
-        if print_date_time:
-            print(date_time)
-
-        # List to hold processed data for DataFrame
-        processed_data = []
-
-        # Iterate through each run acc
-        for acc_str, changes in data.items():
-            acc = eval(acc_str)
-            row = {}
-            if type(acc) == float:
-                    row['acc'] = acc
-                
-            elif type(acc) == tuple:
-                if task == 'link_prediction':
-                    row['test_acc'] = acc[0]
-                    row['val_acc'] = acc[1]
-                
-                elif task == 'anomaly_unsupervised':
-                    row['vanilla_star'] = acc[0]
-                    if len(acc) > 1:
-                        row['prior'] = acc[1]
-                        row['prior_star'] = acc[2]
-
-            for change in changes:
-                section, key, value = change
-                row[f"{section}_{key}"] = value
-            processed_data.append(row)
-        
-        # Convert to DataFrame
-        df = pd.DataFrame(processed_data)
-        df.reset_index(drop=True, inplace=True)
-
-        # Group by unique parameter configurations and calculate mean, std, and count
-        if 'acc' in df.columns:
-            grouped = df.groupby([col for col in df.columns if col != 'acc']).agg(
-                avg_acc=('acc', 'mean'),
-                std_acc=('acc', 'std'),
-                count=('acc', 'size')  # Add count of occurrences
-            ).reset_index()
-            
-            # Rearrange columns so mean, std, and count are first
-            cols = ['avg_acc', 'std_acc', 'count'] + [col for col in grouped.columns if col not in ['avg_acc', 'std_acc', 'count']]
-            grouped = grouped[cols]
-
-            # Sort by avg_acc
-            grouped = grouped.sort_values(by='avg_acc', ascending=False).reset_index(drop=True)
-
-        elif 'val_acc' in df.columns:
-            grouped = df.groupby([col for col in df.columns if col not in ['test_acc', 'val_acc']]).agg(
-                avg_test_acc=('test_acc', 'mean'),
-                std_test_acc=('test_acc', 'std'),
-                avg_val_acc=('val_acc', 'mean'),
-                std_val_acc=('val_acc', 'std'),
-                count=('val_acc', 'size')  # Add count of occurrences
-            ).reset_index()
-
-            # Rearrange columns so mean, std, and count are first
-            cols = ['avg_test_acc', 'std_test_acc', 'avg_val_acc', 'std_val_acc', 'count'] + [col for col in grouped.columns if col not in ['avg_test_acc', 'std_test_acc', 'avg_val_acc', 'std_val_acc', 'count']]
-            grouped = grouped[cols]
-
-            # Sort by specified column
-            if sort_by == 'val_acc':
-                grouped = grouped.sort_values(by='avg_val_acc', ascending=False).reset_index(drop=True)
-            elif sort_by == 'test_acc':
-                grouped = grouped.sort_values(by='avg_test_acc', ascending=False).reset_index(drop=True)
-
-        return grouped
-
-
-    @staticmethod
-    def load_saved(task, file_path, sort_by, metric='auc', print_base=False, print_config_ranges=False, print_date_time=False):
+    def load_saved(task, file_path, sort_by, metric='auc', print_base=False, print_config_ranges=False, print_date_time=False, return_base_config=True):
 
         '''results are saved as config - acc. the function loads the results of a single file as a pandas dataframe. to load all files of a directory, a "print_folder" function is defined in the analysis.py file of every task.
         '''
@@ -230,16 +179,25 @@ class SaveRun:
             date_time = data.pop("date_time")
         if "config_ranges" in data.keys():
             config_ranges = data.pop("config_ranges")
+        if "ds_name" in data.keys():
+            ds_name = data.pop("ds_name")
+        if "model_name" in data.keys():
+            model_name = data.pop("model_name")
+        if "task" in data.keys():
+            task = data.pop("task")
+        if "metric" in data.keys():
+            metric = data.pop("metric")
+
         base_config = data.pop("base_config")
         #todo: if nothing is popped then dont print anything
         if data == {}:
             grouped = pd.DataFrame()
-        if print_base:
-            print(base_config)
-        if print_config_ranges:
-            print(config_ranges)
-        if print_date_time:
-            print(date_time)
+        # if print_base:
+        #     print(base_config)
+        # if print_config_ranges:
+        #     print(config_ranges)
+        # if print_date_time:
+        #     print(date_time)
 
         # List to hold processed data for DataFrame
         processed_data = []
@@ -272,8 +230,7 @@ class SaveRun:
         df.reset_index(drop=True, inplace=True)
 
         # Group by unique parameter configurations and calculate mean, std, and count
-        
-        if ('val_acc' in df.columns and df['val_acc'].notna().any()) or 'vanilla_star' in df.columns:
+        if ('val_acc' in df.columns and df['val_acc'].notna().any()) or 'vanilla_star' in df.columns: # if there is validation score in the file 
             if task == 'link_prediction':
                 grouped = df.groupby([col for col in df.columns if col not in ['test_acc', 'val_acc']]).agg(
                     avg_test_acc=('test_acc', 'mean'),
@@ -316,11 +273,11 @@ class SaveRun:
                 elif sort_by == 'prior_star':
                     grouped = grouped.sort_values(by='avg_prior_star', ascending=False).reset_index(drop=True)
         
-        elif 'test_acc' in df.columns:
-            if (df.columns == ['test_acc', 'val_acc']).all():
+        elif 'test_acc' in df.columns: # if there is only test accuracy
+            if set(df.columns) == {'test_acc', 'val_acc'}:
                 grouped = pd.DataFrame({'mean': df['test_acc'].mean(), 'std': df['test_acc'].std(), 'count':len(df['test_acc'])}, index=[0]) 
             else:
-                grouped = df.groupby([col for col in df.columns if col != 'test_acc']).agg(
+                grouped = df.groupby([col for col in df.columns if col not in {'test_acc', 'val_acc'}]).agg(
                     avg_acc=('test_acc', 'mean'),
                     std_acc=('test_acc', 'std'),
                     count=('test_acc', 'size')  # Add count of occurrences
@@ -332,15 +289,81 @@ class SaveRun:
 
                 # Sort by avg_acc
                 grouped = grouped.sort_values(by='avg_acc', ascending=False).reset_index(drop=True)
+        else:
+            printd('no test or val accuracy scores in the file')
 
-
-        return grouped
+        if return_base_config:
+            return grouped, base_config
+        else:
+            return grouped
        
    
+
+def print_folder(ds_name, model_name, metric='auc', splits=None, test_or_val ='test',  num_to_plot=20, sort_by='val_acc', print_base_config=True):
+    '''print the results of an experiment on a dataset with one of the Clam models. The results are arranged into a metric (auc or hits@20) and test/validation experiments.'''
+    
+    model_path = os.path.join(metric, ds_name, model_name)
+    existing_splits = os.listdir(model_path)
+    if splits is None:
+        splits = existing_splits
+    else:
+        splits = list(set(splits).intersection(existing_splits))
+
+
+    #todo: the paths should be different for each split
+    res_paths = []
+    for split in splits: # all paths to test sets
+        res_paths += [os.path.join(model_path, split, test_or_val)]
+
+
+
+    for i, path in enumerate(res_paths):
+        if os.path.exists(path):
+            print(f'{splits[i]}')
+            print(f'================== \n')
+            for file_name in os.listdir(path):
+                # the folder names should all be datetime %H%M_%d%m%y
+                if file_name.endswith('.json'):
+                    file_path = os.path.join(path, file_name)
+                    grouped_tup = SaveRun.load_saved(
+                        'link_prediction',
+                        file_path, 
+                        sort_by=sort_by,
+                        return_base_config=print_base_config)
+                    
+                    if print_base_config:
+                        grouped_df = grouped_tup[0]
+                        base_config = grouped_tup[1]
+                    else:
+                        grouped_df = grouped_tup
+                    print("    " + file_name + '\n    ==================')
+                    if not grouped_df.empty:  
+                        if print_base_config:
+                            print('    Base config:')
+                            print(json.dumps(base_config, indent=4))
+                            print('    ==================') 
+                        if num_to_plot == -1:
+                            print(grouped_df)
+                        else:
+                            print(grouped_df.head(num_to_plot))
+                        
+                        print('\n')
+                    else:
+                        print(f'The file in {file_path} has no results, consider deleting.\n')
+        else:
+            print(f'Path {path} does not exist. Skipping.\n')
+
+
+
 #  dP""b8 88""Yb  dP"Yb  .dP"Y8 .dP"Y8 88     88 88b 88 88  dP 
 # dP   `" 88__dP dP   Yb `Ybo." `Ybo." 88     88 88Yb88 88odP  
 # Yb      88"Yb  Yb   dP o.`Y8b o.`Y8b 88  .o 88 88 Y88 88"Yb  
 #  YboodP 88  Yb  YbodP  8bodP' 8bodP' 88ood8 88 88  Y8 88  Yb 
+
+
+
+
+
 
 #todo: change cross val link to be cross val and have link and anomaly as options. the saving of the file should be the same, but the analysis file in the results folder
 def cross_val_link(
@@ -355,6 +378,8 @@ def cross_val_link(
         val_p=0.0,
         test_dyads_to_omit=None,
         val_dyads_to_omit=None,
+        test_dyads_path=None,
+        val_dyads_path=None,
         test_only=False,
         metric='auc',
         attr_opt=False,
@@ -369,19 +394,21 @@ def cross_val_link(
     
     # ============ OMIT TEST =============
     '''The dyad omitting process for the algorithm is described in the paper. if a test set is provided it's used and if not the test set is taken randomly with the percentage given and 5X the number of negative samples. The same goes to the val set: if it is not given it is sampled from the dyad set for every parameter configuration.'''
+    
+    if val_p == 0:
+        test_only = True
 
     try:
         
         curr_file_dir = os.path.dirname(os.path.abspath(__file__)) 
         test_or_val = 'test' if test_only else 'valid'
-        save_path = os.path.join(curr_file_dir, 'results', 'link_prediction', ds_name, model_name, metric, test_or_val, 'acc_configs')
+        
+        # save run should configure the save paths 
+        # if there is a test set folder (split. the number after split should be the number that is the test sets connected and turned into a number) like the test set we are using save n
 
-        run_saver = SaveRun(model_name, ds_name, 'link_prediction', use_global_config_base, save_path, config_ranges=range_triplets)
+        ds = import_dataset(ds_name, test_dyads_path=test_dyads_path, val_dyads_path=val_dyads_path)
         
-        ds = import_dataset(ds_name)
-        
-        # if it has attr dont sample the omitted sets
-        #todo: make a test and val set for all of the datasets. not when sampled, when saved
+        # if the dataset comes with dyads to omit use THEM
         if hasattr(ds, 'val_dyads_to_omit'):
             val_dyads_to_omit = ds.val_dyads_to_omit
         if hasattr(ds, 'test_dyads_to_omit'):
@@ -389,7 +416,8 @@ def cross_val_link(
 
         # OMIT TEST
         ds_test_omitted = ds.clone()
-        if test_dyads_to_omit is not None:
+        if test_dyads_to_omit is not None: # if the dataset comes with test dyads
+            #todo: add an option to import dataset to load a test and validation set
             assert type(test_dyads_to_omit) == tuple
             assert utils.is_undirected(test_dyads_to_omit[0]) and utils.is_undirected(test_dyads_to_omit[1])
             
@@ -403,8 +431,24 @@ def cross_val_link(
                                                 ds.edge_attr, 
                                                 test_p)
              
-            
         
+        # make run saver after defining the test set and the test omitted edge attr
+        #todo: run the texas simulation and see if we get the default parameters. then move everything important to the server
+        
+        for triplet in range_triplets[:]:
+            if triplet[2] == []:
+                range_triplets.remove(triplet)
+        
+        run_saver = SaveRun(model_name, 
+                            ds_name, 
+                            'link_prediction', 
+                            metric=metric,
+                            omitted_test_dyads=ds_test_omitted.omitted_dyads_test, 
+                            test_or_val=test_or_val, 
+                            use_global_config_base=use_global_config_base, 
+                            config_ranges=range_triplets)
+        
+        #todo: save test set and save val set should save the tuples of edges and non edges to omit
         if val_dyads_to_omit is not None and not test_only:
             assert type(val_dyads_to_omit) == tuple
             assert utils.is_undirected(val_dyads_to_omit[0]) and utils.is_undirected(val_dyads_to_omit[1])
@@ -415,7 +459,9 @@ def cross_val_link(
                             ds_test_omitted.edge_attr,
                             val_dyads_to_omit)
 
+
         for values in itertools.product(*[triplet[2] for triplet in range_triplets]):
+        
             for _ in range(n_reps): 
         
                 ds_test_val_omitted = ds_test_omitted.clone()
@@ -423,7 +469,7 @@ def cross_val_link(
                 # OMIT VALIDATION DYADS
                 '''edge attr signifies if the edge is omitted or not. if the edge_attr is 0 then the edge is an omitted dyad.'''
 
-                if val_dyads_to_omit is None and not test_only:
+                if val_dyads_to_omit is None and not test_only: #sample random validation set
                     ds_test_val_omitted.omitted_dyads_val, ds_test_val_omitted.edge_index, ds_test_val_omitted.edge_attr = lp.get_dyads_to_omit(
                                             ds_test_omitted.edge_index, 
                                             ds_test_omitted.edge_attr, 
@@ -443,11 +489,6 @@ def cross_val_link(
                 config_triplets = [
                     [outers[i], inners[i], values[i]] for i in range(len(range_triplets))
                             ]
-                # if model_name in {'ieclam', 'pieclam'}:
-                #     if 's_reg' in inners:
-                #         ind_s = inners.index('s_reg')
-                #         config_triplets.append([outers[ind_s], inners[ind_s], values[ind_s]])
-
 
 
 
@@ -524,7 +565,7 @@ def multi_ds_anomaly(
     try:
         
         curr_file_dir = os.path.dirname(os.path.abspath(__file__))
-        
+        #! todo: change this to fit the anomaly detection!!!
         save_paths = [os.path.join(curr_file_dir, 'results', 'anomaly_unsupervised', model_name, ds_name, 'acc_configs.json')for ds_name in ds_names]
         # a different run saver for every dataset
         run_savers = [SaveRun(model_name, 

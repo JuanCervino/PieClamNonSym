@@ -154,9 +154,11 @@ class Trainer():
         
         if configs_dict is None:
             if use_global_config_base:
+                printd(f'\n\n\nUsing global config base\n\n\n')
                 self.get_global_configs_dict(config_triplets=config_triplets_to_change)
             else:
                 '''if not global config then the individual dataset configs provide config triplets'''
+                printd(f'\n\n\nUsing dataset config base\n\n\n')
                 self.configs_dict_from_top_list(config_triplets=config_triplets_to_change)
         else:
             self.configs_dict = configs_dict
@@ -286,20 +288,18 @@ class Trainer():
 #   88   88__dP   dPYb   88 88Yb88 
 #   88   88"Yb   dP__Yb  88 88 Y88 
 #   88   88  Yb dP""""Yb 88 88  Y8 
-    #todo: make a train more function!
+    #todo: make a train more function
     def train(self,
             init_type='small_gaus', 
-            val_rel_size=0.3,
             init_feats=False, 
             acc_every=200, 
-            metric=None,
             prior_fit_mask=None, 
             plot_every=-1, 
             verbose=False, 
             verbose_in_funcs=False,
             node_feats_for_init=None,
             **kwargs):
-        #todo: making things verbose
+        
         '''train one of the 4 models (bool vanilla, bool lorenz) on the given parameters. 
         You can chose to omit dyads from the calculation, dyads are a tuple (edges_to_omit, non_edges_to_omit).
         If only params_name is given, train on the optimal parameters as saved.

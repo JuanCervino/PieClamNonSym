@@ -12,6 +12,6 @@
 source ~/miniconda3/etc/profile.d/conda.sh                
 conda activate clam                  
 
-python -u hypers_search.py --model_name 'pclam' --ds_name 'photo' --dim_feat 110 150 120 --n_iters_feats 700 --n_iters_prior 2000 1300 --lr_feats 0.000005 --lr_prior 0.000003 0.000005 --noise_amps 0.1 --global_config_base --n_reps 10 --first_funcs_in_fit 'fit_feats'
+python -u ../hypers_search.py --model_name 'pclam' --ds_name 'photo' --dim_feat 110 150 120 --n_iters_feats 700 --n_iters_prior 2000 1300 --lr_feats 0.000005 --lr_prior 0.000003 0.000005 --noise_amps 0.1 --global_config_base --n_reps 10 --first_funcs_in_fit 'fit_feats'
 
 
