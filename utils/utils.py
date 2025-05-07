@@ -13,7 +13,7 @@ from networkx.algorithms.cuts import conductance
 from torch_geometric.transforms import RemoveDuplicatedEdges
 from cutnorm import compute_cutnorm
 
-from utils import utils_pyg as up
+from utils import pyg_helpers as up
 
 from utils.printing_utils import printd
 

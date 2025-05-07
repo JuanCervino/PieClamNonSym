@@ -18,7 +18,7 @@ if os.path.join(current_dir, '..') not in sys.path:
 #     sys.path.insert(0, '..')
 
 from utils.printing_utils import printd
-from utils import utils_pyg as up
+from utils import pyg_helpers as up
 from utils import utils as my_utils
 from utils.path_utils import get_project_root
 

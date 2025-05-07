@@ -23,7 +23,7 @@ from ogb.linkproppred import Evaluator
 from transformation import  RealNVP, relu_lightcone, relu_transform, uv_from_xt
 from utils.plotting import *
 from utils import utils
-from utils import utils_pyg as up
+from utils import pyg_helpers as up
 from utils.utils import get_prob_graph, edges_by_coords, k_minimal_neighborhoods
 import utils.link_prediction as lp
 from utils.printing_utils import printd, print_dolphin, print_escher, print_end_fit
