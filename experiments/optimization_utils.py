@@ -70,19 +70,15 @@ def perturb_config(task, model_name, deltas, use_global_config, ds_name=None):
 class SaveRun:
 
     '''we save the a base config (either model specific or global) and change it with deltas. each experiment result is the config delta and the result of the experiment in a json file. to gather all of the results together there is an analysis.py in every results folder.'''
-    # saverun manages different configurations and results. save run should work with the same or different validation sets? each acc_configs file should be for a single validation set that's for sure. but in a single cross val experiment i want to maybe use different test sets, different val sets... maybe every time a val set is drawen the saverun should make a folder for it. the folder structure should be test_123445/-test_mask.pt, val_12345, val_122343, etc.
-    #todo: we must for link prediction both save the test set and the validation set
+    
     def __init__(self, model_name, ds_name, task, metric=None, omitted_test_dyads=None, test_or_val=None, use_global_config_base=True, config_ranges=None):
         self.model_name = model_name
         self.task = task
         self.ds_name = ds_name
         self.use_global_config_base = use_global_config_base
+    
         '''test as number is the binary edge_attr as a decimal number, which defines the test set so many experiments with the same test set can be saved in the same folder. edge attr is the omitted test/test and val mask'''
-        # make a new file
-        #todo: the save run is created inside the folder
-        
-        # Create the split directory
-        #todo: the path is relative to the folder we are in in slurm. i want to give it absolute path
+    
         timestamp = datetime.now().strftime('%H-%M_%d-%m-%y')
         # Find the directory where THIS python file (optimization_utils.py) is
 
@@ -115,12 +111,6 @@ class SaveRun:
         if not os.path.exists(omitted_test_dyads_path):
             torch.save(omitted_test_dyads, omitted_test_dyads_path)
 
-        # self.experiment_folder = os.path.join(self.split_save_path, 
-        #                                       test_or_val,
-        #                                       datetime.now().strftime('%H-%M_%d-%m-%y'))
-        #todo: every time a val set is sampled you create an experiment folder
-        #todo: valid sets will have both the test and
-        # in the split save the experiment in test or val
         self.test_or_val_path = os.path.join(self.split_save_path, test_or_val)
         os.makedirs(self.test_or_val_path, exist_ok=True) 
 
@@ -151,7 +141,6 @@ class SaveRun:
             json.dump(first_entry, file, indent=4)
 
 
-#todo: instead of updating file i now need to update a file only if it has the same validation set!! do i really want to do this? or val sets aren't important enough to save... i think the latter so valid folder should be full of acc configs with the date? forget the folder? i think lets forget the folder
     
     def update_file(self, acc, config_triplets):
         with open(self.acc_configs_path, 'r') as file:
@@ -189,15 +178,8 @@ class SaveRun:
             metric = data.pop("metric")
 
         base_config = data.pop("base_config")
-        #todo: if nothing is popped then dont print anything
         if data == {}:
             grouped = pd.DataFrame()
-        # if print_base:
-        #     print(base_config)
-        # if print_config_ranges:
-        #     print(config_ranges)
-        # if print_date_time:
-        #     print(date_time)
 
         # List to hold processed data for DataFrame
         processed_data = []
@@ -310,7 +292,6 @@ def print_folder(ds_name, model_name, metric='auc', splits=None, test_or_val ='t
         splits = list(set(splits).intersection(existing_splits))
 
 
-    #todo: the paths should be different for each split
     res_paths = []
     for split in splits: # all paths to test sets
         res_paths += [os.path.join(model_path, split, test_or_val)]
@@ -365,7 +346,6 @@ def print_folder(ds_name, model_name, metric='auc', splits=None, test_or_val ='t
 
 
 
-#todo: change cross val link to be cross val and have link and anomaly as options. the saving of the file should be the same, but the analysis file in the results folder
 def cross_val_link(
         ds_name, 
         model_name,
@@ -417,7 +397,6 @@ def cross_val_link(
         # OMIT TEST
         ds_test_omitted = ds.clone()
         if test_dyads_to_omit is not None: # if the dataset comes with test dyads
-            #todo: add an option to import dataset to load a test and validation set
             assert type(test_dyads_to_omit) == tuple
             assert utils.is_undirected(test_dyads_to_omit[0]) and utils.is_undirected(test_dyads_to_omit[1])
             
@@ -432,8 +411,6 @@ def cross_val_link(
                                                 test_p)
              
         
-        # make run saver after defining the test set and the test omitted edge attr
-        #todo: run the texas simulation and see if we get the default parameters. then move everything important to the server
         
         for triplet in range_triplets[:]:
             if triplet[2] == []:
@@ -448,7 +425,6 @@ def cross_val_link(
                             use_global_config_base=use_global_config_base, 
                             config_ranges=range_triplets)
         
-        #todo: save test set and save val set should save the tuples of edges and non edges to omit
         if val_dyads_to_omit is not None and not test_only:
             assert type(val_dyads_to_omit) == tuple
             assert utils.is_undirected(val_dyads_to_omit[0]) and utils.is_undirected(val_dyads_to_omit[1])
@@ -492,7 +468,6 @@ def cross_val_link(
 
 
 
-                #todo: add "metric" parameter that doesn't change anomaly
                 trainer = Trainer(
                             dataset=ds_test_val_omitted,
                             model_name=model_name,
@@ -565,7 +540,6 @@ def multi_ds_anomaly(
     try:
         
         curr_file_dir = os.path.dirname(os.path.abspath(__file__))
-        #! todo: change this to fit the anomaly detection!!!
         save_paths = [os.path.join(curr_file_dir, 'results', 'anomaly_unsupervised', model_name, ds_name, 'acc_configs.json')for ds_name in ds_names]
         # a different run saver for every dataset
         run_savers = [SaveRun(model_name, 
