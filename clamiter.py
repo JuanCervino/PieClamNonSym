@@ -1141,9 +1141,9 @@ class AccTrack:
   
         elif self.task == 'link_prediction':
             # the test and val set are independent of each other as the test set is "given" and the validation is chosen 
-            def calc_ogb_hAk(test_or_val):
+            def calc_ogb_hAk(test_or_valid):
                 #todo: rename to hits20
-                omitted_tup = self.graph.omitted_dyads_test if test_or_val == 'test' else self.graph.omitted_dyads_val
+                omitted_tup = self.graph.omitted_dyads_test if test_or_valid == 'test' else self.graph.omitted_dyads_val
                 evaluator = Evaluator(name=self.graph.name)
                 edge_probs, non_edge_probs = lp.ogb_hAk_omitted_dyads(
                     self.graph.x,
@@ -1158,9 +1158,9 @@ class AccTrack:
                 return hAk_score['hits@20']
 
 
-            def calc_auc_and_append(test_or_val):
+            def calc_auc_and_append(test_or_valid):
                 '''commands that are in use many times'''
-                omitted_tup = self.graph.omitted_dyads_test if test_or_val == 'test' else self.graph.omitted_dyads_val
+                omitted_tup = self.graph.omitted_dyads_test if test_or_valid == 'test' else self.graph.omitted_dyads_val
                 auc_score = lp.roc_of_omitted_dyads(
                         self.graph.x, 
                         self.lorenz, 

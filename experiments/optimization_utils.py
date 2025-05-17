@@ -8,7 +8,9 @@ from copy import deepcopy
 import itertools
 from torch_geometric.transforms import TwoHop
 from torch_geometric import utils
-
+import numpy as np
+import random
+import tqdm
 import sys
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -26,6 +28,33 @@ from datasets.import_dataset import import_dataset
 import utils.link_prediction as lp
 from trainer import Trainer
 from datetime import datetime
+import os
+
+#    db    88b 88    db    88     Yb  dP .dP"Y8 88 .dP"Y8 
+#   dPYb   88Yb88   dPYb   88      YbdP  `Ybo." 88 `Ybo." 
+#  dP__Yb  88 Y88  dP__Yb  88  .o   8P   o.`Y8b 88 o.`Y8b 
+# dP""""Yb 88  Y8 dP""""Yb 88ood8  dP    8bodP' 88 8bodP' 
+                                                        
+                                                        
+def pooled_mean_std(means, stds, ns=None):
+    """Compute pooled mean and std from sample means, stds, and sizes"""
+    if ns is None:
+        ns = 10*np.ones(len(means))
+    
+    means = np.array(means)
+    stds = np.array(stds)
+    ns = np.array(ns)
+
+    # Pooled mean
+    mean_total = np.sum(ns * means) / np.sum(ns)
+
+    # Pooled variance
+    variance_total = (
+        np.sum((ns - 1) * stds**2) + np.sum(ns * (means - mean_total)**2)
+    ) / (np.sum(ns) - 1)
+
+    return mean_total, np.sqrt(variance_total)                                           
+                                                
 
 def load_hyper_config(task, model_name, use_global_config_base=True, ds_name=None):
     '''load the hyperparameters for the model and the dataset'''
@@ -39,6 +68,92 @@ def load_hyper_config(task, model_name, use_global_config_base=True, ds_name=Non
         assert ds_name is not None
         configs_dict = deepcopy(params_dict[ds_name + '_' + model_name])
     return configs_dict
+
+
+def print_folder(ds_name, 
+                 model_name, 
+                 task='link_prediction',
+                 metric='auc', 
+                 splits=None, 
+                 test_or_valid ='test',  
+                 top_num_to_print=20,
+                 from_date=None,
+                 sort_by='val_acc', 
+                 print_base_config=True):
+    '''print the results of an experiment on a dataset with one of the Clam models. The results are arranged into a metric (auc or hits@20) and test/validation experiments.'''
+    
+    model_path = os.path.join(metric, ds_name, model_name)
+    existing_splits = os.listdir(model_path)
+    if splits is None:
+        splits = existing_splits
+    else:
+        splits = list(set(splits).intersection(existing_splits))
+
+
+    res_paths = []
+    for split in splits: # all paths to test sets
+        res_paths += [os.path.join(model_path, split, test_or_valid)]
+
+
+
+    for i, path in enumerate(res_paths):
+        if os.path.exists(path):
+            print(f'{splits[i]}')
+            print(f'================== \n')
+            for file_name in os.listdir(path):
+                # the folder names should all be datetime %H%M_%d%m%y
+                if file_name.endswith('.json'):
+                    # Extract the timestamp from the file name
+                    if from_date is not None:    
+                        try:
+                            file_timestamp = datetime.strptime(file_name[17:-5], '%d-%m-%y')
+                        except ValueError:
+                            continue
+
+                        # Check if the file's timestamp is after the given date
+                        if from_date is not None:
+                            input_date = datetime.strptime(from_date, '%d-%m-%y')
+                            if file_timestamp < input_date:
+                                continue
+                    file_path = os.path.join(path, file_name)
+                    grouped_tup = SaveRun.load_saved(
+                        task,
+                        file_path, 
+                        sort_by=sort_by,
+                        return_base_config=print_base_config)
+                    
+                    if print_base_config:
+                        grouped_df = grouped_tup[0]
+                        base_config = grouped_tup[1]
+                    else:
+                        grouped_df = grouped_tup
+                    print("    " + file_name + '\n    ==================')
+                    if not grouped_df.empty:  
+                        if print_base_config:
+                            print('    Base config:')
+                            print(json.dumps(base_config, indent=4))
+                            print('    ==================') 
+                        if top_num_to_print == -1:
+                            print(grouped_df)
+                        else:
+                            print(grouped_df.head(top_num_to_print))
+                        
+                        print('\n')
+                    else:
+                        print(f'The file in {file_path} has no results, consider deleting.\n')
+        else:
+            print(f'Path {path} does not exist. Skipping.\n')
+
+
+
+
+
+
+# .dP"Y8 88 8b    d8 88   88 88        db    888888 88  dP"Yb  88b 88 
+# `Ybo." 88 88b  d88 88   88 88       dPYb     88   88 dP   Yb 88Yb88 
+# o.`Y8b 88 88YbdP88 Y8   8P 88  .o  dP__Yb    88   88 Yb   dP 88 Y88 
+# 8bodP' 88 88 YY 88 `YbodP' 88ood8 dP""""Yb   88   88  YbodP  88  Y8 
+
 
 
 def perturb_config(task, model_name, deltas, use_global_config, ds_name=None):
@@ -61,17 +176,21 @@ def perturb_config(task, model_name, deltas, use_global_config, ds_name=None):
     return config_range_list
     
     
-# .dP"Y8    db    Yb    dP 888888 88""Yb 88   88 88b 88 
-# `Ybo."   dPYb    Yb  dP  88__   88__dP 88   88 88Yb88 
-# o.`Y8b  dP__Yb    YbdP   88""   88"Yb  Y8   8P 88 Y88 
-# 8bodP' dP""""Yb    YP    888888 88  Yb `YbodP' 88  Y8 
+
+
+
+
+                # .dP"Y8    db    Yb    dP 888888 88""Yb 88   88 88b 88 
+                # `Ybo."   dPYb    Yb  dP  88__   88__dP 88   88 88Yb88 
+                # o.`Y8b  dP__Yb    YbdP   88""   88"Yb  Y8   8P 88 Y88 
+                # 8bodP' dP""""Yb    YP    888888 88  Yb `YbodP' 88  Y8 
 
 
 class SaveRun:
 
     '''we save the a base config (either model specific or global) and change it with deltas. each experiment result is the config delta and the result of the experiment in a json file. to gather all of the results together there is an analysis.py in every results folder.'''
     
-    def __init__(self, model_name, ds_name, task, metric=None, omitted_test_dyads=None, test_or_val=None, use_global_config_base=True, config_ranges=None):
+    def __init__(self, model_name, ds_name, task, metric=None, omitted_test_dyads=None, test_or_valid=None, use_global_config_base=True, config_ranges=None):
         self.model_name = model_name
         self.task = task
         self.ds_name = ds_name
@@ -111,7 +230,7 @@ class SaveRun:
         if not os.path.exists(omitted_test_dyads_path):
             torch.save(omitted_test_dyads, omitted_test_dyads_path)
 
-        self.test_or_val_path = os.path.join(self.split_save_path, test_or_val)
+        self.test_or_val_path = os.path.join(self.split_save_path, test_or_valid)
         os.makedirs(self.test_or_val_path, exist_ok=True) 
 
         self.acc_configs_path = os.path.join(self.test_or_val_path, f"acc_configs{timestamp}.json")
@@ -281,60 +400,6 @@ class SaveRun:
        
    
 
-def print_folder(ds_name, model_name, metric='auc', splits=None, test_or_val ='test',  num_to_plot=20, sort_by='val_acc', print_base_config=True):
-    '''print the results of an experiment on a dataset with one of the Clam models. The results are arranged into a metric (auc or hits@20) and test/validation experiments.'''
-    
-    model_path = os.path.join(metric, ds_name, model_name)
-    existing_splits = os.listdir(model_path)
-    if splits is None:
-        splits = existing_splits
-    else:
-        splits = list(set(splits).intersection(existing_splits))
-
-
-    res_paths = []
-    for split in splits: # all paths to test sets
-        res_paths += [os.path.join(model_path, split, test_or_val)]
-
-
-
-    for i, path in enumerate(res_paths):
-        if os.path.exists(path):
-            print(f'{splits[i]}')
-            print(f'================== \n')
-            for file_name in os.listdir(path):
-                # the folder names should all be datetime %H%M_%d%m%y
-                if file_name.endswith('.json'):
-                    file_path = os.path.join(path, file_name)
-                    grouped_tup = SaveRun.load_saved(
-                        'link_prediction',
-                        file_path, 
-                        sort_by=sort_by,
-                        return_base_config=print_base_config)
-                    
-                    if print_base_config:
-                        grouped_df = grouped_tup[0]
-                        base_config = grouped_tup[1]
-                    else:
-                        grouped_df = grouped_tup
-                    print("    " + file_name + '\n    ==================')
-                    if not grouped_df.empty:  
-                        if print_base_config:
-                            print('    Base config:')
-                            print(json.dumps(base_config, indent=4))
-                            print('    ==================') 
-                        if num_to_plot == -1:
-                            print(grouped_df)
-                        else:
-                            print(grouped_df.head(num_to_plot))
-                        
-                        print('\n')
-                    else:
-                        print(f'The file in {file_path} has no results, consider deleting.\n')
-        else:
-            print(f'Path {path} does not exist. Skipping.\n')
-
-
 
 #  dP""b8 88""Yb  dP"Yb  .dP"Y8 .dP"Y8 88     88 88b 88 88  dP 
 # dP   `" 88__dP dP   Yb `Ybo." `Ybo." 88     88 88Yb88 88odP  
@@ -344,7 +409,65 @@ def print_folder(ds_name, model_name, metric='auc', splits=None, test_or_val ='t
 
 
 
+#todo: just make a function cr
+def cross_val_link_splits(
+        ds_name, 
+        model_name,
+        range_triplets,
+        n_reps,
+        use_global_config_base,
+        device,
+        test_only=False,
+        metric='auc',
+        attr_opt=False,
+        acc_every=20,
+        plot_every=10000,
+        verbose=False,
+        val_p=0.0,
+        random_search=False,
+        random_seed=42,
+        reverse_test_set_order=False,
+        verbose_in_funcs=False):
+    
+    '''Get the path to the folder in which this file is located'''
+    current_file_path = os.path.abspath(__file__)
+    current_folder_path = os.path.dirname(current_file_path)
+    path_to_res = os.path.join(current_folder_path,'results', 'link_prediction', 'auc',ds_name, model_name)
+    #todo: add option of doing it in reverse
+    splits = os.listdir(path_to_res)
+    if reverse_test_set_order:
+        splits = splits[::-1] # reverse the order of the splits so the first split is the last one in the folder
 
+    for split in splits:
+        if 'nosplit' in split:
+            continue
+        printd(f'on test set {path_to_res}, {split}')
+        path_to_test = os.path.join(path_to_res, split, 'omitted_test_dyads.pt')
+        cross_val_link(
+            ds_name,
+            model_name,
+            range_triplets=range_triplets,
+            n_reps=n_reps,
+            use_global_config_base=use_global_config_base,
+            device=device,
+            test_dyads_path=path_to_test,
+            test_only=test_only,
+            metric=metric,
+            attr_opt=attr_opt,
+            acc_every=acc_every,
+            plot_every=plot_every,
+            verbose=verbose,
+            val_p=val_p,
+            random_search=random_search,
+            random_seed=random_seed,
+            verbose_in_funcs=verbose_in_funcs
+        )
+    
+#todo: cancel time consuming jobs.
+# todo: job only for hopkins
+# todo: tests
+# todo: random wide search    
+#todo: test randomizing
 
 def cross_val_link(
         ds_name, 
@@ -352,10 +475,12 @@ def cross_val_link(
         range_triplets,
         n_reps,
         use_global_config_base,
-        densify,
         device,
+        densify=False,
         test_p=0.0,
         val_p=0.0,
+        random_search=False,
+        random_seed=42,
         test_dyads_to_omit=None,
         val_dyads_to_omit=None,
         test_dyads_path=None,
@@ -374,14 +499,13 @@ def cross_val_link(
     
     # ============ OMIT TEST =============
     '''The dyad omitting process for the algorithm is described in the paper. if a test set is provided it's used and if not the test set is taken randomly with the percentage given and 5X the number of negative samples. The same goes to the val set: if it is not given it is sampled from the dyad set for every parameter configuration.'''
-    
-    if val_p == 0:
-        test_only = True
+#todo: make random search for each dataset
 
+    #todo: add option for doing it in random
     try:
         
         curr_file_dir = os.path.dirname(os.path.abspath(__file__)) 
-        test_or_val = 'test' if test_only else 'valid'
+        test_or_valid = 'test' if test_only else 'valid'
         
         # save run should configure the save paths 
         # if there is a test set folder (split. the number after split should be the number that is the test sets connected and turned into a number) like the test set we are using save n
@@ -394,6 +518,11 @@ def cross_val_link(
         if hasattr(ds, 'test_dyads_to_omit'):
             test_dyads_to_omit = ds.test_dyads_to_omit
 
+        if val_p == 0 and not hasattr(ds, 'val_dyads_to_omit'):
+            if test_only == False:
+                printd('\n\n Warning! vaildation experiment set to true but no validation set detected, either random or built in')
+            test_only = True
+        
         # OMIT TEST
         ds_test_omitted = ds.clone()
         if test_dyads_to_omit is not None: # if the dataset comes with test dyads
@@ -421,7 +550,7 @@ def cross_val_link(
                             'link_prediction', 
                             metric=metric,
                             omitted_test_dyads=ds_test_omitted.omitted_dyads_test, 
-                            test_or_val=test_or_val, 
+                            test_or_valid=test_or_valid, 
                             use_global_config_base=use_global_config_base, 
                             config_ranges=range_triplets)
         
@@ -435,11 +564,16 @@ def cross_val_link(
                             ds_test_omitted.edge_attr,
                             val_dyads_to_omit)
 
+      
+        grid = list(itertools.product(*[triplet[2] for triplet in range_triplets]))
+        if random_search:
+            if random_seed is not None:
+                random.seed(random_seed)
+            random.shuffle(grid)
 
-        for values in itertools.product(*[triplet[2] for triplet in range_triplets]):
-        
-            for _ in range(n_reps): 
-        
+        for values in tqdm(grid, desc="Grid search"):
+            for i in tqdm(range(n_reps), leave=False, desc="Repetitions"): 
+                printd(f'Repetition no. {i}')
                 ds_test_val_omitted = ds_test_omitted.clone()
                 
                 # OMIT VALIDATION DYADS
@@ -618,3 +752,21 @@ def multi_ds_anomaly(
         
         torch.cuda.empty_cache()
         printd('\n\nFinished CrossVal!\n\n')    
+
+
+    import os
+import shutil
+
+def empty_test(abs_path):
+    '''empty all of the test folders in the direcrtory where the splits are'''
+    root_path = '/home/user/Documents/danny/ICML_pieclam/experiments/results/link_prediction/auc/texas/ieclam'
+
+    for folder in os.listdir(root_path):
+        test_dir = os.path.join(root_path, folder, 'test')
+        if os.path.isdir(test_dir):
+            for item in os.listdir(test_dir):
+                item_path = os.path.join(test_dir, item)
+                if os.path.isfile(item_path) or os.path.islink(item_path):
+                    os.unlink(item_path)
+                elif os.path.isdir(item_path):
+                    shutil.rmtree(item_path)

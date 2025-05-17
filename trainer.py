@@ -158,7 +158,7 @@ class Trainer():
                 self.get_global_configs_dict(config_triplets=config_triplets_to_change)
             else:
                 '''if not global config then the individual dataset configs provide config triplets'''
-                printd(f'\n\n\nUsing dataset config base\n\n\n')
+                printd(f'\nUsing dataset specific configuration and not global \n\n')
                 self.configs_dict_from_top_list(config_triplets=config_triplets_to_change)
         else:
             self.configs_dict = configs_dict
@@ -415,8 +415,7 @@ class Trainer():
                                         **kwargs)
                
                 
-                if verbose:
-                    printd(f'\ntrain_model_on_params on {self.model_name} {self.dataset_name} \ntook {time.time() - t_train_model} seconds')
+             
                 
                 # printd(f'\n\n\nFINISHED train model on params \n\n\n')
 
@@ -448,7 +447,9 @@ class Trainer():
                             print(f'{key=}: {accuracies_val[key][-1]}')
                         else:
                             print(f'{key}: None')
-                printd(f'\n\n\n')
+
+                print(f'\n')
+            printd(f'\ntrain_model_on_params on {self.model_name} {self.dataset_name} \ntook {time.time() - t_train_model} seconds')
 
 
     def get_prob_graph(self, to_sparse=False, with_prior=False, ret_fufv=False):
