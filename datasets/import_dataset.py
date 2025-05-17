@@ -104,17 +104,20 @@ def import_dataset(dataset_name, test_dyads_path=None, val_dyads_path=None, remo
     # ANOMALY DETECTION
 
     elif dataset_name == 'photo':
-        data = load_data_('photo')
+        data_dir = os.path.join(current_dir, 'Photo')
+        data = load_data_matlab_format(data_dir, 'photo')
         data.edge_index = remove_self_loops(data.edge_index)[0]
         data.edge_index = to_undirected(data.edge_index)
     
     elif dataset_name == 'reddit':
-        data = load_data_('reddit')
+        data_dir = os.path.join(current_dir, 'Reddit')
+        data = load_data_matlab_format(data_dir, 'reddit')
         data.edge_index = remove_self_loops(data.edge_index)[0]
         data.edge_index = to_undirected(data.edge_index)
 
     elif dataset_name == 'elliptic':
-        data = load_data_('elliptic')
+        data_dir = os.path.join(current_dir, 'Elliptic')
+        data = load_data_matlab_format(data_dir, 'elliptic')
         data.edge_index = remove_self_loops(data.edge_index)[0]
         data.edge_index = to_undirected(data.edge_index)
     
@@ -217,6 +220,7 @@ def import_dataset(dataset_name, test_dyads_path=None, val_dyads_path=None, remo
 
 
 def load_data_(dataset, train_rate=0.3, val_rate=0.1):
+    # return load_data_matlab_format('', dataset, train_rate, val_rate)
     return load_data_matlab_format('anomaly_detection/GGAD_datasets', dataset, train_rate, val_rate)
 
 

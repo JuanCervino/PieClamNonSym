@@ -4,6 +4,7 @@ import pandas as pd
 import json
 import yaml
 import os
+import shutil
 from copy import deepcopy
 import itertools
 from torch_geometric.transforms import TwoHop
@@ -655,7 +656,6 @@ def multi_ds_anomaly(
         model_name,
         range_triplets,
         n_reps,
-        metric,
         use_global_config_base,
         device,
         ds_names=['reddit', 'photo', 'elliptic'], 
@@ -754,8 +754,7 @@ def multi_ds_anomaly(
         printd('\n\nFinished CrossVal!\n\n')    
 
 
-    import os
-import shutil
+
 
 def empty_test(abs_path):
     '''empty all of the test folders in the direcrtory where the splits are'''
