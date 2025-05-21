@@ -102,7 +102,7 @@ photo_pieclam:
 # o.`Y8b Yb b dP Y8   8P 88 88"Yb  88"Yb  88""   88  .o 
 # 8bodP'  `"YoYo `YbodP' 88 88  Yb 88  Yb 888888 88ood8 
 
-
+#todo: there is no setup for squirrel bigclam and need to do.
 squirrel_ieclam:
     clamiter_init:
         dim_feat: 90

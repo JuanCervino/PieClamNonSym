@@ -11,7 +11,7 @@ from torch_geometric.transforms import TwoHop
 from torch_geometric import utils
 import numpy as np
 import random
-import tqdm
+from tqdm import tqdm
 import sys
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -71,6 +71,7 @@ def load_hyper_config(task, model_name, use_global_config_base=True, ds_name=Non
     return configs_dict
 
 
+
 def print_folder(ds_name, 
                  model_name, 
                  task='link_prediction',
@@ -80,27 +81,79 @@ def print_folder(ds_name,
                  top_num_to_print=20,
                  from_date=None,
                  sort_by='val_acc', 
-                 print_base_config=True):
+                 print_base_config=True,
+                 return_dataframes=False):
     '''print the results of an experiment on a dataset with one of the Clam models. The results are arranged into a metric (auc or hits@20) and test/validation experiments.'''
     
-    model_path = os.path.join(metric, ds_name, model_name)
-    existing_splits = os.listdir(model_path)
-    if splits is None:
-        splits = existing_splits
-    else:
-        splits = list(set(splits).intersection(existing_splits))
+    if task == 'link_prediction':   
+        model_path = os.path.join(metric, ds_name, model_name)
+        existing_splits = os.listdir(model_path)
+        if splits is None:
+            splits = existing_splits
+        else:
+            splits = list(set(splits).intersection(existing_splits))
 
 
-    res_paths = []
-    for split in splits: # all paths to test sets
-        res_paths += [os.path.join(model_path, split, test_or_valid)]
+        res_paths = []
+        for split in splits: # all paths to test sets
+            res_paths += [os.path.join(model_path, split, test_or_valid)]
 
 
 
-    for i, path in enumerate(res_paths):
+        for i, path in enumerate(res_paths):
+            if os.path.exists(path):
+                print(f'{splits[i]}')
+                print(f'================== \n')
+                for file_name in os.listdir(path):
+                    # the folder names should all be datetime %H%M_%d%m%y
+                    if file_name.endswith('.json'):
+                        # Extract the timestamp from the file name
+                        if from_date is not None:    
+                            try:
+                                file_timestamp = datetime.strptime(file_name[17:-5], '%d-%m-%y')
+                            except ValueError:
+                                continue
+
+                            # Check if the file's timestamp is after the given date
+                            if from_date is not None:
+                                input_date = datetime.strptime(from_date, '%d-%m-%y')
+                                if file_timestamp < input_date:
+                                    continue
+                        file_path = os.path.join(path, file_name)
+                        grouped_tup = SaveRun.load_saved(
+                            task,
+                            file_path, 
+                            sort_by=sort_by,
+                            return_base_config=print_base_config)
+                        
+                        if print_base_config:
+                            grouped_df = grouped_tup[0]
+                            base_config = grouped_tup[1]
+                        else:
+                            grouped_df = grouped_tup
+                        print("    " + file_name + '\n    ==================')
+                        if not grouped_df.empty:  
+                            if print_base_config:
+                                print('    Base config:')
+                                print(json.dumps(base_config, indent=4))
+                                print('    ==================') 
+                            if top_num_to_print == -1:
+                                print(grouped_df)
+                            else:
+                                print(grouped_df.head(top_num_to_print))
+                            
+                            print('\n')
+                        else:
+                            print(f'The file in {file_path} has no results, consider deleting.\n')
+            else:
+                print(f'Path {path} does not exist. Skipping.\n')
+
+    elif task == 'anomaly_unsupervised':
+        model_path = os.path.join('anomaly_unsupervised', model_name, ds_name)
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(current_dir, 'results', model_path)
+        grouped_tups = []
         if os.path.exists(path):
-            print(f'{splits[i]}')
-            print(f'================== \n')
             for file_name in os.listdir(path):
                 # the folder names should all be datetime %H%M_%d%m%y
                 if file_name.endswith('.json'):
@@ -142,8 +195,14 @@ def print_folder(ds_name,
                         print('\n')
                     else:
                         print(f'The file in {file_path} has no results, consider deleting.\n')
+                    grouped_tups.append(grouped_tup)
+            
+            if return_dataframes:
+                return grouped_tups
+        
         else:
             print(f'Path {path} does not exist. Skipping.\n')
+
 
 
 
@@ -206,36 +265,42 @@ class SaveRun:
 
         # Now go to the results folder inside it
         base_results_dir = os.path.join(current_file_dir, 'results')
-
+        if task == 'link_prediction':
         # Build your final model path
-        self.model_path = os.path.join(base_results_dir, task, metric, ds_name, model_name)
-        os.makedirs(self.model_path, exist_ok=True)
-        
-        split_exists = False
-        for split_name in os.listdir(self.model_path):
-            if split_name.startswith('split'):
-                split_omitted_test_dyads = torch.load(os.path.join(self.model_path, split_name, 'omitted_test_dyads.pt'))
-                if omitted_test_dyads[0].shape == split_omitted_test_dyads[0].shape and omitted_test_dyads[1].shape == split_omitted_test_dyads[1].shape:     
-                    if (omitted_test_dyads[0] == split_omitted_test_dyads[0]).all() and (omitted_test_dyads[1] == split_omitted_test_dyads[1]).all():
-                        split_exists = True                    
-                        break
-        if not split_exists:
-            split_name = f'split_{timestamp}'
+            self.model_path = os.path.join(base_results_dir, task, metric, ds_name, model_name)
+            os.makedirs(self.model_path, exist_ok=True)
+            
+            split_exists = False
+            for split_name in os.listdir(self.model_path):
+                if split_name.startswith('split'):
+                    split_omitted_test_dyads = torch.load(os.path.join(self.model_path, split_name, 'omitted_test_dyads.pt'))
+                    if omitted_test_dyads[0].shape == split_omitted_test_dyads[0].shape and omitted_test_dyads[1].shape == split_omitted_test_dyads[1].shape:     
+                        if (omitted_test_dyads[0] == split_omitted_test_dyads[0]).all() and (omitted_test_dyads[1] == split_omitted_test_dyads[1]).all():
+                            split_exists = True                    
+                            break
+            if not split_exists:
+                split_name = f'split_{timestamp}'
 
 
-        self.split_save_path = os.path.join(self.model_path, split_name)
-        
-        os.makedirs(self.split_save_path, exist_ok=True)
-        
-        omitted_test_dyads_path = os.path.join(self.split_save_path, 'omitted_test_dyads.pt')
-        if not os.path.exists(omitted_test_dyads_path):
-            torch.save(omitted_test_dyads, omitted_test_dyads_path)
+            self.split_save_path = os.path.join(self.model_path, split_name)
+            
+            os.makedirs(self.split_save_path, exist_ok=True)
+            
+            omitted_test_dyads_path = os.path.join(self.split_save_path, 'omitted_test_dyads.pt')
+            if not os.path.exists(omitted_test_dyads_path):
+                torch.save(omitted_test_dyads, omitted_test_dyads_path)
 
-        self.test_or_val_path = os.path.join(self.split_save_path, test_or_valid)
-        os.makedirs(self.test_or_val_path, exist_ok=True) 
+            self.test_or_val_path = os.path.join(self.split_save_path, test_or_valid)
+            os.makedirs(self.test_or_val_path, exist_ok=True) 
 
-        self.acc_configs_path = os.path.join(self.test_or_val_path, f"acc_configs{timestamp}.json")
-        
+            self.acc_configs_path = os.path.join(self.test_or_val_path, f"acc_configs{timestamp}.json")
+
+        elif task == 'anomaly_unsupervised':
+            self.model_path = os.path.join(base_results_dir, task, model_name, ds_name)
+            os.makedirs(self.model_path, exist_ok=True)
+            self.acc_configs_path = os.path.join(self.model_path, f'acc_configs{timestamp}.json')
+            
+
         os.makedirs(os.path.dirname(self.acc_configs_path), exist_ok=True)
     
 
@@ -351,7 +416,7 @@ class SaveRun:
                     grouped = grouped.sort_values(by='avg_val_acc', ascending=False).reset_index(drop=True)
                 elif sort_by == 'test_acc':
                     grouped = grouped.sort_values(by='avg_test_acc', ascending=False).reset_index(drop=True)
-
+            
             elif task == 'anomaly_unsupervised':
                 grouped = df.groupby([col for col in df.columns if col not in ['vanilla_star', 'prior', 'prior_star']]).agg(
                     avg_vanilla_star=('vanilla_star', 'mean'),
@@ -427,6 +492,7 @@ def cross_val_link_splits(
         val_p=0.0,
         random_search=False,
         random_seed=42,
+        num_draws_random=50,
         reverse_test_set_order=False,
         verbose_in_funcs=False):
     
@@ -461,6 +527,7 @@ def cross_val_link_splits(
             val_p=val_p,
             random_search=random_search,
             random_seed=random_seed,
+            num_draws_random=num_draws_random,
             verbose_in_funcs=verbose_in_funcs
         )
     
@@ -482,6 +549,7 @@ def cross_val_link(
         val_p=0.0,
         random_search=False,
         random_seed=42,
+        num_draws_random=50,
         test_dyads_to_omit=None,
         val_dyads_to_omit=None,
         test_dyads_path=None,
@@ -555,6 +623,8 @@ def cross_val_link(
                             use_global_config_base=use_global_config_base, 
                             config_ranges=range_triplets)
         
+        printd(f'RunSaver defined to acc_configs path {run_saver.acc_configs_path}')
+
         if val_dyads_to_omit is not None and not test_only:
             assert type(val_dyads_to_omit) == tuple
             assert utils.is_undirected(val_dyads_to_omit[0]) and utils.is_undirected(val_dyads_to_omit[1])
@@ -571,6 +641,7 @@ def cross_val_link(
             if random_seed is not None:
                 random.seed(random_seed)
             random.shuffle(grid)
+            grid = grid[:num_draws_random]
 
         for values in tqdm(grid, desc="Grid search"):
             for i in tqdm(range(n_reps), leave=False, desc="Repetitions"): 
@@ -650,7 +721,10 @@ def cross_val_link(
         torch.cuda.empty_cache()
         printd('\n\nFinished CrossVal!\n\n')    
 
-
+#  dP""b8 88""Yb  dP"Yb  .dP"Y8 .dP"Y8        db    88b 88  dP"Yb  8b    d8    db    88     Yb  dP 
+# dP   `" 88__dP dP   Yb `Ybo." `Ybo."       dPYb   88Yb88 dP   Yb 88b  d88   dPYb   88      YbdP  
+# Yb      88"Yb  Yb   dP o.`Y8b o.`Y8b      dP__Yb  88 Y88 Yb   dP 88YbdP88  dP__Yb  88  .o   8P   
+#  YboodP 88  Yb  YbodP  8bodP' 8bodP'     dP""""Yb 88  Y8  YbodP  88 YY 88 dP""""Yb 88ood8  dP    
 
 def multi_ds_anomaly(
         model_name,
@@ -660,8 +734,10 @@ def multi_ds_anomaly(
         device,
         ds_names=['reddit', 'photo', 'elliptic'], 
         densifiable_ds=['reddit', 'photo'],
-        attr_opt=False,
-        plot_every=10000):
+        attr_opt=True,
+        plot_every=10000,
+        random_search=False,
+        random_seed=42):
     
     '''here we test a single configuration for a list of datasets since the setting is unsupervised. '''
     
@@ -674,16 +750,22 @@ def multi_ds_anomaly(
     try:
         
         curr_file_dir = os.path.dirname(os.path.abspath(__file__))
-        save_paths = [os.path.join(curr_file_dir, 'results', 'anomaly_unsupervised', model_name, ds_name, 'acc_configs.json')for ds_name in ds_names]
+        # save_paths = [os.path.join(curr_file_dir, 'results', 'anomaly_unsupervised', model_name, ds_name, 'acc_configs.json')for ds_name in ds_names]
         # a different run saver for every dataset
         run_savers = [SaveRun(model_name, 
                               ds_name,
                               task='anomaly_unsupervised', 
                               use_global_config_base=use_global_config_base, 
-                              save_path=save_paths[i], 
+                            #   save_path=save_paths[i], 
                               config_ranges=range_triplets) for i, ds_name in enumerate(ds_names)]
-        
-        for values in itertools.product(*[triplet[2] for triplet in range_triplets]):
+        grid = list(itertools.product(*[triplet[2] for triplet in range_triplets]))
+        if random_search:
+            if random_seed is not None:
+                random.seed(random_seed)
+            random.shuffle(grid)
+
+               
+        for values in tqdm(grid, desc="Grid search"):
             '''for each configuration run all of the datasets and save the results in the corresponding folder'''
             outers = []
             inners = []
@@ -693,7 +775,9 @@ def multi_ds_anomaly(
                 
             config_triplets = [
                 [outers[i], inners[i], values[i]] for i in range(len(range_triplets))]
-            for _ in range(n_reps): 
+            
+            for i in tqdm(range(n_reps), leave=False, desc="Repetitions"): 
+                printd(f'Repetition no. {i}')
                 for i, ds_name in enumerate(ds_names):
                     ds = import_dataset(ds_name)
                     ds_to_use = ds
@@ -716,7 +800,7 @@ def multi_ds_anomaly(
                                 metric='auc',
                                 config_triplets_to_change=config_triplets,
                                 use_global_config_base=use_global_config_base,
-                                attr_opt=False,
+                                attr_opt=attr_opt,
                                 device=device,
                     )
 
@@ -747,8 +831,8 @@ def multi_ds_anomaly(
             del trainer_anomaly
         if ds is not None:
             del ds
-        if ds_for_optimization is not None:
-            del ds_for_optimization
+        # if ds_for_optimization is not None:
+        #     del ds_for_optimization
         
         torch.cuda.empty_cache()
         printd('\n\nFinished CrossVal!\n\n')    
@@ -756,12 +840,15 @@ def multi_ds_anomaly(
 
 
 
-def empty_test(abs_path):
+def empty_test(abs_path, test_or_valid):
     '''empty all of the test folders in the direcrtory where the splits are'''
-    root_path = '/home/user/Documents/danny/ICML_pieclam/experiments/results/link_prediction/auc/texas/ieclam'
+    root_path = abs_path
 
     for folder in os.listdir(root_path):
-        test_dir = os.path.join(root_path, folder, 'test')
+        if test_or_valid == 'test':
+            test_dir = os.path.join(root_path, folder, 'test')
+        else:
+            test_dir = os.path.join(root_path, folder, 'valid')
         if os.path.isdir(test_dir):
             for item in os.listdir(test_dir):
                 item_path = os.path.join(test_dir, item)
