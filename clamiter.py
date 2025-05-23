@@ -373,6 +373,7 @@ class PCLAMIter(MessagePassing):
                     break
                 
                 # ACCURACY CALCULATION
+                #todo: i think that it will speed everything up if there is an option to acc only in the end
                 if (i+1)%acc_every == 0:
                     #! problem here, accuracies not in sync with losses.
                     # measurement_interval = 1 if i == 0 else acc_every
@@ -440,7 +441,7 @@ class PCLAMIter(MessagePassing):
                   early_stop=0,
                   cutoff=0.0, 
                   verbose=False,
-                  acc_every=10, 
+                  acc_every=100, 
                   plot_every=100000,
                   **kwargs):
         

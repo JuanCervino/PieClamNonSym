@@ -335,7 +335,6 @@ class Trainer():
         printd(f'\n {datetime.now().strftime("%Y-%m-%d %H:%M:%S")} starting optimization of {self.model_name} on {self.dataset_name} on device {self.device}')
         print('\n configs_dict: \n' + json.dumps(self.configs_dict, indent=4))
           
-          
         if init_feats or (self.data.x is None):
             if verbose:
                 printd(f'\n train_model_on_params, initializing feats with {init_type}')
@@ -353,7 +352,9 @@ class Trainer():
         self.data.to(self.device) 
     
         # OPTIMIZATION
+            
         try:
+            #todo: add a case for when acc_every is -1 and just calculate it in the end of each function
             # FIT VANILLA 
             if self.vanilla:
                 losses_prior = None
@@ -368,7 +369,7 @@ class Trainer():
                         **kwargs)
                 if verbose:
                     printd(f'\n train: finished vanilla fit feats')
-                                   
+                          
                 return losses_feats, accuracies_test, accuracies_val
             # =====================================================
             
