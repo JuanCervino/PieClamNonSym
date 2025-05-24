@@ -83,9 +83,10 @@ def main():
     parser.add_argument('--val_dyads_path', type=str, default=None, help='path to the validation dyads')
     parser.add_argument('--test_dyads_path', type=str, default=None, help='path to the test dyads')
     parser.add_argument('--random_search', action='store_true', help='whether to use random search')
+    parser.add_argument('--num_draws_random', type=int, default=1, help='number of draws for random search')
     parser.add_argument('--test_only', action='store_true', help='whether to test only')
     parser.add_argument('--n_reps', type=int, default=3, help='number of repetitions')
-
+    parser.add_argument('--reverse_test_set_order', action='store_true', help='whether to reverse the order of the features')
     args = parser.parse_args()
     
 
@@ -115,6 +116,8 @@ def main():
         ]
     # Create the file if it doesn't exist
     #todo: test the datasets: photo, texas, facebook, squirrel and crocodile
+    printd(f'Running cross val link splits for {args.ds_name} with model {args.model_name}')
+    printd(f'{args=}')
     ou.cross_val_link_splits(
         ds_name=args.ds_name,
         model_name=args.model_name,
@@ -123,10 +126,13 @@ def main():
         attr_opt=args.attr_opt,
         val_p=args.val_p,
         random_search=args.random_search,
+        num_draws_random=args.num_draws_random,
         test_only=args.test_only,
+        reverse_test_set_order=args.reverse_test_set_order,
         n_reps=args.n_reps,
         device=device,
-        plot_every=100000
+        plot_every=100000,
+        acc_every=-1
         )
 
 if __name__ == "__main__":

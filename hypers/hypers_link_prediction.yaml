@@ -167,7 +167,7 @@ texas_ieclam:
 texas_pieclam:
     clamiter_init:
         dim_feat: 22
-        l1_reg: 1
+        l1_reg: 1 # note: s_reg: 0.1 could improve, non tested.
     feat_opt:
         lr: 0.000004
         n_iter: 2000

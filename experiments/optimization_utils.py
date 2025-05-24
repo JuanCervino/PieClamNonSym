@@ -84,6 +84,7 @@ def print_folder(ds_name,
                  print_base_config=True,
                  return_dataframes=False):
     '''print the results of an experiment on a dataset with one of the Clam models. The results are arranged into a metric (auc or hits@20) and test/validation experiments.'''
+    printd(f'Printing results for {task} on {ds_name} with {model_name} model.\n')
     
     if task == 'link_prediction':   
         model_path = os.path.join(metric, ds_name, model_name)

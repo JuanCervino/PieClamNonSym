@@ -130,7 +130,8 @@ def main():
         test_only=args.test_only,
         n_reps=args.n_reps,
         device=device,
-        plot_every=100000
+        plot_every=100000,
+        acc_every=-1
         )
 
 if __name__ == "__main__":

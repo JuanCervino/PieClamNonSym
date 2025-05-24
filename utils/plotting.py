@@ -803,37 +803,7 @@ def plot_edge_index_nx(edge_index, ax=None):
     ax.set_aspect('equal')
 
 
-
-# def plot_distance_experiment(d, experiment_name, ds_name, model_name, slice):
-#         '''plot the logcut values through an optimization.
-#         experiment name: the name of the conducted experiment e.g. find_d - find the best 
-#         d for logcut of a dataset,
-#         slice: the slice of the logcut values to plot (for visual convenience). if int, it will be [slice, -1]'''
-#         if type(slice) == int:
-#             slice = [slice, -1]
-        
-#         base_path = f'results/distance/{experiment_name}/{ds_name}/{model_name}/d_{d}'
-#         folders = [f for f in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, f))]
-        
-#         plt.figure(figsize=(10, 5))
-        
-#         for folder in folders:
-#             load_path = os.path.join(base_path, folder)
-#             logcuts_path = os.path.join(load_path, 'logcuts')
-            
-#             if os.path.exists(logcuts_path):
-#                 logcuts = torch.load(logcuts_path)[slice[0]:slice[1]]
-#                 plt.plot(range(slice[0], slice[0] + len(logcuts)), logcuts, label=f'Log Cut - {folder}')
-#             else:
-#                 print(f"Logcuts file not found in {load_path}")
-
-#         plt.xlabel('Iterations')
-#         plt.ylabel('Values')
-#         plt.title('Log Cuts over Iterations')
-#         plt.legend()
-#         plt.show()
-
-def plot_distance_experiment(d, experiment_name, ds_name, model_name, slice=0, metrics_to_plot=['logcuts', 'l2s', 'log_likelihoods']):
+def plot_distance_experiment(path, slice=0, metrics_to_plot=['logcuts', 'l2s', 'log_likelihoods']):
         '''plot the logcut values through an optimization.
         experiment name: the name of the conducted experiment e.g. find_d - find the best 
         d for logcut of a dataset,
@@ -841,7 +811,8 @@ def plot_distance_experiment(d, experiment_name, ds_name, model_name, slice=0, m
         if type(slice) == int:
             slice = [slice, -1]
         
-        base_path = f'results/distance/{experiment_name}/{ds_name}/{model_name}/d_{d}'
+        curr_dir = os.path.dirname(os.path.abspath(__file__))
+        base_path = os.path.join(curr_dir, f'..', path)
         # folders = [f for f in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, f))]
         files = os.listdir(base_path)
         plt.figure(figsize=(10, 5))
@@ -867,3 +838,39 @@ def plot_distance_experiment(d, experiment_name, ds_name, model_name, slice=0, m
         plt.title('Log Cuts over Iterations')
         plt.legend()
         plt.show()
+
+# def plot_distance_experiment(d, experiment_name, ds_name, model_name, slice=0, metrics_to_plot=['logcuts', 'l2s', 'log_likelihoods']):
+#         '''plot the logcut values through an optimization.
+#         experiment name: the name of the conducted experiment e.g. find_d - find the best 
+#         d for logcut of a dataset,
+#         slice: the slice of the logcut values to plot (for visual convenience). if int, it will be [slice, -1]'''
+#         if type(slice) == int:
+#             slice = [slice, -1]
+        
+#         curr_dir = os.path.dirname(os.path.abspath(__file__))
+#         base_path = os.path.join(curr_dir, f'../experiments/results/distance/{experiment_name}/{ds_name}/{model_name}/d_{d}')
+#         # folders = [f for f in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, f))]
+#         files = os.listdir(base_path)
+#         plt.figure(figsize=(10, 5))
+        
+#         for file in files:
+#             metric_name = file.split('.')[0]
+#             if metric_name not in metrics_to_plot:
+#                 continue
+                
+#             load_path = os.path.join(base_path, file)
+#             # logcuts_path = os.path.join(load_path, 'logcuts')
+            
+#             if os.path.exists(load_path):
+#                 loaded = torch.load(load_path)[slice[0]:slice[1]]
+#                 if metric_name == 'log_likelihoods':
+#                     loaded = -loaded
+#                 plt.plot(range(slice[0], slice[0] + len(loaded)), loaded, label=f'{metric_name}')
+#             else:
+#                 print(f"file not found in {load_path}")
+
+#         plt.xlabel('Iterations')
+#         plt.ylabel('Values')
+#         plt.title('Log Cuts over Iterations')
+#         plt.legend()
+#         plt.show()
