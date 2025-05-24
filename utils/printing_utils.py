@@ -22,7 +22,8 @@ def printd(msg):
     filename = getframeinfo(cf.f_back).filename
     linum = cf.f_back.f_lineno
     print('\n')
-    print(filename + ':' + str(linum) + f':::  {msg}')
+    print(filename + ':' + str(linum) + f':::  \n{msg}')
+    
 
 
 def bp():

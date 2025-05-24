@@ -508,7 +508,8 @@ def cross_val_link_splits(
     for split in splits:
         if 'nosplit' in split:
             continue
-        printd(f'on test set {path_to_res}, {split}')
+        printd(f'On test set {split} of {ds_name},{model_name}\n ======================')
+        
         path_to_test = os.path.join(path_to_res, split, 'omitted_test_dyads.pt')
         cross_val_link(
             ds_name,
@@ -735,6 +736,7 @@ def multi_ds_anomaly(
         ds_names=['reddit', 'photo', 'elliptic'], 
         densifiable_ds=['reddit', 'photo'],
         attr_opt=True,
+        acc_every=200,
         plot_every=10000,
         random_search=False,
         random_seed=42):
@@ -807,7 +809,7 @@ def multi_ds_anomaly(
                     losses, acc_test, acc_val = trainer.train(
                                 init_type='small_gaus',
                                 init_feats=True,
-                                acc_every=20,
+                                acc_every=acc_every,
                                 plot_every=plot_every,
                                 verbose=False,
                                 verbose_in_funcs=False

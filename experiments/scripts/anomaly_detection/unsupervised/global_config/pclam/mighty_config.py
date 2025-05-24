@@ -103,7 +103,7 @@ def main():
                     for lr_prior in args.lr_prior:
                         for noise_amp in args.noise_amps:
                             for lr_feats in args.lr_feats:
-                                printd(f'\n\n {round_num= } \n\n')
+                                printd(f'\n {round_num= } \n\n')
 
                                 config_triplets = [
                                     ['clamiter_init','dim_feats', dim_feats],

@@ -730,7 +730,7 @@ def scheduler_step(scheduler, optimizer, feat_params, prior_params, verbose=Fals
         prior_params['lr'] = new_optimizer_lr
         prior_params['noise_amp'] = max(prior_params['noise_amp']*scheduler.gamma, 0.0001)
         if verbose:
-            printd(f'\nscheduler made step. changes:') 
+            printd(f'scheduler made step. changes:') 
             print(f'feats lr: {old_feats_lr} to {feat_params["lr"]}')  
             print(f'feats n_iter changed from {old_feats_n_iter} to {feat_params["n_iter"]}') 
             print(f'noise_amp from {old_noise_amp} to {prior_params["noise_amp"]}') 

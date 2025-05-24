@@ -232,7 +232,7 @@ class PCLAMIter(MessagePassing):
         #* try saying that 3 times!
         ''' optimize n_iter times with the prior fixed, then for every feat dimension, swap it with all the rest of the dimensions and caluclate the loss. for every ax choose the swap that gives the best loss'''
         #todo: cancel the dropout node thing, just slows everything down
-        printd(f'\n in fit_feats_fixed_prior, using device {self.device}')
+        printd(f' in fit_feats_fixed_prior, using device {self.device}')
         if self.prior != None:
             self.prior.eval()
         
@@ -245,7 +245,7 @@ class PCLAMIter(MessagePassing):
             
                 
         if verbose:
-            printd(f'\n in fit_feats_fixed_prior, plotting losses and state')
+            printd(f' in fit_feats_fixed_prior, plotting losses and state')
             self.plot_state(graph, community_affiliation=graph.y, calling_function_name='fit_feats_fixed_prior')
             plot_losses(losses_feats, l2_norms)
         
@@ -278,7 +278,8 @@ class PCLAMIter(MessagePassing):
                     **kwargs
                     ):
             '''The algorithm optimizes the features and prior back to back in alternation. the fit functions are similar and are both represeted by this wrapper function.'''
-
+            if acc_every == -1:
+                acc_every = n_iter
 
             def iter_step_feat():
                 clamiter_grad = self(graph, node_mask)
@@ -316,7 +317,7 @@ class PCLAMIter(MessagePassing):
                 ValueError('print_every should be at least n_iter//100')
 
             if verbose:
-                printd(f'\n in {which_fit}, using device {self.device}')
+                printd(f' in {which_fit}, using device {self.device}')
 
             losses = []
 
@@ -373,7 +374,6 @@ class PCLAMIter(MessagePassing):
                     break
                 
                 # ACCURACY CALCULATION
-                #todo: i think that it will speed everything up if there is an option to acc only in the end
                 if (i+1)%acc_every == 0:
                     #! problem here, accuracies not in sync with losses.
                     # measurement_interval = 1 if i == 0 else acc_every
@@ -386,32 +386,21 @@ class PCLAMIter(MessagePassing):
                     #     a=0
 
                     if verbose:
-                        printd(f'\n fit wrapper {which_fit}, intermediate values iter {i}')
+                        printd(f' fit wrapper {which_fit}, intermediate values iter {i}')
                         acc_tracker.print_accuracies()
                 
                 if (i+1)%plot_every == 0:
-                    printd(f'\nfit wrapper {which_fit}, plotting state at iter {i}')
+                    printd(f'fit wrapper {which_fit}, plotting state at iter {i}')
                     acc_tracker.plot_intermediate(**kwargs)
                     acc_tracker.print_accuracies()
-                    # Plot the last and best validation and test scores from acc_tracker
-                    # if acc_tracker.accuracies_val is not None:
-                    #     last_val_scores = acc_tracker.get_latest_val_acc()
-                    #     best_val_scores, best_val_iters = acc_tracker.get_best_val_acc()
-                    #     print(f"Last Validation Scores: {last_val_scores}")
-                    #     print(f"Best Validation Scores: {best_val_scores} at iterations {best_val_iters}")
-
-                    # last_test_scores = acc_tracker.get_latest_test_acc()
-                    # best_test_scores, best_test_iters = acc_tracker.get_best_test_acc()
-                    # print(f"Last Test Scores: {last_test_scores}")
-                    # print(f"Best Test Scores: {best_test_scores} at iterations {best_test_iters}")
-                    #todo: print the last and best acc values    
+                    
             # ========================================== end for loop
            
-            # LAST CALC ACCS            
+            # LAST CALC ACCS           
             acc_tracker.get_intermediate_accuracies(losses=losses, measurement_interval=(i+1)%acc_every)
             
             if verbose:
-                printd(f'\nfit_wrapper {which_fit}. optmization loop ended at iteration {i}')
+                printd(f'fit_wrapper {which_fit}. optmization loop ended at iteration {i}')
                 acc_tracker.print_accuracies()
                 if which_fit == 'fit_feats':
                     print_dolphin()
@@ -421,7 +410,7 @@ class PCLAMIter(MessagePassing):
             # ===============================  end return acc  
 
             
-            return losses, acc_tracker.accuracies_test, acc_tracker.accuracies_val
+            return losses, acc_tracker
                                                                                 
                                                                                 
 
@@ -441,7 +430,7 @@ class PCLAMIter(MessagePassing):
                   early_stop=0,
                   cutoff=0.0, 
                   verbose=False,
-                  acc_every=100, 
+                  acc_every=10, 
                   plot_every=100000,
                   **kwargs):
         
@@ -531,7 +520,7 @@ class PCLAMIter(MessagePassing):
         should have two modes'''
             
         if verbose:
-            printd(f'\nfit, {task=}')
+            printd(f'fit, {task=}')
 
         if plot_every == -1:
             plot_every = n_back_forth
@@ -547,7 +536,7 @@ class PCLAMIter(MessagePassing):
         if early_stops is not None:
             #! in general should be none
             if len(early_stops) != 2:
-                printd(f'\nfit, early_stops should be a list of two integers, got {early_stops}. will use the ones in configs dict')
+                printd(f'fit, early_stops should be a list of two integers, got {early_stops}. will use the ones in configs dict')
             prior_params['early_stop'] = early_stops[0]
             feat_params['early_stop'] = early_stops[1]
 
@@ -575,7 +564,7 @@ class PCLAMIter(MessagePassing):
         # FIRST AND SECOND PARAMS
     
         second_function_name = 'fit_prior' if first_func_in_fit == 'fit_feats' else 'fit_feats'
-        printd(f'\nin fit,\n{first_func_in_fit=}\n{second_function_name=}')
+        printd(f'in fit,\n{first_func_in_fit=}\n{second_function_name=}')
 
         first_func = fit_feats_func if first_func_in_fit == 'fit_feats' else fit_prior_func
         second_func = fit_prior_func if first_func_in_fit == 'fit_feats' else fit_feats_func
@@ -609,57 +598,67 @@ class PCLAMIter(MessagePassing):
         if n_back_forth == 0:
             
             if first_func_in_fit == 'fit_prior':
-                printd(f'\n\nWARNING\n\WARNING: n_back_forth = 0, starting {first_func_in_fit} this is only optimizing prior, you should do "fit prior"\nWARNIING\n')
+                printd(f'\nWARNING\n\WARNING: n_back_forth = 0, starting {first_func_in_fit} this is only optimizing prior, you should do "fit prior"\nWARNIING\n')
 
-            printd(f'\n n_back_forth = 0, starting {first_func_in_fit}')
+            printd(f' n_back_forth = 0, starting {first_func_in_fit}')
             first_eval_style() # either prior.eval() or prior.train()
             t = time.time()
             
-            # FIRST FUNCTION
             try:
-                losses_first, accuracies_test_first, accuracies_val_first = first_func()
+                # losses_first, accuracies_test_first, accuracies_val_first = first_func()
+                losses_first, acc_tracker_first = first_func()
+                accuracies_test_first = acc_tracker_first.accuracies_test
+                accuracies_val_first = acc_tracker_first.accuracies_val
+
             except ValueError as e:
-                printd(f'\nfit func. error in {first_func_in_fit} at iter {i}:\n {e}')
+                printd(f'fit func. error in {first_func_in_fit} at iter {i}:\n {e}')
                 raise
             #  ===== end first function =====
 
-            printd(f'\n{first_func_in_fit} took {time.time()-t} seconds')
+            printd(f'{first_func_in_fit} took {time.time()-t} seconds')
             
             acc_tracker.append_accuracies(accuracies_test_first, [], accuracies_val_first, [])
-            acc_tracker.losses = losses_first
             
-            return losses, acc_tracker.accuracies_test, acc_tracker.accuracies_val
+            return losses_first, acc_tracker
         # ====== back forth == 0 ========================
         
         # BACK AND FORTH
         # for i in tqdm(range(n_back_forth), desc='back and forth'):
         for i in range(n_back_forth):
 
-            printd(f'\nback and forth {i+1}/{n_back_forth}')
+            printd(f'back and forth {i+1}/{n_back_forth}')
             
             # --FIRST FUNCTION -- 
             first_eval_style() #* either self.prior.eval() or self.prior.train()
             t_first = time.time()
             try:
-                losses_epoch_1st, accuracies_test_epoch_1st, accuracies_val_epoch_1st = first_func()
+                # losses_epoch_1st, accuracies_test_epoch_1st, accuracies_val_epoch_1st = first_func()
+                losses_epoch_1st, acc_tracker_1st = first_func()
+                accuracies_test_epoch_1st = acc_tracker_1st.accuracies_test
+                accuracies_val_epoch_1st = acc_tracker_1st.accuracies_val
+
             except ValueError as e:
-                printd(f'\nfit func. nerror in {first_func_in_fit} at iter {i}:\n {e}')
+                printd(f'fit func. nerror in {first_func_in_fit} at iter {i}:\n {e}')
                 break       
             if verbose_in_funcs:
-                printd(f'\nin fit, {first_func_in_fit} took {time.time()-t_first} seconds')
+                printd(f'in fit, {first_func_in_fit} took {time.time()-t_first} seconds')
             # ==== end first function ==
             
             # --SECOND FUNCTION --            
             t_second = time.time()
             second_eval_style() # either self.prior.eval() or self.prior.train()
             try:
-                losses_epoch_2nd, accuracies_test_epoch_2nd, accuracies_val_epoch_2nd = second_func()
+                # losses_epoch_2nd, accuracies_test_epoch_2nd, accuracies_val_epoch_2nd = second_func()
+                losses_epoch_2nd, acc_tracker_2nd = second_func()
+                accuracies_test_epoch_2nd = acc_tracker_2nd.accuracies_test
+                accuracies_val_epoch_2nd = acc_tracker_2nd.accuracies_val
+
             except ValueError as e:
-                printd(f'\nfit func. error in {second_function_name} at iter {i}:\n {e}')
+                printd(f'fit func. error in {second_function_name} at iter {i}:\n {e}')
                 break
                 
             if verbose_in_funcs:
-                printd(f'\nin fit, {second_function_name} took {time.time()-t_second} seconds')
+                printd(f'in fit, {second_function_name} took {time.time()-t_second} seconds')
             # ==== end second function =======================
             
             # COLLECT RESULTS
@@ -681,7 +680,7 @@ class PCLAMIter(MessagePassing):
             if verbose:
                 if verbose_in_funcs:
                     print_end_fit()
-                printd(f'\nfit, back and forth {i+1}/{n_back_forth} took {time.time()-t_first} seconds')
+                printd(f'fit, back and forth {i+1}/{n_back_forth} took {time.time()-t_first} seconds')
                 acc_tracker.print_accuracies()
                 a=0
           
@@ -696,17 +695,17 @@ class PCLAMIter(MessagePassing):
                 a=0
 
             if (i+1)%plot_every == 0:
-                printd(f'\nfit, plotting state at iter {i+1}.\ndataset: {graph.name}, ,model: {self.model_name}')
+                printd(f'fit, plotting state at alternation {i+1}.\ndataset: {graph.name}, ,model: {self.model_name}')
                 acc_tracker.plot_intermediate(num_blanks_second, num_blanks_first, i+1, **params)
         # ========= end fit loop ================
 
        
             if i == n_back_forth-1:
-                printd(f'\nfit end, no early stopping')
+                printd(f'fit end')
             
         losses = (losses_first, losses_second)
         
-        return losses, acc_tracker.accuracies_test, acc_tracker.accuracies_val
+        return losses, acc_tracker
         
   #todo: refactor fit to have an acc tracker, simething to take care of the val accuracy management since we don't use it and it takes up a lot of space
 
@@ -762,7 +761,7 @@ class PCLAMIter(MessagePassing):
             **kwargs):
         
         '''plot the state of the model'''
-        # printd(f'\nin plot state, calling function is {calling_function_name}')
+        # printd(f'in plot state, calling function is {calling_function_name}')
         plot_optimization_stage(
                             self.prior, 
                             graph, 
@@ -1239,7 +1238,7 @@ class AccTrack:
         elif self.task == 'distance':
             best_val_distance = max(self.accuracies_val)
             if best_val_distance - self.first_val_dist < 0:
-                printd(f'\n fit prior. no improvement, best distance == first distance')
+                printd(f' fit prior. no improvement, best distance == first distance')
                 # graph.x = first_x.clone()
             # del first_x
     
@@ -1249,7 +1248,7 @@ class AccTrack:
                           accuracies_test_2nd,
                           accuracies_val_1st=None,
                           accuracies_val_2nd=None):
-        
+        '''append the accuracies from the first and second function to the accuracies_test and accuracies_val'''
         for key in self.accuracies_test.keys():
             self.accuracies_test[key] += accuracies_test_1st[key] + accuracies_test_2nd[key]
 
@@ -1398,7 +1397,7 @@ class EarlyStop:
             #         patiance += 1
             #         if early_stop_fit!=0:
             #             if patiance >= early_stop_fit:
-            #                 printd(f'\nfit_prior early stopping at iteration {i}')
+            #                 printd(f'fit_prior early stopping at iteration {i}')
             #                 break
                 
             # # ========= distance collect results  ====================
@@ -1445,11 +1444,11 @@ class EarlyStop:
             #         # === end CHECK IMPROVE ======
                         
             #             if verbose:
-            #                 printd(f'\nfit function after checking improvement {i= }; \n {count_not_improved_link=}, {iter_best_link= }\n\n ANOMALY ACC:\n {auc_vanilla_star= }, {auc_prior= }, {auc_prior_star= }' )
+            #                 printd(f'fit function after checking improvement {i= }; \n {count_not_improved_link=}, {iter_best_link= }\n\n ANOMALY ACC:\n {auc_vanilla_star= }, {auc_prior= }, {auc_prior_star= }' )
                         
             #             # STOPPING CONDITION
             #             if early_stop_fit!=0 and count_not_improved_link >= early_stop_fit:
-            #                 printd(f'\nfit. early stopping at iteration {i+1}')
+            #                 printd(f'fit. early stopping at iteration {i+1}')
             #                 break
                 
             #     accuracies_test['vanilla_star'] += accuracies_test_epoch_1st['vanilla_star'] + accuracies_test_epoch_2nd['vanilla_star']

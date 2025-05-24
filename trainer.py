@@ -335,6 +335,7 @@ class Trainer():
         printd(f'\n {datetime.now().strftime("%Y-%m-%d %H:%M:%S")} starting optimization of {self.model_name} on {self.dataset_name} on device {self.device}')
         print('\n configs_dict: \n' + json.dumps(self.configs_dict, indent=4))
           
+          
         if init_feats or (self.data.x is None):
             if verbose:
                 printd(f'\n train_model_on_params, initializing feats with {init_type}')
@@ -350,15 +351,14 @@ class Trainer():
                 printd(f'\n init_node_feats took {time.time() - t} seconds')
 
         self.data.to(self.device) 
-    
+
         # OPTIMIZATION
-            
         try:
-            #todo: add a case for when acc_every is -1 and just calculate it in the end of each function
             # FIT VANILLA 
             if self.vanilla:
                 losses_prior = None
-                losses_feats, accuracies_test, accuracies_val = self.clamiter.fit_feats(
+                # losses_feats, accuracies_test, accuracies_val = self.clamiter.fit_feats(
+                losses, acc_tracker = self.clamiter.fit_feats(
                         graph=self.data,
                         acc_every=acc_every,
                         task=self.task,
@@ -369,8 +369,8 @@ class Trainer():
                         **kwargs)
                 if verbose:
                     printd(f'\n train: finished vanilla fit feats')
-                          
-                return losses_feats, accuracies_test, accuracies_val
+                
+                return losses, acc_tracker.accuracies_test, acc_tracker.accuracies_val
             # =====================================================
             
             # FIT WITH PRIOR
@@ -397,7 +397,8 @@ class Trainer():
                         'early_stop_fit': self.configs_dict['back_forth']['early_stop_fit']
                         }
                 
-                losses, accuracies_test, accuracies_val = self.clamiter.fit(
+                # losses, accuracies_test, accuracies_val = self.clamiter.fit(
+                losses, acc_tracker = self.clamiter.fit(
                                         self.data, 
                                         optimizer=self.optimizer, scheduler=self.scheduler,
                                         prior_fit_mask=prior_fit_mask,
@@ -419,8 +420,8 @@ class Trainer():
              
                 
                 # printd(f'\n\n\nFINISHED train model on params \n\n\n')
-
-                return losses, accuracies_test, accuracies_val
+                return losses, acc_tracker.accuracies_test, acc_tracker.accuracies_val
+                
             # ===============================================================
 
 
@@ -433,19 +434,19 @@ class Trainer():
         finally:
             # self.data.edge_index = self.data.edge_index_original.to(self.device)
             # self.data.edge_attr = torch.ones(self.data.edge_index.shape[1]).bool().to(self.device)
-            if accuracies_test is not None:    
+            if acc_tracker.accuracies_test is not None:    
                 printd(f'\n\n\nFINISHED train \n last accuracies:')
-                for key in accuracies_test.keys():
+                for key in acc_tracker.accuracies_test.keys():
                     print('test')
-                    if accuracies_test[key]:
-                        print(f'{key=}: {accuracies_test[key][-1]}')
+                    if acc_tracker.accuracies_test[key]:
+                        print(f'{key=}: {acc_tracker.accuracies_test[key][-1]}')
                     else:
                         print(f'{key}: None')
-                if accuracies_val is not None:
+                if acc_tracker.accuracies_val is not None:
                     print('val')
-                    for key in accuracies_val.keys():
-                        if accuracies_val[key]:
-                            print(f'{key=}: {accuracies_val[key][-1]}')
+                    for key in acc_tracker.accuracies_val.keys():
+                        if acc_tracker.accuracies_val[key]:
+                            print(f'{key=}: {acc_tracker.accuracies_val[key][-1]}')
                         else:
                             print(f'{key}: None')
 

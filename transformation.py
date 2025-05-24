@@ -333,7 +333,7 @@ class RealNVP(nn.Module):
             # if (z > limit_radius).any():
                 # raise ValueError('z is too large')
                 # a=0
-                # printd(f'\n{(z > limit_radius).any(dim=1).sum()=}')
+                # printd(f'{(z > limit_radius).any(dim=1).sum()=}')
             #!debug ^^
             
             log_det_tot += move_forward_mask*log_det
