@@ -126,7 +126,7 @@ def plot_2dgraph(graph,
         num_nodes = node_feats.shape[0]
         num_edges = graph_cpu.edge_index.shape[1]
         node_positions_dict = {i: feat for i, feat in enumerate(node_feats)}
-        node_sizes = 5*node_size_factor*figsize[0]/num_nodes*degree(graph_cpu.edge_index[0]).detach().numpy()
+        node_sizes = 5*node_size_factor*figsize[0]/num_nodes*degree(graph_cpu.edge_index[0], num_nodes=num_nodes).detach().numpy()
         G = to_networkx(graph_cpu)
         if ax is None:
             fig, ax = plt.subplots(figsize=figsize)

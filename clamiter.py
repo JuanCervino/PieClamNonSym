@@ -91,10 +91,17 @@ class PCLAMIter(MessagePassing):
             self.in_out_dim = dim_feat
 
         if self.lorenz:
+            print('gets in')
             if not dim_feat//2 == dim_feat/2:
                raise ValueError('dim_feat should be even for p/ieclam')
             self.B = 1/self.T*(torch.concatenate([torch.ones(dim_feat//2), -torch.ones(dim_feat//2)])).to(device) # GPU 50 mib
             self.dim_feat = dim_feat
+            
+            d = dim_feat//2
+            self.B_imag = 1/self.T * torch.block_diag(torch.zeros(d, d), torch.zeros(d, d))
+            self.B_imag[:d, d:] = torch.eye(d)
+            self.B_imag[d:, :d] = torch.eye(d)
+
             
             
             self.vanilla = vanilla
@@ -185,7 +192,10 @@ class PCLAMIter(MessagePassing):
         # todo> change clamiter and maybe the prior to mask some of the edges
         # how to mask the edges? for now not very important.. if this becomes a problem for large graphs i can do 2d edge attributes or something. hope it's not 
         x_inner_product = torch.einsum('ij,ij->i', x_i, self.B*x_j) + eps
-        
+        x_inner_product_im = torch.einsum('ij,ij->i', x_i, x_j@self.B_imag) + eps
+        # angle = torch.atan2(x_inner_product_im, x_inner_product)  # shape: [num_edges]
+        mask_positive_imag = x_inner_product_im > 0  # shape: [num_edges], dtype: torch.bool
+        printd(f'mask_positive_imag: {mask_positive_imag.sum()} out of {mask_positive_imag.shape[0]} edges have positive imaginary part')
         if (x_inner_product < 0).any():
             raise ValueError('x_inner_product is negative for neighbors')
         if (x_inner_product == 0).any():
@@ -196,6 +206,9 @@ class PCLAMIter(MessagePassing):
 
         # edge attr is 0 for omitted dyads
         msg = edge_attr.unsqueeze(1)*msg_1 + (~edge_attr).unsqueeze(1)*msg_0 
+        # msg = torch.where(mask_positive_imag.unsqueeze(1), msg, -msg)
+        msg = torch.where(mask_positive_imag.unsqueeze(1), msg, torch.zeros_like(msg))
+
         #? TESTED  torch.where(msg == x_j) == torch.where(edge_attr==0) 
         return msg
 
@@ -306,7 +319,7 @@ class PCLAMIter(MessagePassing):
             
 
             # ASSERTIONS
-            assert graph.is_undirected(), 'graph is directed!!!'
+            # assert graph.is_undirected(), 'graph is directed!!!'
             assert not graph.has_self_loops(), 'graph contains self loops!!!'
             assert which_fit in ['fit_feats', 'fit_prior'], 'which_fit should be either fit_feats or fit_prior'
             # ==== end assertions =====

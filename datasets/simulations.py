@@ -53,6 +53,15 @@ def sample_from_adj(prob_adj):
     adj_mat = adj_mat + adj_mat.transpose(0,1)
     return adj_mat.int()
 
+
+def sample_from_adj_non_symmetric(prob_adj):
+    '''sample edges from probability adjacency'''
+    
+    assert torch.all((prob_adj >= 0) & (prob_adj <= 1)), "All elements in the tensor must be between 0 and 1"
+    adj_mat = torch.bernoulli(prob_adj)
+    adj_mat = torch.triu(adj_mat, diagonal=1)
+    # adj_mat = adj_mat + adj_mat.transpose(0,1)
+    return adj_mat.int()
 # add all graph creation with prior models here
 
 def sample_normflows_dist(num_samples, name_shape, lorenz=False, device='cpu'):
@@ -114,8 +123,23 @@ def simulate_dataset(name, verbose=False):
             axes[0].set_title('sbm')
             axes[1].set_title('sampled')
 
+    elif name == 'bipartiteDirected':
+            num_samples = 100
+            prob_adj_bipart, y = create_sbm(num_samples, p_comm=[0.0, 0.0], p_bipart=[0.5])
+            adj_bipart = sample_from_adj_non_symmetric(prob_adj_bipart)
+            edge_index = dense_to_sparse(adj_bipart)[0]
+            print(type(edge_index))
+
+            data = Data(edge_index=edge_index, y=y)
+            if verbose == True:
+                _, axes = plt.subplots(1,2, figsize=figsize)
+                axes[0].imshow(prob_adj_bipart)
+                axes[1].imshow(adj_bipart)
+                axes[0].set_title('sbm')
+                axes[1].set_title('sampled')
+
     elif name == 'bipartiteHalf':
-        num_samples = 100
+        num_samples = 25
         prob_adj_bipart, y = create_sbm(num_samples, p_comm=[0.0, 0.0], p_bipart=[0.5])
         adj_bipart = sample_from_adj(prob_adj_bipart)
         edge_index = dense_to_sparse(adj_bipart)[0]
@@ -126,7 +150,42 @@ def simulate_dataset(name, verbose=False):
             axes[1].imshow(adj_bipart)
             axes[0].set_title('sbm')
             axes[1].set_title('sampled')
+            
+    elif name == 'bipartiteHalfDirected':
+        # num_samples = 100
+        # prob_adj_bipart, y = create_sbm(num_samples, p_comm=[0.0, 0.0], p_bipart=[0.5])
+        # adj_bipart = sample_from_adj(prob_adj_bipart)
+        # edge_index = dense_to_sparse(adj_bipart)[0]
+        # data = Data(edge_index=edge_index, y=y)
+        # if verbose == True:
+        #     _, axes = plt.subplots(1,2, figsize=figsize)
+        #     axes[0].imshow(prob_adj_bipart)
+        #     axes[1].imshow(adj_bipart)
+        #     axes[0].set_title('sbm')
+        #     axes[1].set_title('sampled')
+            # assert(1==2)
+            num_samples = 25
+            prob_adj_bipart, y = create_sbm(num_samples, p_comm=[0.0, 0.0], p_bipart=[0.5])
+            adj_bipart = sample_from_adj_non_symmetric(prob_adj_bipart)
+            edge_index = dense_to_sparse(adj_bipart)[0]
+            print(type(edge_index))
 
+            data = Data(edge_index=edge_index, y=y)
+            if verbose == True:
+                _, axes = plt.subplots(1,2, figsize=figsize)
+                axes[0].imshow(prob_adj_bipart)
+                axes[1].imshow(adj_bipart)
+                axes[0].set_title('sbm')
+                axes[1].set_title('sampled')
+            # Make the probability matrix non-symmetric by zeroing out one triangle
+            # prob_adj_bipart = torch.triu(prob_adj_bipart, diagonal=1)  # upper triangular only
+
+            # # Sample the adjacency matrix
+            # adj_bipart = sample_from_adj(prob_adj_bipart)
+
+            # # No need to symmetrize — this remains directed
+            # edge_index = dense_to_sparse(adj_bipart)[0]
+            # data = Data(edge_index=edge_index, y=y)
 
     elif name=='sbm3x3HalfCenter':
         num_samples_per_comm = 70

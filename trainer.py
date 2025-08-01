@@ -118,9 +118,18 @@ class Trainer():
         if model_name == 'ieclam':
             self.vanilla = True
             self.lorenz = True
+        elif model_name == 'juanclam':
+            self.vanilla = True
+            self.lorenz_plus = True
         elif model_name == 'bigclam':
             self.vanilla = True
             self.lorenz = False
+        elif model_name == 'bigclam':
+            self.vanilla = True
+            self.lorenz = False
+        elif model_name == 'bigclam':
+            self.vanilla = True
+            self.lorenz = False         
         elif model_name == 'pieclam':
             self.vanilla = False
             self.lorenz = True
@@ -356,6 +365,7 @@ class Trainer():
         try:
             # FIT VANILLA 
             if self.vanilla:
+                print("Fitting vanilla model...")
                 losses_prior = None
                 # losses_feats, accuracies_test, accuracies_val = self.clamiter.fit_feats(
                 losses, acc_tracker = self.clamiter.fit_feats(
@@ -375,6 +385,8 @@ class Trainer():
             
             # FIT WITH PRIOR
             else:
+                print("Fitting prior model...")
+
                 #  OPTIMIZER AND SCHEDULER 
                 if not self.optimizer:
                     self.optimizer = torch.optim.Adam(

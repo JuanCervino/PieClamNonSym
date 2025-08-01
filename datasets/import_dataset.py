@@ -145,6 +145,9 @@ def import_dataset(dataset_name, test_dyads_path=None, val_dyads_path=None, remo
     elif dataset_name == 'bipartite':
         data = simulate_dataset('bipartite', verbose=verbose)
 
+    elif dataset_name == 'bipartiteDirected':
+        data = simulate_dataset('bipartiteDirected', verbose=verbose)
+        
     elif dataset_name == 'sbm3x3HalfCenter':
         data = simulate_dataset('sbm3x3HalfCenter', verbose=verbose)
         
@@ -154,7 +157,10 @@ def import_dataset(dataset_name, test_dyads_path=None, val_dyads_path=None, remo
 
     elif dataset_name == 'bipartiteHalf':
         data = simulate_dataset('bipartiteHalf', verbose=verbose)
-
+        
+    elif dataset_name == 'bipartiteHalfDirected':
+        data = simulate_dataset('bipartiteHalfDirected', verbose=verbose)
+        
     elif dataset_name == 'smallBipart':
         data = simulate_dataset('smallBipart', verbose=verbose)
 
@@ -213,7 +219,7 @@ def import_dataset(dataset_name, test_dyads_path=None, val_dyads_path=None, remo
     # 1 flag is normal: normal edge and normal node.
 
     assert not data.has_isolated_nodes(), 'in import_dataset: isolated nodes found'
-    assert data.is_undirected(), 'in import_dataset: graph is not undirected'
+    # assert data.is_undirected(), 'in import_dataset: graph is not undirected'
     assert not data.has_self_loops(), 'in import_dataset: self loops found'
 
     return data

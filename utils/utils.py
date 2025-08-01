@@ -78,6 +78,32 @@ def get_prob_graph(x, lorenz, to_sparse=False, prior=None,ret_fufv=False):
     if lorenz:
         B = torch.concatenate([torch.ones(dim_feat//2), -torch.ones(dim_feat//2)]).to(x.device)
         fufv = x @ (B*x).T
+
+
+
+        print(f'\n\n\nLorenz: {lorenz}, dim_feat: {dim_feat}, fufv shape: {fufv.shape}')
+        print(f'B shape: {B.shape}')
+
+        d = dim_feat//2
+        # add noise to x 
+        eps = 1
+        # x = x + eps * torch.randn_like(x)
+        B_imag = torch.block_diag(torch.zeros(d, d), torch.zeros(d, d))
+        B_imag[:d, d:] = torch.eye(d)
+        B_imag[d:, :d] = torch.eye(d)
+        print(f'B shape: {B_imag.shape}')
+        x_inner_product = torch.einsum('ij,ij->i', x, B*x)
+        x_inner_product_im = torch.einsum('ij,ij->i', x, x @ B_imag) 
+        fufv_im = x @ B_imag @ x.T
+        mask_positive_imag = fufv_im > 0  # shape: [num_edges], dtype: torch.bool
+        is_symmetric = torch.equal(fufv_im, fufv_im.T)
+        print(f"mask_positive_imag is symmetric? {is_symmetric}")
+        print(f'x_inner_product shape: {x_inner_product.shape}')
+        print(f'x_inner_product_im shape: {x_inner_product_im.shape}')
+        print(f'fufv_im shape: {fufv_im.shape}')    
+        fufv = torch.where(mask_positive_imag, fufv,  torch.zeros_like(fufv))
+        print(fufv_im-fufv_im.T)
+
     else:
         fufv = x @ x.T
     
